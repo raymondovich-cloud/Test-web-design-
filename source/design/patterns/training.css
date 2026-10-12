@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.33 */
+/* source/design/patterns/training.css — Version 3.34 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -440,8 +440,8 @@
     transition:opacity var(--motion-duration-fast);
 }
 .training-session__exercise-card--current{}
-.training-session__exercise-card--complete{opacity:.72}
-.training-session__exercise-card--upcoming{opacity:.94}
+.training-session__exercise-card--complete,
+.training-session__exercise-card--upcoming{opacity:1}
 .training-session__exercise-top{display:grid;grid-template-columns:minmax(0,1fr);align-items:center;gap:var(--space-3);cursor:pointer;outline-offset:3px}
 .training-session__exercise-heading{display:grid;gap:var(--space-1);min-width:0}
 .training-session__exercise-kicker{margin:0;color:var(--color-accent);font-size:var(--font-size-2xs);font-weight:var(--font-weight-semibold);letter-spacing:.12em}
