@@ -1,0 +1,30 @@
+/* border-unification.css — Version 1.0 */
+/* Единый цвет всех видимых рамок Design System. Геометрия рамок не меняется. */
+
+:root {
+  --color-border-unified: var(--color-financial-health-border);
+}
+
+/* Рамки элементов, включая разделители, поля, кнопки и focus outlines. */
+*,
+*::before,
+*::after {
+  border-color: var(--color-border-unified) !important;
+  outline-color: var(--color-border-unified) !important;
+}
+
+/* Рамки, отрисованные отдельным псевдоэлементом через градиент и mask,
+   также используют один цвет вместо декоративного градиента по периметру. */
+.finance-data-screen .finance-data-accordion .accordion-item::after,
+.finance-health::after,
+.finance-capital::after,
+.health-data-category::after,
+.health-analytics-frame::after,
+.health-priority-panel::after,
+.health-overview-section::after,
+.development-system-context::after,
+.training-overview::after,
+.assets-statistics-screen::after,
+.credit-product-details-frame::after {
+  background: var(--color-border-unified) !important;
+}
