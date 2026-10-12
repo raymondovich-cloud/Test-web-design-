@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.39 */
+/* source/design/patterns/training.css — Version 3.40 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -2305,4 +2305,9 @@ body.is-training-session-active .training-session__footer{
  .training-session--active .training-session__header{grid-template-columns:2rem minmax(0,1fr)}
  .training-session--active .training-session__back{grid-column:1;grid-row:1}
  .training-session--active .training-session__identity{grid-column:2;grid-row:1}
+}
+
+/* Keep the collapsed current exercise title visible beside its expand control. */
+.training-session--active .training-session__exercise-card--current .training-session__exercise-top{
+    grid-template-columns:auto minmax(0,1fr);
 }
