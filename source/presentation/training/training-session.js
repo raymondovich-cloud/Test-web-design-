@@ -1,4 +1,4 @@
-// source/presentation/training/training-session.js — Version 4.15
+// source/presentation/training/training-session.js — Version 4.16
 // Responsibility: render the active workout interaction; delegate persistence and business rules to the application layer.
 function createElement(tag, className = "", text = null) {
     const element = document.createElement(tag);
@@ -135,7 +135,7 @@ function renderTrainingSession(container, { sessionResult, workout, application,
             body.appendChild(setHead);
             for (let index = 0; index < rowsCount; index += 1) {
                 const savedSet = exercise.sets[index];
-                const row = createElement("div", "training-session__set-row" + (index === 0 && isCurrentExercise ? " is-current" : ""));
+                const row = createElement("div", "training-session__set-row");
                 const checkbox = document.createElement("input");
                 checkbox.type = "checkbox";
                 checkbox.className = "training-session__set-check";
