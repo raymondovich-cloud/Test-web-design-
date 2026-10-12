@@ -1,4 +1,4 @@
-// source/presentation/training/training-session.js — Version 3.3
+// source/presentation/training/training-session.js — Version 4.0
 // Responsibility: render the active workout interaction; delegate persistence and business rules to the application layer.
 function createElement(tag, className = "", text = null) {
     const element = document.createElement(tag);
@@ -16,11 +16,6 @@ function renderTrainingSession(container, { sessionResult, workout, application,
     }
 
     let current = sessionResult;
-    const startedAt = Number.isFinite(current.session.startedAt)
-        ? current.session.startedAt
-        : current.session.status === "in_progress" && Number.isFinite(current.session.updatedAt)
-            ? current.session.updatedAt
-            : Number.isFinite(current.session.createdAt) ? current.session.createdAt : Date.now();
     let timerId = null;
     const expandedExerciseIds = new Set();
 
@@ -49,18 +44,13 @@ function renderTrainingSession(container, { sessionResult, workout, application,
         const eyebrow = createElement("span", "training-session__eyebrow", "ACTIVE SESSION");
         const title = createElement("h3", "training-session__title", workout.title || "Моя тренировка");
         identity.append(eyebrow, title);
-        const timer = createElement("div", "training-session__timer");
-        timer.setAttribute("aria-label", "Время тренировки");
-        const timerLabel = createElement("span", "training-session__timer-label", "ВРЕМЯ ТРЕНИРОВКИ");
-        const elapsed = createElement("p", "training-session__elapsed", "00:00");
-        elapsed.setAttribute("aria-label", "Продолжительность тренировки");
-        timer.append(timerLabel, elapsed);
-        const back = createElement("button", "training-session__back", "← Назад");
+        const back = createElement("button", "training-session__back", "‹");
         back.type = "button";
+        back.setAttribute("aria-label", "Назад к тренировкам");
         back.addEventListener("click", () => {
             if (typeof onBack === "function") onBack();
         });
-        header.append(back, identity, timer);
+        header.append(back, identity);
 
         const completedSets = current.session.exercises.reduce(
             (total, exercise) => total + getCompletedSetCount(exercise),
@@ -93,6 +83,8 @@ function renderTrainingSession(container, { sessionResult, workout, application,
         progressBar.max = Math.max(1, plannedSets);
         progressBar.value = completedSets;
         progressBar.setAttribute("aria-label", "Выполненные подходы");
+        const progressPercent = Math.round((completedSets / Math.max(1, plannedSets)) * 100);
+        progressHeading.appendChild(createElement("span", "training-session__progress-percent", progressPercent + "%"));
         progress.append(progressHeading, progressBar);
 
         const exerciseHost = createElement("div", "training-session__exercises");
@@ -116,19 +108,27 @@ function renderTrainingSession(container, { sessionResult, workout, application,
             toggle.setAttribute("aria-expanded", String(isExpanded));
             toggle.textContent = isExpanded ? "⌃" : "⌄";
             const heading = createElement("div", "training-session__exercise-heading");
-            if (isCurrentExercise) {
-                heading.appendChild(createElement("p", "training-session__exercise-kicker", "СЕЙЧАС"));
+            if (!isCurrentExercise) {
+                heading.appendChild(createElement("span", "training-session__exercise-index", String(exerciseIndex + 1)));
             }
-            heading.append(
+            const exerciseTitleBlock = createElement("div", "training-session__exercise-title-block");
+            exerciseTitleBlock.append(
                 createElement("h4", "training-session__exercise-title", exercise.name),
-                createElement("p", "training-session__exercise-progress", getCompletedSetCount(exercise) + "/" + getPlannedSetCount(exercise) + " подходов выполнено")
+                createElement("p", "training-session__exercise-progress", getCompletedSetCount(exercise) + " из " + getPlannedSetCount(exercise) + " подходов")
             );
+            heading.appendChild(exerciseTitleBlock);
             top.append(toggle, heading);
             const meta = createElement("div", "training-session__exercise-meta");
             meta.append(createElement("span", "training-session__exercise-meta-item", String(getPlannedSetCount(exercise)) + " подходов"));
             meta.append(createElement("span", "training-session__exercise-meta-item", String(definition.targetReps ?? 8) + " повторений"));
             meta.append(createElement("span", "training-session__exercise-meta-item", definition.targetResistance?.value != null ? String(definition.targetResistance.value) + " кг" : "Собственный вес"));
             heading.appendChild(meta);
+            if (isCurrentExercise) {
+                const exerciseVisual = createElement("div", "training-session__exercise-visual");
+                exerciseVisual.setAttribute("aria-hidden", "true");
+                exerciseVisual.innerHTML = '<svg viewBox="0 0 88 104" focusable="false"><path class="muscle-outline" d="M25 19 32 8 39 16 49 16 56 8 63 20 71 28 75 45 70 59 66 47 63 34 58 29 55 40 50 46 38 46 33 40 30 29 25 34 22 47 18 59 13 44 17 29Z"/><path class="muscle-outline" d="M33 18 31 35 36 44 44 49 52 44 57 35 55 18M36 44 33 58 37 69 34 83M52 44 55 58 51 69 54 83M38 49 44 55 50 49M37 69 44 73 51 69"/><path class="muscle-highlight" d="M29 30 39 27 43 36 36 43 29 39ZM45 36 49 27 59 30 59 39 52 43Z"/><path class="muscle-outline" d="M27 61 22 76 25 91M61 61 66 76 63 91M35 83 32 98M53 83 56 98"/></svg>';
+                heading.appendChild(exerciseVisual);
+            }
             const setProgress = createElement("div", "training-session__set-progress");
             setProgress.setAttribute("aria-label", "Прогресс подходов упражнения");
             for (let tick = 0; tick < getPlannedSetCount(exercise); tick += 1) {
@@ -158,7 +158,7 @@ function renderTrainingSession(container, { sessionResult, workout, application,
             body.appendChild(setHead);
             for (let index = 0; index < rowsCount; index += 1) {
                 const savedSet = exercise.sets[index];
-                const row = createElement("div", "training-session__set-row");
+                const row = createElement("div", "training-session__set-row" + (index === getCompletedSetCount(exercise) && isCurrentExercise ? " is-current" : ""));
                 const checkbox = document.createElement("input");
                 checkbox.type = "checkbox";
                 checkbox.className = "training-session__set-check";
@@ -166,6 +166,7 @@ function renderTrainingSession(container, { sessionResult, workout, application,
                 checkbox.disabled = Boolean(savedSet);
                 checkbox.setAttribute("aria-label", "Подход " + (index + 1) + " выполнен");
                 const number = createElement("span", "training-session__set-number", String(index + 1));
+                const rowLabel = createElement("span", "training-session__set-row-label", "подход");
                 const reps = document.createElement("input");
                 reps.type = "number"; reps.min = "1"; reps.max = "100"; reps.step = "1";
                 reps.inputMode = "numeric"; reps.className = "training-session__set-reps";
@@ -184,15 +185,21 @@ function renderTrainingSession(container, { sessionResult, workout, application,
                 resistance.value = String(savedSet?.resistance?.value ?? definition.targetResistance?.value ?? "");
                 resistance.disabled = Boolean(savedSet);
                 resistance.setAttribute("aria-label", "Вес в килограммах, подход " + (index + 1));
-                const repsField = createElement("label", "training-session__set-field training-session__set-field--reps");
-                repsField.append(reps, createElement("span", "training-session__set-unit", "повт."));
-                const weightField = createElement("label", "training-session__set-field training-session__set-field--weight");
-                weightField.append(resistance, createElement("span", "training-session__set-weight-unit", "кг"));
+                const repsField = createElement("label", "training-session__set-field-wrap training-session__set-field-wrap--reps");
+                repsField.append(createElement("span", "training-session__set-field-label", "ПОВТОРЫ"));
+                const repsControl = createElement("span", "training-session__set-field training-session__set-field--reps");
+                repsControl.append(reps, createElement("span", "training-session__set-unit", "ПОВТ."));
+                repsField.appendChild(repsControl);
+                const weightField = createElement("label", "training-session__set-field-wrap training-session__set-field-wrap--weight");
+                weightField.append(createElement("span", "training-session__set-field-label", "ВЕС"));
+                const weightControl = createElement("span", "training-session__set-field training-session__set-field--weight");
+                weightControl.append(resistance, createElement("span", "training-session__set-weight-unit", "КГ"));
+                weightField.appendChild(weightControl);
                 if (isCardio) {
                     row.classList.add("training-session__set-row--cardio");
-                    row.append(checkbox, number, repsField);
+                    row.append(number, rowLabel, repsField, checkbox);
                 } else {
-                    row.append(checkbox, number, repsField, weightField);
+                    row.append(number, rowLabel, repsField, weightField, checkbox);
                 }
                 if (savedSet) row.classList.add("is-complete");
                 checkbox.addEventListener("change", async () => {
@@ -230,7 +237,8 @@ function renderTrainingSession(container, { sessionResult, workout, application,
                 });
                 body.appendChild(row);
             }
-            const addSet = createElement("button", "training-session__add-set", "+ Добавить подход");
+            const addSet = createElement("button", "training-session__add-set", "Добавить подход");
+            addSet.appendChild(createElement("span", "training-session__add-set-arrow", "›"));
             addSet.hidden = !isExpanded;
             addSet.type = "button";
             addSet.addEventListener("click", () => {
@@ -266,13 +274,13 @@ function renderTrainingSession(container, { sessionResult, workout, application,
                 current = await application.completeWorkout({ sessionResult: current });
                 if (timerId !== null) window.clearInterval(timerId);
                 complete.removeAttribute("aria-busy");
-                complete.textContent = "ТРЕНИРОВКА ЗАВЕРШЕНА ✓";
+                complete.textContent = "Тренировка завершена ✓";
                 status.className = "training-session__status training-session__status--success";
                 status.textContent = "Тренировка завершена. Результат сохранён.";
                 if (typeof onFinished === "function") await onFinished();
             } catch (error) {
                 complete.removeAttribute("aria-busy");
-                complete.textContent = "ЗАВЕРШИТЬ ТРЕНИРОВКУ";
+                complete.textContent = "⚑  Завершить тренировку";
                 status.className = "training-session__status training-session__status--error";
                 status.textContent = error?.code === "TRAINING_SESSION_CONFLICT"
                     ? "Тренировка изменилась в другом запросе. Обнови экран перед продолжением."
@@ -283,13 +291,10 @@ function renderTrainingSession(container, { sessionResult, workout, application,
         footer.append(status, complete);
         screen.append(header, progress, exerciseHost, footer);
         container.appendChild(screen);
-        const updateElapsed = () => {
-            const seconds = Math.max(0, Math.floor((Date.now() - startedAt) / 1000));
-            elapsed.textContent = String(Math.floor(seconds / 60)).padStart(2, "0") + ":" + String(seconds % 60).padStart(2, "0");
-        };
-        updateElapsed();
-        if (timerId !== null) window.clearInterval(timerId);
-        timerId = window.setInterval(updateElapsed, 1000);
+        if (timerId !== null) {
+            window.clearInterval(timerId);
+            timerId = null;
+        }
     }
 
     render();
