@@ -1,4 +1,4 @@
-// source/presentation/training/training.js — Version 4.2
+// source/presentation/training/training.js — Version 4.3
 // Responsibility: render the Training workspace and coordinate user actions through Application callbacks only.
 import { renderTrainingOverview } from "./training-overview.js";
 import { createPinIndicator } from "../shared/pin-indicator.js";
@@ -526,7 +526,7 @@ async function renderTraining(container, { trainingOverviewApplication = null, t
     if (!container || typeof container.replaceChildren !== "function") throw new TypeError("LifeGame Training: a container element is required.");
     const content = renderTrainingShell(container, onBack);
     const workspaceIntro = container.querySelector(".finance-workspace-header");
-    const setWorkspaceIntroVisible = (visible) => { if (workspaceIntro) workspaceIntro.hidden = !visible; };
+    const setWorkspaceIntroVisible = (visible) => { if (workspaceIntro) { workspaceIntro.hidden = !visible; workspaceIntro.style.display = visible ? "" : "none"; } };
     if (!trainingOverviewApplication || typeof trainingOverviewApplication.execute !== "function" ||
         !trainingWorkoutLibraryApplication || typeof trainingWorkoutLibraryApplication.listExercises !== "function") {
         renderStatus(content, "Тренировочные данные пока недоступны. Вернись в раздел позже."); return;
