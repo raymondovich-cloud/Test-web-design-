@@ -1,4 +1,4 @@
-// source/presentation/training/training-session.js — Version 2.11
+// source/presentation/training/training-session.js — Version 2.12
 // Responsibility: render the active workout interaction; delegate persistence and business rules to the application layer.
 function createElement(tag, className = "", text = null) {
     const element = document.createElement(tag);
@@ -38,7 +38,6 @@ function renderTrainingSession(container, { sessionResult, workout, application,
         (exercise) => getCompletedSetCount(exercise) < getPlannedSetCount(exercise)
     );
     let activeExerciseId = initialCurrentExercise?.id ?? null;
-    if (initialCurrentExercise) expandedExerciseIds.add(initialCurrentExercise.id);
 
     function render() {
         container.replaceChildren();
