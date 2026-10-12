@@ -1,4 +1,4 @@
-// source/presentation/training/training-session.js — Version 2.8
+// source/presentation/training/training-session.js — Version 2.9
 // Responsibility: render the active workout interaction; delegate persistence and business rules to the application layer.
 function createElement(tag, className = "", text = null) {
     const element = document.createElement(tag);
@@ -22,7 +22,6 @@ function renderTrainingSession(container, { sessionResult, workout, application,
             ? current.session.updatedAt
             : Number.isFinite(current.session.createdAt) ? current.session.createdAt : Date.now();
     let timerId = null;
-    const expandedExerciseIds = new Set();
 
     function getPlannedSetCount(exercise) {
         const definition = workout.exercises.find((item) => item.id === exercise.id) || exercise;
@@ -38,7 +37,6 @@ function renderTrainingSession(container, { sessionResult, workout, application,
         (exercise) => getCompletedSetCount(exercise) < getPlannedSetCount(exercise)
     );
     let activeExerciseId = initialCurrentExercise?.id ?? null;
-    if (initialCurrentExercise) expandedExerciseIds.add(initialCurrentExercise.id);
 
     function render() {
         container.replaceChildren();
@@ -68,7 +66,6 @@ function renderTrainingSession(container, { sessionResult, workout, application,
         );
         const nextCurrentExercise = current.session.exercises[currentExerciseIndex];
         if (nextCurrentExercise && nextCurrentExercise.id !== activeExerciseId) {
-            expandedExerciseIds.add(nextCurrentExercise.id);
             activeExerciseId = nextCurrentExercise.id;
         } else if (!nextCurrentExercise) {
             activeExerciseId = null;
@@ -102,12 +99,6 @@ function renderTrainingSession(container, { sessionResult, workout, application,
             );
             if (isCurrentExercise) section.setAttribute("aria-current", "step");
             const top = createElement("div", "training-session__exercise-top");
-            const toggle = createElement("button", "training-session__collapse", "⌄");
-            toggle.type = "button";
-            toggle.setAttribute("aria-label", "Свернуть или развернуть упражнение " + exercise.name);
-            const isExpanded = expandedExerciseIds.has(exercise.id);
-            toggle.setAttribute("aria-expanded", String(isExpanded));
-            toggle.textContent = isExpanded ? "⌃" : "⌄";
             const heading = createElement("div", "training-session__exercise-heading");
             if (isCurrentExercise) {
                 heading.appendChild(createElement("p", "training-session__exercise-kicker", "СЕЙЧАС"));
@@ -116,9 +107,8 @@ function renderTrainingSession(container, { sessionResult, workout, application,
                 createElement("h4", "training-session__exercise-title", exercise.name),
                 createElement("p", "training-session__exercise-progress", getCompletedSetCount(exercise) + "/" + getPlannedSetCount(exercise) + " подходов выполнено")
             );
-            top.append(toggle, heading);
+            top.appendChild(heading);
             const body = createElement("div", "training-session__exercise-body");
-            body.hidden = !isExpanded;
             const targetSets = Math.max(4, Number.isInteger(definition.targetSets) ? definition.targetSets : 4);
             const rowsCount = Math.max(targetSets, exercise.sets.length);
             for (let index = 0; index < rowsCount; index += 1) {
@@ -194,20 +184,10 @@ function renderTrainingSession(container, { sessionResult, workout, application,
                 body.appendChild(row);
             }
             const addSet = createElement("button", "training-session__add-set", "+ Добавить подход");
-            addSet.hidden = !isExpanded;
             addSet.type = "button";
             addSet.addEventListener("click", () => {
                 definition.targetSets = rowsCount + 1;
                 render();
-            });
-            toggle.addEventListener("click", () => {
-                const nextExpanded = body.hidden;
-                if (nextExpanded) expandedExerciseIds.add(exercise.id);
-                else expandedExerciseIds.delete(exercise.id);
-                body.hidden = !nextExpanded;
-                addSet.hidden = !nextExpanded;
-                toggle.textContent = nextExpanded ? "⌃" : "⌄";
-                toggle.setAttribute("aria-expanded", String(nextExpanded));
             });
             section.append(top, body, addSet);
             exerciseHost.appendChild(section);
