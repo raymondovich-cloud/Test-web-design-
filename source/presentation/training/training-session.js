@@ -1,4 +1,4 @@
-// source/presentation/training/training-session.js — Version 2.15
+// source/presentation/training/training-session.js — Version 2.16
 // Responsibility: render the active workout interaction; delegate persistence and business rules to the application layer.
 function createElement(tag, className = "", text = null) {
     const element = document.createElement(tag);
@@ -7,11 +7,11 @@ function createElement(tag, className = "", text = null) {
     return element;
 }
 
-function renderTrainingSession(container, { sessionResult, workout, application, onBack, onSessionChange } = {}) {
+function renderTrainingSession(container, { sessionResult, workout, application, onBack, onSessionChange, onFinished } = {}) {
     if (!container || typeof container.replaceChildren !== "function") throw new TypeError("Training Session: a container element is required.");
     if (!sessionResult?.session || !Number.isSafeInteger(sessionResult.revision)) throw new TypeError("Training Session: a valid session envelope is required.");
     if (!workout || !Array.isArray(workout.exercises) || !application ||
-        typeof application.recordSet !== "function") {
+        typeof application.recordSet !== "function" || typeof application.completeWorkout !== "function") {
         throw new TypeError("Training Session: workout and application commands are required.");
     }
 
@@ -231,7 +231,34 @@ function renderTrainingSession(container, { sessionResult, workout, application,
         const status = createElement("p", "training-session__status");
         status.setAttribute("role", "status");
         status.setAttribute("aria-live", "polite");
-        screen.append(header, progress, status, exerciseHost);
+        const footer = createElement("footer", "training-session__footer");
+        const complete = createElement("button", "training-session__complete", "ЗАВЕРШИТЬ ТРЕНИРОВКУ");
+        complete.type = "button";
+        const hasCompletedSet = () => current.session.exercises.some(
+            (exercise) => exercise.sets.some((set) => set.completed === true)
+        );
+        complete.disabled = !hasCompletedSet();
+        complete.addEventListener("click", async () => {
+            if (complete.disabled) return;
+            complete.disabled = true;
+            status.textContent = "Сохраняем результат тренировки…";
+            try {
+                current = await application.completeWorkout({ sessionResult: current });
+                if (timerId !== null) window.clearInterval(timerId);
+                timerId = null;
+                status.textContent = "Результат сохранён. Обновляем аналитику…";
+                if (typeof onFinished === "function") await onFinished(current);
+            } catch (error) {
+                status.textContent = error?.code === "TRAINING_SESSION_CONFLICT"
+                    ? "Тренировка изменилась в другом запросе. Обнови экран перед продолжением."
+                    : error?.code === "TRAINING_SESSION_EMPTY"
+                        ? "Сохрани хотя бы один подход перед завершением тренировки."
+                        : "Не удалось сохранить результат. Проверь соединение и попробуй ещё раз.";
+                complete.disabled = !hasCompletedSet();
+            }
+        });
+        footer.appendChild(complete);
+        screen.append(header, progress, status, exerciseHost, footer);
         container.appendChild(screen);
         const updateElapsed = () => {
             const seconds = Math.max(0, Math.floor((Date.now() - startedAt) / 1000));
