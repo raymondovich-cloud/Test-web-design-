@@ -1,4 +1,4 @@
-/* design.css — Version 4.12 */
+/* design.css — Version 4.13 */
 
 /* Единая точка входа Design System. */
 
@@ -46,3 +46,5 @@
 
 @import "./themes/dark.css";
 @import "./themes/light.css";
+
+@import "./patterns/border-unification.css?v=20261013-1700";
