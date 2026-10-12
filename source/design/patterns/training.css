@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.35 */
+/* source/design/patterns/training.css — Version 3.36 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -2221,4 +2221,41 @@ body.is-training-session-active .training-session--active{
         width:4rem;
         height:5.5rem;
     }
+}
+
+
+/* Reuse the approved Health section watermark as the active workout background. */
+body.is-training-session-active #module-content::after{
+    position:fixed;
+    top:50%;
+    left:50%;
+    z-index:0;
+    width:min(82vw,22rem);
+    max-height:68dvh;
+    aspect-ratio:8 / 9;
+    transform:translate(-50%,-50%);
+    pointer-events:none;
+    content:"";
+    background-image:url("../assets/watermark-health.svg?v=20261012-1600");
+    background-repeat:no-repeat;
+    background-position:center;
+    background-size:contain;
+    opacity:.13;
+}
+body.is-training-session-active .training-session--active{
+    position:relative;
+    z-index:1;
+    background:transparent;
+}
+body.is-training-session-active .training-session__footer{
+    z-index:20;
+}
+@media(min-width:48rem){
+    body.is-training-session-active #module-content::after{
+        width:min(58vw,22rem);
+        opacity:.12;
+    }
+}
+@media(prefers-reduced-transparency:reduce){
+    body.is-training-session-active #module-content::after{opacity:.07}
 }
