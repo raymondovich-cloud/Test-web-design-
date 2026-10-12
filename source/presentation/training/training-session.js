@@ -1,4 +1,4 @@
-// source/presentation/training/training-session.js — Version 4.7
+// source/presentation/training/training-session.js — Version 4.8
 // Responsibility: render the active workout interaction; delegate persistence and business rules to the application layer.
 function createElement(tag, className = "", text = null) {
     const element = document.createElement(tag);
@@ -96,8 +96,8 @@ function renderTrainingSession(container, { sessionResult, workout, application,
                 "section",
                 "training-session__exercise-card" +
                     (completedExercise ? " training-session__exercise-card--complete" : "") +
-                    (isCurrentExercise ? " training-session__exercise-card--current" : "") +
-                    (!completedExercise && !isCurrentExercise ? " training-session__exercise-card--upcoming" : "")
+                    (isCurrentExercise && expandedExerciseIds.has(exercise.id) ? " training-session__exercise-card--current" : "") +
+                    (!completedExercise && (!isCurrentExercise || !expandedExerciseIds.has(exercise.id)) ? " training-session__exercise-card--upcoming" : "")
             );
             if (isCurrentExercise) section.setAttribute("aria-current", "step");
             const top = createElement("div", "training-session__exercise-top");
@@ -242,10 +242,7 @@ function renderTrainingSession(container, { sessionResult, workout, application,
                 const nextExpanded = body.hidden;
                 if (nextExpanded) expandedExerciseIds.add(exercise.id);
                 else expandedExerciseIds.delete(exercise.id);
-                body.hidden = !nextExpanded;
-                addSet.hidden = !nextExpanded;
-                toggle.textContent = nextExpanded ? "⌃" : "⌄";
-                toggle.setAttribute("aria-expanded", String(nextExpanded));
+                render();
             });
             section.append(top, body, addSet);
             exerciseHost.appendChild(section);
