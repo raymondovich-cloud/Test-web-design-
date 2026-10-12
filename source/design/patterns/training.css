@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.57 */
+/* source/design/patterns/training.css — Version 3.58 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -2418,4 +2418,52 @@ body.is-training-session-active .training-session__footer{
     min-width:0;
     height:3.8rem;
     min-height:3.8rem;
+}
+
+
+/* Fit repetition and weight controls comfortably inside the standardized 3.8rem set row. */
+.training-session--active .training-session__set-field-wrap{
+    box-sizing:border-box;
+    min-width:0;
+    width:100%;
+    gap:.2rem;
+}
+.training-session--active .training-session__set-field-label{
+    font-size:.58rem;
+    line-height:1;
+}
+.training-session--active .training-session__set-field{
+    box-sizing:border-box;
+    width:100%;
+    min-width:0;
+    min-height:2.15rem;
+    height:2.15rem;
+    gap:.2rem;
+    padding:0 .3rem;
+    border-radius:.65rem;
+}
+.training-session--active .training-session__set-field .training-session__set-reps,
+.training-session--active .training-session__set-field .training-session__set-weight{
+    box-sizing:border-box;
+    width:100%;
+    min-width:0;
+    min-height:0;
+    height:1.7rem;
+    padding:0;
+    font-size:.95rem;
+    line-height:1;
+}
+.training-session--active .training-session__set-field .training-session__set-unit,
+.training-session--active .training-session__set-field .training-session__set-weight-unit{
+    font-size:.52rem;
+    line-height:1;
+}
+@media(max-width:390px){
+    .training-session--active .training-session__set-field-wrap{gap:.16rem}
+    .training-session--active .training-session__set-field{min-height:2rem;height:2rem;padding:0 .22rem;gap:.12rem}
+    .training-session--active .training-session__set-field .training-session__set-reps,
+    .training-session--active .training-session__set-field .training-session__set-weight{height:1.55rem;font-size:.88rem}
+    .training-session--active .training-session__set-field-label{font-size:.52rem}
+    .training-session--active .training-session__set-field .training-session__set-unit,
+    .training-session--active .training-session__set-field .training-session__set-weight-unit{font-size:.47rem}
 }
