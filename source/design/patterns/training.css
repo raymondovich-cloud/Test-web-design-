@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.25 */
+/* source/design/patterns/training.css — Version 3.26 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -628,5 +628,6 @@
 
 
 /* Hide the complete training intro only during an active workout session. */
+.training-workspace--active-session > .training-workspace__back,
 .training-workspace--active-session > .finance-workspace-header,
 .training-workspace__intro--hidden{display:none}

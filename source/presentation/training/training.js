@@ -1,4 +1,4 @@
-// source/presentation/training/training.js — Version 4.3
+// source/presentation/training/training.js — Version 4.4
 // Responsibility: render the Training workspace and coordinate user actions through Application callbacks only.
 import { renderTrainingOverview } from "./training-overview.js";
 import { createPinIndicator } from "../shared/pin-indicator.js";
