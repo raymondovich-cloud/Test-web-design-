@@ -1,4 +1,4 @@
-// source/presentation/training/training-session.js — Version 3.2
+// source/presentation/training/training-session.js — Version 3.3
 // Responsibility: render the active workout interaction; delegate persistence and business rules to the application layer.
 function createElement(tag, className = "", text = null) {
     const element = document.createElement(tag);
@@ -124,6 +124,20 @@ function renderTrainingSession(container, { sessionResult, workout, application,
                 createElement("p", "training-session__exercise-progress", getCompletedSetCount(exercise) + "/" + getPlannedSetCount(exercise) + " подходов выполнено")
             );
             top.append(toggle, heading);
+            const meta = createElement("div", "training-session__exercise-meta");
+            meta.append(createElement("span", "training-session__exercise-meta-item", String(getPlannedSetCount(exercise)) + " подходов"));
+            meta.append(createElement("span", "training-session__exercise-meta-item", String(definition.targetReps ?? 8) + " повторений"));
+            meta.append(createElement("span", "training-session__exercise-meta-item", definition.targetResistance?.value != null ? String(definition.targetResistance.value) + " кг" : "Собственный вес"));
+            heading.appendChild(meta);
+            const setProgress = createElement("div", "training-session__set-progress");
+            setProgress.setAttribute("aria-label", "Прогресс подходов упражнения");
+            for (let tick = 0; tick < getPlannedSetCount(exercise); tick += 1) {
+                const mark = createElement("span", "training-session__set-progress-tick");
+                if (tick < getCompletedSetCount(exercise)) mark.classList.add("is-complete");
+                else if (isCurrentExercise && tick === getCompletedSetCount(exercise)) mark.classList.add("is-current");
+                setProgress.appendChild(mark);
+            }
+            heading.appendChild(setProgress);
             const body = createElement("div", "training-session__exercise-body");
             body.hidden = !isExpanded;
             const targetSets = Math.max(4, Number.isInteger(definition.targetSets) ? definition.targetSets : 4);
