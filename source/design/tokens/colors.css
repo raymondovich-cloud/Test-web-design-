@@ -1,4 +1,4 @@
-/* colors.css — Version 1.6 */
+/* colors.css — Version 1.7 */
 
 :root {
     --color-black: #080706;
@@ -10,13 +10,13 @@
     --color-white-soft: #d6d0c9;
     --color-gray: #aaa39b;
     --color-gray-dark: #505050;
-    --color-border: rgba(255, 255, 255, 0.12);
-    --color-border-strong: rgba(255, 255, 255, 0.22);
+    --color-border: var(--color-financial-health-border);
+    --color-border-strong: var(--color-financial-health-border);
     --color-overlay: rgba(0, 0, 0, 0.72);
     --color-accent: #f28a2e;
     --color-accent-soft: rgba(242, 138, 46, 0.12);
     --color-accent-glow: rgba(242, 138, 46, 0.18);
-    --color-accent-border: rgba(242, 138, 46, 0.42);
+    --color-accent-border: var(--color-financial-health-border);
     --color-brand-orange: #ff7900;
     --color-success: #b9ffcf;
     --color-warning: #ffe2a8;
