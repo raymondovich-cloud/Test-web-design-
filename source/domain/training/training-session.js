@@ -1,10 +1,10 @@
-// source/domain/training/training-session.js — Version 1.3
+// source/domain/training/training-session.js — Version 1.4
 // Responsibility: validate and create an immutable training-session domain value.
 const TYPES=Object.freeze(["strength","cardio","mobility","other"]);
 const STATUSES=Object.freeze(["planned","in_progress","completed"]);
 const INTENSITIES=Object.freeze(["light","moderate","vigorous","unknown"]);
 const UNITS=Object.freeze(["kg","lb","bodyweight","band","machine","other"]);
-const EXERCISE_TYPES=Object.freeze(["strength","cardio"]);
+const EXERCISE_TYPES=Object.freeze(["strength","cardio","bodyweight"]);
 const DATE=/^\d{4}-\d{2}-\d{2}$/;
 const UUID=/^[0-9a-f]{8}-[0-9a-f]{4}-[1-8][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 function validDate(s){if(typeof s!=="string"||!DATE.test(s))return false;const d=new Date(s+"T00:00:00.000Z");return !Number.isNaN(d.getTime())&&d.toISOString().slice(0,10)===s;}

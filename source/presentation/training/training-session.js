@@ -1,4 +1,4 @@
-// source/presentation/training/training-session.js — Version 2.21
+// source/presentation/training/training-session.js — Version 2.22
 // Responsibility: render the active workout interaction; delegate persistence and business rules to the application layer.
 function createElement(tag, className = "", text = null) {
     const element = document.createElement(tag);
@@ -139,6 +139,8 @@ function renderTrainingSession(container, { sessionResult, workout, application,
                 reps.disabled = Boolean(savedSet);
                 reps.setAttribute("aria-label", "Количество повторений, подход " + (index + 1));
                 const isCardio = definition.exerciseType === "cardio";
+                const usesBodyweight = definition.exerciseType === "bodyweight";
+                const hidesResistanceInput = isCardio || usesBodyweight;
                 const resistance = document.createElement("input");
                 resistance.type = "number";
                 resistance.min = "0";
@@ -150,7 +152,7 @@ function renderTrainingSession(container, { sessionResult, workout, application,
                 resistance.value = String(savedSet?.resistance?.value ?? sharedValues?.weight ?? definition.targetResistance?.value ?? "");
                 resistance.disabled = Boolean(savedSet);
                 resistance.setAttribute("aria-label", "Вес в килограммах, подход " + (index + 1));
-                if (isCardio) {
+                if (hidesResistanceInput) {
                     row.classList.add("training-session__set-row--cardio");
                     row.append(checkbox, number, reps);
                 } else {
@@ -158,7 +160,7 @@ function renderTrainingSession(container, { sessionResult, workout, application,
                 }
                 if (savedSet) row.classList.add("is-complete");
                 const maybeConfirmSharedValues = () => {
-                    if (index !== 0 || isCardio || setValuePromptedExerciseIds.has(exercise.id)) return;
+                    if (index !== 0 || hidesResistanceInput || setValuePromptedExerciseIds.has(exercise.id)) return;
                     const repsText = reps.value.trim();
                     const weightText = resistance.value.trim();
                     const repetitions = Number(repsText);
@@ -207,7 +209,7 @@ function renderTrainingSession(container, { sessionResult, workout, application,
                     screen.appendChild(overlay);
                     accept.focus();
                 };
-                if (!isCardio && index === 0 && !savedSet) {
+                if (!hidesResistanceInput && index === 0 && !savedSet) {
                     reps.addEventListener("change", maybeConfirmSharedValues);
                     resistance.addEventListener("change", maybeConfirmSharedValues);
                 }
@@ -216,15 +218,15 @@ function renderTrainingSession(container, { sessionResult, workout, application,
                     const weightText = resistance.value.trim();
                     const weight = weightText === "" ? null : Number(weightText);
                     if (!Number.isInteger(repetitions) || repetitions < 1 || repetitions > 100 ||
-                        (!isCardio && weight !== null && (!Number.isFinite(weight) || weight < 0 || weight > 1000))) {
+                        (!hidesResistanceInput && weight !== null && (!Number.isFinite(weight) || weight < 0 || weight > 1000))) {
                         checkbox.checked = false;
                         if (!Number.isInteger(repetitions) || repetitions < 1 || repetitions > 100) reps.focus();
-                        else if (!isCardio) resistance.focus();
+                        else if (!hidesResistanceInput) resistance.focus();
                         return;
                     }
                     checkbox.disabled = true;
                     try {
-                        const selectedResistance = isCardio || weight === null
+                        const selectedResistance = hidesResistanceInput || weight === null
                             ? { unit: "bodyweight", value: null }
                             : { unit: "kg", value: weight };
                         current = await application.recordSet({

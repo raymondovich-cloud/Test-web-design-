@@ -1,8 +1,9 @@
-// source/presentation/training/training.js — Version 4.6
+// source/presentation/training/training.js — Version 4.7
 // Responsibility: render the Training workspace and coordinate user actions through Application callbacks only.
 import { renderTrainingOverview } from "./training-overview.js";
 import { createPinIndicator } from "../shared/pin-indicator.js";
 import { renderTrainingSession } from "./training-session.js";
+import { classifyWorkoutType, getWorkoutTypeLabel, normalizeExerciseType } from "../../domain/training/workout-type.js";
 function el(tag, cls = "", text = null) {
     const node = document.createElement(tag);
     if (cls) node.className = cls;
@@ -27,7 +28,7 @@ function renderTrainingShell(container, onBack) {
     page.append(back, intro, content); container.appendChild(page); return content;
 }
 function normalizeExercise(exercise) {
-    return { id: exercise.id, name: exercise.name, exerciseType: exercise.exerciseType === "cardio" ? "cardio" : "strength", muscleGroups: Array.isArray(exercise.muscleGroups) ? exercise.muscleGroups : [], targetReps: Number.isInteger(exercise.targetReps) ? exercise.targetReps : 8 };
+    return { id: exercise.id, name: exercise.name, exerciseType: normalizeExerciseType(exercise.exerciseType), muscleGroups: Array.isArray(exercise.muscleGroups) ? exercise.muscleGroups : [], targetReps: Number.isInteger(exercise.targetReps) ? exercise.targetReps : 8 };
 }
 function localId() {
     if (typeof globalThis.crypto?.randomUUID === "function") return globalThis.crypto.randomUUID();
@@ -45,11 +46,12 @@ function openExerciseModal(container, onSave) {
     const input = document.createElement("input"); input.type = "text"; input.name = "exerciseName"; input.autocomplete = "off";
     input.maxLength = 80; input.required = true; input.placeholder = "Например, жим лёжа"; input.setAttribute("aria-describedby", "training-exercise-modal-error");
     label.appendChild(input);
-    const typeLabel = el("label", "training-exercise-modal__label", "Тип упражнения");
+    const typeLabel = el("label", "training-exercise-modal__label", "Выберите тип тренировки");
     const typeSelect = document.createElement("select"); typeSelect.name = "exerciseType"; typeSelect.required = true;
     const cardioOption = document.createElement("option"); cardioOption.value = "cardio"; cardioOption.textContent = "Кардио тренировка";
     const strengthOption = document.createElement("option"); strengthOption.value = "strength"; strengthOption.textContent = "Силовая тренировка";
-    typeSelect.append(cardioOption, strengthOption); typeSelect.value = "strength"; typeLabel.appendChild(typeSelect);
+    const bodyweightOption = document.createElement("option"); bodyweightOption.value = "bodyweight"; bodyweightOption.textContent = "Тренировка с собственным весом";
+    typeSelect.append(cardioOption, strengthOption, bodyweightOption); typeSelect.value = "strength"; typeLabel.appendChild(typeSelect);
     const error = el("p", "training-exercise-modal__error"); error.id = "training-exercise-modal-error"; error.setAttribute("role", "alert");
     const footer = el("div", "training-exercise-modal__actions");
     const save = el("button", "training-overview__start", "СОХРАНИТЬ УПРАЖНЕНИЕ"); save.type = "submit";
@@ -81,6 +83,12 @@ function renderExerciseBuilder(container, { libraryApplication, libraryExercises
         el("p", "training-overview__description", "Собери занятие из упражнений своей библиотеки. Новые упражнения можно добавить в отдельном разделе «Библиотека упражнений». Сохрани шаблон, чтобы повторять тренировку позже."));
     const titleLabel = el("label", "training-exercise-modal__label", "Название тренировки");
     const titleInput = document.createElement("input"); titleInput.type = "text"; titleInput.maxLength = 80; titleInput.value = initialTemplate?.title || ""; titleInput.placeholder = "Моя тренировка"; titleInput.setAttribute("aria-label", "Название тренировки"); titleLabel.appendChild(titleInput);
+    const workoutType = el("p", "training-overview__description");
+    function updateWorkoutType() {
+        workoutType.textContent = draft.length
+            ? "Тип тренировки: " + getWorkoutTypeLabel(classifyWorkoutType(draft))
+            : "Тип тренировки определится автоматически после добавления упражнений.";
+    }
     const libraryPanel = el("div", "training-workout-builder__library");
     const libraryHeader = el("div", "training-workout-builder__library-header");
     libraryHeader.appendChild(el("span", "training-overview__eyebrow", "МОЯ БИБЛИОТЕКА УПРАЖНЕНИЙ"));
@@ -99,6 +107,7 @@ function renderExerciseBuilder(container, { libraryApplication, libraryExercises
         const cancel = el("button", "training-workout-builder__cancel", "← Назад"); cancel.type = "button"; cancel.addEventListener("click", onCancel);
     function renderList() {
         list.replaceChildren(); empty.hidden = draft.length > 0; saveTemplate.disabled = draft.length === 0;
+        updateWorkoutType();
         draft.forEach((exercise, index) => {
             const item = el("li", "training-workout-builder__item");
             const number = el("span", "training-workout-builder__number", String(index + 1).padStart(2, "0"));
@@ -129,7 +138,7 @@ function renderExerciseBuilder(container, { libraryApplication, libraryExercises
             status.textContent = initialTemplate ? "Изменения сохранены." : "Шаблон сохранён. Его можно будет запускать повторно."; await onSaved();
         } catch (error) { status.textContent = error?.message || "Не удалось сохранить шаблон. Попробуй ещё раз."; saveTemplate.disabled = draft.length === 0; }
     });
-    actions.append(saveTemplate); builder.append(header, titleLabel, libraryPanel, list, empty, status, actions, cancel); container.appendChild(builder); renderLibraryItems(); renderList();
+    actions.append(saveTemplate); builder.append(header, titleLabel, workoutType, libraryPanel, list, empty, status, actions, cancel); container.appendChild(builder); renderLibraryItems(); renderList();
 }
 function openSavedWorkoutMenu(item, template, onEditTemplate, onDeleteTemplate, onSetTemplatePinned) {
     const backdrop = el("div", "row-interaction-backdrop");
@@ -374,7 +383,7 @@ function renderWorkoutDetails(container, template, onBack, onStartWorkout) {
     header.append(
         el("span", "training-overview__eyebrow", "ТВОЯ ТРЕНИРОВКА"),
         el("h3", "training-workout-details__title", template.title || "Моя тренировка"),
-        el("p", "training-overview__description", "Упражнения, которые ты добавил в это занятие.")
+        el("p", "training-overview__description", "Тип тренировки: " + getWorkoutTypeLabel(classifyWorkoutType(template.exercises)) + ". Упражнения, которые ты добавил в это занятие.")
     );
     const list = el("ol", "training-workout-details__list");
     const seen = new Set();
@@ -460,7 +469,7 @@ function renderSavedResources(container, { exercises, templates, onCreateWorkout
                 if (typeof onViewTemplate === "function") onViewTemplate(template);
             });
             const exerciseCount = Array.isArray(template.exercises) ? template.exercises.length : 0;
-            info.append(start, el("p", "training-overview__description", exerciseCount + " упражнений"));
+            info.append(start, el("p", "training-overview__description", getWorkoutTypeLabel(classifyWorkoutType(template.exercises)) + " · " + exerciseCount + " упражнений"));
             item.append(info); list.appendChild(item);
         });
         templatesContent.appendChild(list);

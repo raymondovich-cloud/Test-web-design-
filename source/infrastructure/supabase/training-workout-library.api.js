@@ -1,6 +1,7 @@
-// source/infrastructure/supabase/training-workout-library.api.js — Version 1.2
+// source/infrastructure/supabase/training-workout-library.api.js — Version 1.3
 // Responsibility: persist exercise library and workout templates through the authenticated Supabase client.
 // Payload-level encryption is deferred to the planned unified application encryption standard; ownership is enforced by auth checks and database RLS.
+import { normalizeExerciseType } from "../../domain/training/workout-type.js";
 function createTrainingWorkoutLibraryApi({ client } = {}) {
     if (!client?.auth || typeof client.auth.getUser !== "function" || typeof client.from !== "function") {
         throw new TypeError("Training Workout Library API: authenticated Supabase client is required.");
@@ -19,7 +20,7 @@ function createTrainingWorkoutLibraryApi({ client } = {}) {
         const { data, error } = await client.from("training_exercises").select("id,name,exercise_type,created_at").eq("user_id", owner).order("name", { ascending: true });
         if (error) throw error;
         if (!Array.isArray(data)) throw new TypeError("Training Workout Library API: exercise list is invalid.");
-        return data.map((item) => Object.freeze({ id: item.id, name: item.name, exerciseType: item.exercise_type === "cardio" ? "cardio" : "strength", createdAt: item.created_at }));
+        return data.map((item) => Object.freeze({ id: item.id, name: item.name, exerciseType: normalizeExerciseType(item.exercise_type), createdAt: item.created_at }));
     }
     async function createExercise(userId, name, exerciseType = "strength") {
         const owner = await assertOwner(userId);
@@ -29,7 +30,7 @@ function createTrainingWorkoutLibraryApi({ client } = {}) {
             failure.code = error.code === "23505" ? "TRAINING_EXERCISE_DUPLICATE" : "TRAINING_EXERCISE_SAVE_FAILED"; throw failure;
         }
         if (!data?.id || typeof data.name !== "string") throw new TypeError("Training Workout Library API: created exercise response is invalid.");
-        return Object.freeze({ id: data.id, name: data.name, exerciseType: data.exercise_type === "cardio" ? "cardio" : "strength", createdAt: data.created_at });
+        return Object.freeze({ id: data.id, name: data.name, exerciseType: normalizeExerciseType(data.exercise_type), createdAt: data.created_at });
     }
     async function deleteExercise(userId, exerciseId) {
         const owner = await assertOwner(userId);

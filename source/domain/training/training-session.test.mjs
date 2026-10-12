@@ -1,4 +1,4 @@
-// source/domain/training/training-session.test.mjs — Version 1.2
+// source/domain/training/training-session.test.mjs — Version 1.3
 import test from "node:test";import assert from "node:assert/strict";import {createTrainingSession} from "./training-session.js";
 const valid={id:"11111111-1111-4111-8111-111111111111",date:"2026-10-10",activityType:"strength",status:"completed",intensity:"moderate",durationMinutes:45,notes:" upper ",exercises:[{id:"e1",name:"Bench press",muscleGroups:["chest","triceps","chest"],sets:[{reps:10,completed:true,resistance:{value:40,unit:"kg"}},{reps:8,completed:false}]}],createdAt:100,updatedAt:100};
 test("normalizes and freezes the session",()=>{const s=createTrainingSession({...valid,title:" Верх тела "});assert.equal(s.id,valid.id);assert.equal(s.title,"Верх тела");assert.deepEqual(s.exercises[0].muscleGroups,["chest","triceps"]);assert.equal(s.exercises[0].exerciseType,"strength");assert.equal(s.exercises[0].targetSets,4);assert.equal(s.exercises[0].targetReps,8);assert.equal(s.notes,"upper");assert.equal(Object.isFrozen(s.exercises[0].sets[0]),true);});
@@ -11,3 +11,8 @@ test("requires explicit set completion",()=>assert.throws(()=>createTrainingSess
 test("rejects invalid reps and resistance",()=>{assert.throws(()=>createTrainingSession({...valid,exercises:[{...valid.exercises[0],sets:[{reps:-1,completed:true}]}]}),/reps must be/);assert.throws(()=>createTrainingSession({...valid,exercises:[{...valid.exercises[0],sets:[{reps:5,completed:true,resistance:{value:-2,unit:"kg"}}]}]}),/resistance must be non-negative/);});
 test("bodyweight does not invent a numeric load",()=>{const s=createTrainingSession({...valid,exercises:[{...valid.exercises[0],sets:[{reps:8,completed:true,resistance:{value:null,unit:"bodyweight"}}]}]});assert.deepEqual(s.exercises[0].sets[0].resistance,{value:null,unit:"bodyweight"});});
 test("rejects reversed timestamps",()=>assert.throws(()=>createTrainingSession({...valid,createdAt:200,updatedAt:100}),/valid createdAt and updatedAt/));
+
+test("accepts bodyweight as a distinct exercise type", () => {
+ const s=createTrainingSession({...valid,exercises:[{...valid.exercises[0],exerciseType:"bodyweight",targetResistance:{value:null,unit:"bodyweight"}}]});
+ assert.equal(s.exercises[0].exerciseType,"bodyweight");
+});

@@ -1,4 +1,4 @@
-// source/application/training/training-workout-library.test.mjs — Version 1.3
+// source/application/training/training-workout-library.test.mjs — Version 1.4
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createTrainingWorkoutLibraryApplication } from "./training-workout-library.js";
@@ -49,4 +49,19 @@ test("pins a saved workout through the user-scoped API and validates the command
     assert.deepEqual(calls[0], ["setTemplatePinned", "user-4", "template-7", true]);
     assert.throws(() => app.setTemplatePinned({ templateId: "template-7", isPinned: "yes" }), /pinned state must be boolean/);
     assert.equal(calls.length, 1);
+});
+
+test("accepts and preserves the bodyweight exercise category", async () => {
+    const { api, calls } = makeApi();
+    const app = createTrainingWorkoutLibraryApplication({ api, userContext: { userId: "user-bodyweight" } });
+    await app.createExercise({ name: "Отжимания", exerciseType: "bodyweight" });
+    await app.saveTemplate({ title: "Тренировка дома", exercises: [{ id: "exercise-bw", name: "Отжимания", exerciseType: "bodyweight" }] });
+    assert.deepEqual(calls[0], ["createExercise", "user-bodyweight", "Отжимания", "bodyweight"]);
+    assert.equal(calls[1][2].exercises[0].exerciseType, "bodyweight");
+});
+test("rejects unknown exercise categories before persistence", () => {
+    const { api, calls } = makeApi();
+    const app = createTrainingWorkoutLibraryApplication({ api, userContext: { userId: "user-invalid" } });
+    assert.throws(() => app.createExercise({ name: "Тест", exerciseType: "unsupported" }), /invalid exercise type/);
+    assert.equal(calls.length, 0);
 });
