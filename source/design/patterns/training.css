@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.56 */
+/* source/design/patterns/training.css — Version 3.57 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -2408,4 +2408,14 @@ body.is-training-session-active .training-session__footer{
     left:auto;
     right:auto;
     transform:none;
+}
+
+
+/* Match each set row to the exercise-row dimensions while preserving the centered exercise container. */
+.training-session--active .training-session__set-row{
+    box-sizing:border-box;
+    width:100%;
+    min-width:0;
+    height:3.8rem;
+    min-height:3.8rem;
 }
