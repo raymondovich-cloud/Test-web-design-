@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.59 */
+/* source/design/patterns/training.css — Version 3.60 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -2507,4 +2507,15 @@ body.is-training-session-active .training-session__footer{
         height:1.55rem;
         font-size:1.15rem;
     }
+}
+
+
+/* Give the expanded current exercise the same enclosing set-group frame as expanded upcoming exercises. */
+.training-session--active .training-session__exercise-card--current .training-session__exercise-body{
+    box-sizing:border-box;
+    border:1px solid rgba(255,255,255,.13);
+    border-radius:1.25rem;
+    background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.008));
+    box-shadow:none;
+    overflow:hidden;
 }
