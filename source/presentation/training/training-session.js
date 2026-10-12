@@ -1,4 +1,4 @@
-// source/presentation/training/training-session.js — Version 4.3
+// source/presentation/training/training-session.js — Version 4.4
 // Responsibility: render the active workout interaction; delegate persistence and business rules to the application layer.
 function createElement(tag, className = "", text = null) {
     const element = document.createElement(tag);
@@ -146,8 +146,7 @@ function renderTrainingSession(container, { sessionResult, workout, application,
             heading.appendChild(setProgress);
             const body = createElement("div", "training-session__exercise-body");
             body.hidden = !isExpanded;
-            const targetSets = Math.max(4, Number.isInteger(definition.targetSets) ? definition.targetSets : 4);
-            const rowsCount = Math.max(targetSets, exercise.sets.length);
+            const rowsCount = getPlannedSetCount(exercise);
             const setHead = createElement(
                 "div",
                 "training-session__set-head" + (definition.exerciseType === "cardio" ? " training-session__set-head--cardio" : "")
