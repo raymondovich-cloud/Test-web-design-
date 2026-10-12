@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.33 */
+/* source/design/patterns/training.css — Version 3.34 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -2018,4 +2018,120 @@ body.is-training-session-active .training-session--active{
     .training-session--active .training-session__progress{column-gap:.45rem}
     .training-session--active .training-session__progress-value,
     .training-session--active .training-session__progress-percent{font-size:.75rem}
+}
+
+
+/* Focused iPhone corrections: inline session identity, two-line progress and compact exercise summary. */
+.training-session--active .training-session__header{
+    display:grid;
+    grid-template-columns:3.2rem minmax(0,1fr);
+    align-items:center;
+    gap:.85rem;
+    padding:0 0 1.65rem;
+}
+.training-session--active .training-session__back{
+    width:3.1rem;
+    height:3.1rem;
+    min-height:3.1rem;
+    padding:0 0 .12rem;
+    font-size:1.8rem;
+    font-family:Arial,sans-serif;
+    font-weight:400;
+    line-height:1;
+}
+.training-session--active .training-session__identity{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    justify-content:center;
+    gap:.35rem;
+    width:100%;
+    min-width:0;
+}
+.training-session--active .training-session__eyebrow{
+    font-size:.78rem;
+    letter-spacing:.2em;
+    line-height:1.15;
+}
+.training-session--active .training-session__title{
+    font-size:clamp(1.7rem,7vw,2.35rem);
+    line-height:1.05;
+    letter-spacing:-.04em;
+}
+.training-session--active .training-session__progress{
+    display:grid;
+    grid-template-columns:minmax(0,1fr);
+    grid-template-rows:auto auto;
+    gap:.65rem;
+    padding-bottom:2rem;
+}
+.training-session--active .training-session__progress-heading{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    align-items:center;
+    gap:.75rem;
+}
+.training-session--active .training-session__progress-value{
+    grid-column:1;
+    grid-row:1;
+    font-size:clamp(.9rem,3.9vw,1rem);
+}
+.training-session--active .training-session__progress-percent{
+    grid-column:2;
+    grid-row:1;
+    font-size:clamp(.9rem,3.9vw,1rem);
+}
+.training-session--active .training-session__progress-bar{
+    grid-column:1;
+    grid-row:2;
+    width:100%;
+    height:.68rem;
+    cursor:default;
+}
+.training-session--active .training-session__exercise-card--current .training-session__exercise-top{
+    grid-template-columns:minmax(0,1fr) auto;
+    gap:.55rem;
+    padding-bottom:.6rem;
+}
+.training-session--active .training-session__exercise-card--current .training-session__exercise-heading{
+    gap:.4rem;
+}
+.training-session--active .training-session__exercise-card--current .training-session__exercise-title-block{
+    gap:.15rem;
+}
+.training-session--active .training-session__exercise-card--current .training-session__exercise-title{
+    font-size:clamp(1.55rem,6.2vw,2rem);
+    line-height:1.1;
+}
+.training-session--active .training-session__exercise-card--current .training-session__exercise-progress{
+    font-size:.9rem;
+}
+.training-session--active .training-session__exercise-card--current .training-session__exercise-meta{
+    gap:.35rem .8rem;
+}
+.training-session--active .training-session__exercise-card--current .training-session__exercise-meta-item{
+    font-size:clamp(.78rem,3.45vw,.9rem);
+    line-height:1.25;
+}
+.training-session--active .training-session__exercise-card--current .training-session__collapse{
+    width:2.65rem;
+    height:2.65rem;
+    min-width:2.65rem;
+    min-height:2.65rem;
+    font-size:1.45rem;
+}
+@media(max-width:390px){
+    .training-session--active .training-session__header{
+        grid-template-columns:2.8rem minmax(0,1fr);
+        gap:.7rem;
+    }
+    .training-session--active .training-session__back{
+        width:2.7rem;
+        height:2.7rem;
+        min-height:2.7rem;
+        font-size:1.6rem;
+    }
+    .training-session--active .training-session__title{font-size:1.7rem}
+    .training-session--active .training-session__progress-value,
+    .training-session--active .training-session__progress-percent{font-size:.82rem}
 }
