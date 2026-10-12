@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.54 */
+/* source/design/patterns/training.css — Version 3.55 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -2385,11 +2385,12 @@ body.is-training-session-active .training-session__footer{
 }
 
 
-/* iPhone Safari: center exercise rows inside the actual padded session content box. */
+/* iPhone Safari: slightly widen the centered exercise-row area without reaching the screen edges. */
 .training-session--active .training-session__exercises{
     box-sizing:border-box;
-    width:100%;
+    width:min(calc(100% + .75rem),calc(100vw - 2rem));
     min-width:0;
+    margin-inline:auto;
     justify-items:center;
 }
 .training-session--active .training-session__exercise-card--current,
