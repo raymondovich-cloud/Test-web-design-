@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.49 */
+/* source/design/patterns/training.css — Version 3.50 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -2312,20 +2312,18 @@ body.is-training-session-active .training-session__footer{
     grid-template-columns:auto minmax(0,1fr);
 }
 
-/* Match upcoming exercise rows to the exact outer dimensions of the fixed finish-workout button. */
-.training-session--active .training-session__exercise-card--upcoming{
+/* Keep collapsed upcoming rows button-sized, but let opened rows grow in normal document flow. */
+.training-session--active .training-session__exercise-card--upcoming:not(:has(.training-session__collapse[aria-expanded="true"])){
     box-sizing:border-box;
     width:min(calc(100vw - 2 * clamp(1rem,5.5vw,1.5rem)),calc(34rem - 2 * clamp(1rem,5.5vw,1.5rem)));
     height:3.8rem;
     min-height:3.8rem;
     max-height:3.8rem;
     margin-inline:auto;
-    justify-self:center;
-    align-self:center;
     padding:0;
     overflow:hidden;
 }
-.training-session--active .training-session__exercise-card--upcoming .training-session__exercise-top{
+.training-session--active .training-session__exercise-card--upcoming:not(:has(.training-session__collapse[aria-expanded="true"])) .training-session__exercise-top{
     box-sizing:border-box;
     display:flex;
     align-items:center;
@@ -2334,8 +2332,22 @@ body.is-training-session-active .training-session__footer{
     min-height:0;
     padding:0 .75rem;
 }
-.training-session--active .training-session__exercise-card--upcoming{
-    position:relative;
-    left:50%;
-    transform:translateX(-50%);
+/* An expanded exercise must occupy its own natural height instead of overlapping the next row. */
+.training-session--active .training-session__exercise-card--upcoming:has(.training-session__collapse[aria-expanded="true"]){
+    width:min(calc(100vw - 2 * clamp(1rem,5.5vw,1.5rem)),calc(34rem - 2 * clamp(1rem,5.5vw,1.5rem)));
+    height:auto;
+    min-height:0;
+    max-height:none;
+    margin-inline:auto;
+    overflow:visible;
+}
+.training-session--active .training-session__exercise-card--upcoming:has(.training-session__collapse[aria-expanded="true"]) .training-session__exercise-top{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) 1.5rem;
+    align-items:center;
+    width:100%;
+    height:auto;
+    min-height:5.8rem;
+    padding:.7rem 1rem;
+}
 }
