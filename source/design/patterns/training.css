@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.52 */
+/* source/design/patterns/training.css — Version 3.53 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -2373,4 +2373,13 @@ body.is-training-session-active .training-session__footer{
     box-shadow:none;
     border-color:rgba(255,255,255,.14);
     color:var(--color-white);
+}
+
+
+/* Center every exercise row on the viewport, including the active/current exercise. */
+.training-session--active .training-session__exercise-card--current,
+.training-session--active .training-session__exercise-card--upcoming{
+    box-sizing:border-box;
+    width:min(calc(100vw - 2 * clamp(1rem,5.5vw,1.5rem)),calc(34rem - 2 * clamp(1rem,5.5vw,1.5rem)));
+    margin-inline:auto;
 }
