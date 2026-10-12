@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.43 */
+/* source/design/patterns/training.css — Version 3.44 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -736,5 +736,95 @@
     }
     .training-session--active .training-session__exercise-body:not([hidden]) .training-session__set-row--cardio{
         grid-template-columns:1.5rem minmax(4rem,.7fr) auto 1.4rem;
+    }
+}
+
+
+/* Active workout — keep expanded exercise and set frames equal in size and spacing. */
+.training-session--active .training-session__exercise-card{
+    min-height:3.75rem;
+    height:3.75rem;
+    box-sizing:border-box;
+}
+.training-session--active .training-session__exercise-card:has(.training-session__exercise-body:not([hidden])){
+    height:auto;
+    min-height:0;
+    gap:var(--space-2);
+    padding:0;
+    border:0;
+    border-radius:0;
+    background:transparent;
+    box-shadow:none;
+}
+.training-session--active .training-session__exercise-card:has(.training-session__exercise-body:not([hidden])) .training-session__exercise-top{
+    display:grid;
+    align-content:center;
+    width:100%;
+    min-height:3.75rem;
+    height:3.75rem;
+    box-sizing:border-box;
+    padding:var(--space-4);
+    border:var(--training-session-frame-border);
+    border-radius:var(--training-session-frame-radius);
+    background:var(--training-session-frame-background);
+    box-shadow:var(--training-session-frame-shadow);
+}
+.training-session--active .training-session__exercise-card:has(.training-session__exercise-body:not([hidden])) .training-session__exercise-title{
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+.training-session--active .training-session__exercise-card:has(.training-session__exercise-body:not([hidden])) .training-session__exercise-body{
+    gap:var(--space-2);
+    padding-top:0;
+}
+.training-session--active .training-session__exercise-body:not([hidden]) .training-session__set-row{
+    width:100%;
+    min-width:0;
+    min-height:3.75rem;
+    height:3.75rem;
+    box-sizing:border-box;
+    padding:calc(var(--space-3) * .75) var(--space-4);
+    border:var(--training-session-frame-border);
+    border-radius:var(--training-session-frame-radius);
+    background:var(--training-session-frame-background);
+    box-shadow:var(--training-session-frame-shadow);
+}
+.training-session--active .training-session__exercise-body:not([hidden]) .training-session__set-row:last-child{
+    border-bottom:var(--training-session-frame-border);
+}
+.training-session--active .training-session__exercise-body:not([hidden]) .training-session__set-row.is-complete{
+    border-color:var(--training-session-frame-border-color);
+    background:linear-gradient(110deg,rgba(242,138,46,.12),rgba(12,12,12,.96) 70%);
+}
+.training-session--active .training-session__exercise-card:has(.training-session__exercise-body:not([hidden])) .training-session__add-set{
+    margin-top:0;
+}
+@media(max-width:380px){
+    .training-session--active .training-session__exercise-card{
+        padding-inline:var(--space-3);
+    }
+    .training-session--active .training-session__exercise-card:has(.training-session__exercise-body:not([hidden])){
+        padding:0;
+    }
+    .training-session--active .training-session__exercise-card:has(.training-session__exercise-body:not([hidden])) .training-session__exercise-top{
+        padding:var(--space-3);
+    }
+    .training-session--active .training-session__exercise-body:not([hidden]) .training-session__set-row{
+        padding-inline:var(--space-3);
+    }
+}
+@media(min-width:720px){
+    .training-session--active .training-session__exercise-card{
+        padding-inline:var(--space-5);
+    }
+    .training-session--active .training-session__exercise-card:has(.training-session__exercise-body:not([hidden])){
+        padding:0;
+    }
+    .training-session--active .training-session__exercise-card:has(.training-session__exercise-body:not([hidden])) .training-session__exercise-top{
+        padding:var(--space-5);
+    }
+    .training-session--active .training-session__exercise-body:not([hidden]) .training-session__set-row{
+        padding-inline:var(--space-5);
     }
 }
