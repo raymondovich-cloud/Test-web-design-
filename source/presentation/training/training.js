@@ -1,8 +1,8 @@
-// source/presentation/training/training.js — Version 4.4
+// source/presentation/training/training.js — Version 4.5
 // Responsibility: render the Training workspace and coordinate user actions through Application callbacks only.
 import { renderTrainingOverview } from "./training-overview.js";
 import { createPinIndicator } from "../shared/pin-indicator.js";
-import { renderTrainingSession } from "./training-session.js";
+import { renderTrainingSession } from "./training-session.js?v=20261012-2120";
 function el(tag, cls = "", text = null) {
     const node = document.createElement(tag);
     if (cls) node.className = cls;
