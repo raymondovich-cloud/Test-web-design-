@@ -1,4 +1,4 @@
-// source/presentation/training/training-session.js — Version 4.2
+// source/presentation/training/training-session.js — Version 4.3
 // Responsibility: render the active workout interaction; delegate persistence and business rules to the application layer.
 function createElement(tag, className = "", text = null) {
     const element = document.createElement(tag);
@@ -18,10 +18,14 @@ function renderTrainingSession(container, { sessionResult, workout, application,
     let current = sessionResult;
     let timerId = null;
     const expandedExerciseIds = new Set();
+    const addedSetCounts = new Map();
 
     function getPlannedSetCount(exercise) {
         const definition = workout.exercises.find((item) => item.id === exercise.id) || exercise;
-        const targetSets = Math.max(4, Number.isInteger(definition.targetSets) ? definition.targetSets : 4);
+        const requestedSetCount = addedSetCounts.get(exercise.id);
+        const targetSets = Math.max(4, Number.isInteger(requestedSetCount)
+            ? requestedSetCount
+            : Number.isInteger(definition.targetSets) ? definition.targetSets : 4);
         return Math.max(targetSets, exercise.sets.length);
     }
 
@@ -244,7 +248,7 @@ function renderTrainingSession(container, { sessionResult, workout, application,
             addSet.hidden = !isExpanded;
             addSet.type = "button";
             addSet.addEventListener("click", () => {
-                definition.targetSets = rowsCount + 1;
+                addedSetCounts.set(exercise.id, rowsCount + 1);
                 render();
             });
             toggle.addEventListener("click", () => {
