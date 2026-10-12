@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.32 */
+/* source/design/patterns/training.css — Version 3.33 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -1716,4 +1716,306 @@ body.is-training-session-active .training-workspace__content{margin:0!important;
 .training-session--active .training-session__progress-percent{grid-column:3;grid-row:1}
 @media(max-width:520px){
  body.is-training-session-active #module-content{padding-top:max(.3rem,env(safe-area-inset-top))}
+}
+
+
+/* iPhone viewport refinement — Version 3.33
+   Correct header hierarchy, progress-grid structure and safe-area-aware scrolling. */
+html:has(body.is-training-session-active),
+body.is-training-session-active{
+    min-height:100%;
+    background:#050505!important;
+}
+body.is-training-session-active{
+    min-height:100svh;
+    min-height:100dvh;
+    overflow-x:clip;
+    overscroll-behavior-y:contain;
+}
+body.is-training-session-active #application-shell{
+    min-height:100svh;
+    min-height:100dvh;
+    display:block;
+}
+body.is-training-session-active #module-content{
+    box-sizing:border-box;
+    width:100%;
+    max-width:100%;
+    min-height:100svh;
+    min-height:100dvh;
+    padding:calc(env(safe-area-inset-top, 0px) + .8rem) 0 calc(env(safe-area-inset-bottom, 0px) + .5rem);
+}
+body.is-training-session-active .training-session--active{
+    box-sizing:border-box;
+    display:grid;
+    grid-template-columns:minmax(0,1fr);
+    gap:0;
+    width:100%;
+    max-width:34rem;
+    min-height:calc(100svh - env(safe-area-inset-top, 0px));
+    min-height:calc(100dvh - env(safe-area-inset-top, 0px));
+    margin:0 auto;
+    padding:0 clamp(1rem,5.5vw,1.5rem) calc(7.25rem + env(safe-area-inset-bottom, 0px));
+    overflow:visible;
+    border:0;
+    border-radius:0;
+    background:#050505;
+    box-shadow:none;
+}
+.training-session--active .training-session__header{
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:1.05rem;
+    margin:0;
+    padding:0 0 1.7rem;
+    border:0;
+}
+.training-session--active .training-session__back{
+    display:grid;
+    place-items:center;
+    flex:0 0 auto;
+    width:4rem;
+    height:4rem;
+    min-height:4rem;
+    padding:0 0 .2rem;
+    border:1px solid rgba(255,132,39,.72);
+    border-radius:50%;
+    background:radial-gradient(circle at 40% 25%,rgba(255,255,255,.055),rgba(0,0,0,.15) 70%);
+    color:#fff;
+    font-size:2.8rem;
+    line-height:1;
+    box-shadow:0 0 1.4rem rgba(255,119,25,.07);
+}
+.training-session--active .training-session__identity{
+    display:grid;
+    grid-template-columns:minmax(0,1fr);
+    gap:.45rem;
+    width:100%;
+    min-width:0;
+}
+.training-session--active .training-session__eyebrow{
+    display:block;
+    margin:0;
+    color:#ff8127;
+    font-size:.78rem;
+    font-weight:700;
+    line-height:1.2;
+    letter-spacing:.24em;
+    white-space:nowrap;
+}
+.training-session--active .training-session__title{
+    max-width:100%;
+    margin:0;
+    color:#ffb16d;
+    font-size:clamp(2rem,8vw,2.65rem);
+    font-weight:700;
+    line-height:1.04;
+    letter-spacing:-.055em;
+    overflow-wrap:normal;
+    word-break:normal;
+    text-wrap:balance;
+}
+.training-session--active .training-session__progress{
+    display:grid;
+    grid-template-columns:minmax(0,1fr);
+    gap:.55rem;
+    width:100%;
+    min-width:0;
+    margin:0;
+    padding:0 0 2.3rem;
+}
+.training-session--active .training-session__progress-heading{
+    display:contents;
+}
+.training-session--active .training-session__progress-label{display:none}
+.training-session--active .training-session__progress-value{
+    grid-column:1;
+    grid-row:1;
+    align-self:center;
+    color:#b7b7bd;
+    font-size:clamp(.78rem,3.5vw,.98rem);
+    line-height:1.2;
+    white-space:nowrap;
+}
+.training-session--active .training-session__progress-bar{
+    grid-column:2;
+    grid-row:1;
+    align-self:center;
+    display:block;
+    width:100%;
+    min-width:0;
+    height:.72rem;
+    margin:0;
+    border:0;
+    border-radius:999px;
+    overflow:hidden;
+    appearance:none;
+    -webkit-appearance:none;
+    background:#29292c;
+}
+.training-session--active .training-session__progress-bar::-webkit-progress-bar{border-radius:999px;background:#29292c}
+.training-session--active .training-session__progress-bar::-webkit-progress-value{border-radius:999px;background:linear-gradient(90deg,#ff9b45,#ff711c)}
+.training-session--active .training-session__progress-bar::-moz-progress-bar{border-radius:999px;background:linear-gradient(90deg,#ff9b45,#ff711c)}
+.training-session--active .training-session__progress-percent{
+    grid-column:3;
+    grid-row:1;
+    align-self:center;
+    color:#b7b7bd;
+    font-size:clamp(.78rem,3.5vw,.98rem);
+    line-height:1.2;
+    text-align:right;
+}
+.training-session--active .training-session__exercises{
+    display:grid;
+    grid-template-columns:minmax(0,1fr);
+    gap:0;
+    min-width:0;
+}
+.training-session--active .training-session__exercise-card--current{
+    display:grid;
+    grid-template-columns:minmax(0,1fr);
+    gap:0;
+    min-width:0;
+    padding:0;
+    border:0;
+    border-radius:0;
+    background:transparent;
+    box-shadow:none;
+}
+.training-session--active .training-session__exercise-card--current .training-session__exercise-top{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    align-items:start;
+    gap:.7rem;
+    min-width:0;
+    padding:0 0 .9rem;
+}
+.training-session--active .training-session__exercise-card--current .training-session__exercise-heading{
+    display:grid;
+    grid-template-columns:minmax(0,1fr);
+    gap:.7rem;
+    min-width:0;
+}
+.training-session--active .training-session__exercise-card--current .training-session__exercise-title-block{
+    display:grid;
+    gap:.35rem;
+    min-width:0;
+}
+.training-session--active .training-session__exercise-card--current .training-session__exercise-title{
+    margin:0;
+    font-size:clamp(1.75rem,7.1vw,2.3rem);
+    line-height:1.12;
+    letter-spacing:-.045em;
+    overflow-wrap:anywhere;
+}
+.training-session--active .training-session__exercise-card--current .training-session__exercise-progress{
+    color:#b8b8bd;
+    font-size:1rem;
+    line-height:1.3;
+}
+.training-session--active .training-session__exercise-card--current .training-session__collapse{
+    width:3.1rem;
+    height:3.1rem;
+    min-width:3.1rem;
+    min-height:3.1rem;
+    border:1px solid rgba(255,132,39,.48);
+    border-radius:50%;
+    background:rgba(255,132,39,.035);
+    color:#ff922f;
+    font-size:1.7rem;
+}
+.training-session--active .training-session__exercise-card--current .training-session__exercise-meta{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:.65rem 1rem;
+    min-width:0;
+}
+.training-session--active .training-session__exercise-card--current .training-session__exercise-meta-item{
+    color:#bdbdc2;
+    font-size:clamp(.82rem,3.7vw,1rem);
+    line-height:1.35;
+}
+.training-session--active .training-session__exercise-card--current .training-session__exercise-visual{
+    display:flex;
+    align-items:center;
+    justify-content:flex-start;
+    min-height:6.5rem;
+    margin:.5rem 0 0;
+}
+.training-session--active .training-session__exercise-card--current .training-session__exercise-visual svg{
+    width:5rem;
+    height:6rem;
+}
+.training-session--active .training-session__exercise-card--current .training-session__set-progress{
+    display:flex;
+    align-items:center;
+    gap:.5rem;
+    min-height:4.5rem;
+    margin:0 0 .9rem;
+    padding:0 0 0 7rem;
+}
+.training-session--active .training-session__exercise-card--current .training-session__set-progress-tick{
+    width:.28rem;
+    height:3.6rem;
+    flex:0 0 .28rem;
+    border-radius:999px;
+    background:#1d1d20;
+}
+.training-session--active .training-session__exercise-card--current .training-session__set-progress-tick.is-current,
+.training-session--active .training-session__exercise-card--current .training-session__set-progress-tick.is-complete{
+    background:linear-gradient(180deg,#ffa14d,#ff741e);
+}
+.training-session--active .training-session__set-list,
+.training-session--active .training-session__exercise-body{
+    min-width:0;
+}
+.training-session--active .training-session__set-row{
+    box-sizing:border-box;
+    width:100%;
+    min-width:0;
+}
+.training-session--active .training-session__set-field,
+.training-session--active .training-session__set-field-wrap{
+    min-width:0;
+}
+.training-session--active .training-session__set-field input{
+    min-width:0;
+    max-width:100%;
+}
+.training-session--active .training-session__footer{
+    position:fixed;
+    right:0;
+    bottom:0;
+    left:0;
+    z-index:20;
+    box-sizing:border-box;
+    width:100%;
+    max-width:34rem;
+    margin:0 auto;
+    padding:.85rem clamp(1rem,5.5vw,1.5rem) calc(.85rem + env(safe-area-inset-bottom, 0px));
+    background:linear-gradient(180deg,rgba(5,5,5,.86),#050505 22%);
+    -webkit-backdrop-filter:blur(18px);
+    backdrop-filter:blur(18px);
+}
+.training-session--active .training-session__complete{
+    min-height:3.8rem;
+    font-size:1rem;
+}
+@media(max-width:390px){
+    body.is-training-session-active #module-content{padding-top:calc(env(safe-area-inset-top, 0px) + .45rem)}
+    .training-session--active{padding-right:.8rem;padding-left:.8rem}
+    .training-session--active .training-session__set-row{
+        grid-template-columns:2.3rem 3.2rem minmax(0,1fr) minmax(0,1fr) 1.25rem;
+        gap:.28rem;
+        padding:.4rem;
+    }
+    .training-session--active .training-session__set-number{width:2.15rem;height:2.15rem}
+    .training-session--active .training-session__set-field{padding:.1rem .2rem}
+    .training-session--active .training-session__set-field .training-session__set-unit,
+    .training-session--active .training-session__set-field .training-session__set-weight-unit{font-size:.48rem}
+    .training-session--active .training-session__progress{column-gap:.45rem}
+    .training-session--active .training-session__progress-value,
+    .training-session--active .training-session__progress-percent{font-size:.75rem}
 }
