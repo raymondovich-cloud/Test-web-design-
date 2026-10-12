@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.64 */
+/* source/design/patterns/training.css — Version 3.65 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -2538,7 +2538,7 @@ body.is-training-session-active .training-session__footer{
 .training-session--active .training-session__exercise-card--upcoming.training-session__exercise-card--expanded .training-session__exercise-top{grid-template-columns:minmax(0,1fr)}
 
 
-/* Active workout: keep the exercise number, title, set progress, and set group inside one shared card frame — Version 3.63. */
+/* Active workout: keep the exercise number, title, set progress, and set group inside one shared card frame — Version 3.65. */
 .training-session--active .training-session__exercise-card--current,
 .training-session--active .training-session__exercise-card--upcoming.training-session__exercise-card--expanded{
     box-sizing:border-box;
@@ -2572,5 +2572,7 @@ body.is-training-session-active .training-session__footer{
 }
 
 
-/* Reduce the vertical gap between collapsed exercise rows by 3x — Version 3.64. */
-.training-session--active .training-session__exercises{gap:calc(var(--space-2) / 3) !important;}
+/* Tighten spacing between collapsed exercise rows by reducing their vertical padding 3x — Version 3.65. */
+.training-session--active .training-session__exercise-card:not(.training-session__exercise-card--current):not(.training-session__exercise-card--expanded){
+    padding-block:.45rem !important;
+}
