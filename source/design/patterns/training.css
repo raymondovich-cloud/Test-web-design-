@@ -2576,3 +2576,12 @@ body.is-training-session-active .training-session__footer{
 .training-session--active .training-session__exercise-card:not(.training-session__exercise-card--current):not(.training-session__exercise-card--expanded){
     padding-block:.225rem !important;
 }
+
+
+/* Fix large vertical gaps between exercise rows at the list level — Version 3.67. */
+.training-session--active .training-session__exercises{
+    row-gap:0 !important;
+}
+.training-session--active .training-session__exercise-card:not(.training-session__exercise-card--current):not(.training-session__exercise-card--expanded){
+    padding-block:.225rem !important;
+}
