@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.50 */
+/* source/design/patterns/training.css — Version 3.51 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -2312,8 +2312,8 @@ body.is-training-session-active .training-session__footer{
     grid-template-columns:auto minmax(0,1fr);
 }
 
-/* Keep collapsed upcoming rows button-sized, but let opened rows grow in normal document flow. */
-.training-session--active .training-session__exercise-card--upcoming:not(:has(.training-session__collapse[aria-expanded="true"])){
+/* Collapsed upcoming exercises match the finish button dimensions; expanded cards stay in normal flow. */
+.training-session--active .training-session__exercise-card--upcoming:not(.training-session__exercise-card--expanded){
     box-sizing:border-box;
     width:min(calc(100vw - 2 * clamp(1rem,5.5vw,1.5rem)),calc(34rem - 2 * clamp(1rem,5.5vw,1.5rem)));
     height:3.8rem;
@@ -2323,7 +2323,7 @@ body.is-training-session-active .training-session__footer{
     padding:0;
     overflow:hidden;
 }
-.training-session--active .training-session__exercise-card--upcoming:not(:has(.training-session__collapse[aria-expanded="true"])) .training-session__exercise-top{
+.training-session--active .training-session__exercise-card--upcoming:not(.training-session__exercise-card--expanded) .training-session__exercise-top{
     box-sizing:border-box;
     display:flex;
     align-items:center;
@@ -2332,16 +2332,16 @@ body.is-training-session-active .training-session__footer{
     min-height:0;
     padding:0 .75rem;
 }
-/* An expanded exercise must occupy its own natural height instead of overlapping the next row. */
-.training-session--active .training-session__exercise-card--upcoming:has(.training-session__collapse[aria-expanded="true"]){
+.training-session--active .training-session__exercise-card--upcoming.training-session__exercise-card--expanded{
     width:min(calc(100vw - 2 * clamp(1rem,5.5vw,1.5rem)),calc(34rem - 2 * clamp(1rem,5.5vw,1.5rem)));
     height:auto;
     min-height:0;
     max-height:none;
     margin-inline:auto;
+    padding:0;
     overflow:visible;
 }
-.training-session--active .training-session__exercise-card--upcoming:has(.training-session__collapse[aria-expanded="true"]) .training-session__exercise-top{
+.training-session--active .training-session__exercise-card--upcoming.training-session__exercise-card--expanded .training-session__exercise-top{
     display:grid;
     grid-template-columns:minmax(0,1fr) 1.5rem;
     align-items:center;
@@ -2349,4 +2349,11 @@ body.is-training-session-active .training-session__footer{
     height:auto;
     min-height:5.8rem;
     padding:.7rem 1rem;
+}
+/* The finish button uses the same neutral surface as the training screen, not a separate orange gradient. */
+.training-session--active .training-session__complete{
+    background:transparent;
+    box-shadow:none;
+    border-color:rgba(255,255,255,.14);
+    color:var(--color-white);
 }

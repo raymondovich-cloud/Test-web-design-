@@ -105,6 +105,7 @@ function renderTrainingSession(container, { sessionResult, workout, application,
             toggle.type = "button";
             toggle.setAttribute("aria-label", "Свернуть или развернуть упражнение " + exercise.name);
             const isExpanded = expandedExerciseIds.has(exercise.id);
+            if (isExpanded) section.classList.add("training-session__exercise-card--expanded");
             toggle.setAttribute("aria-expanded", String(isExpanded));
             toggle.textContent = isExpanded ? "⌃" : "⌄";
             const heading = createElement("div", "training-session__exercise-heading");
