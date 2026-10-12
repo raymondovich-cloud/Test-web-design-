@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.23 */
+/* source/design/patterns/training.css — Version 3.24 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -625,3 +625,7 @@
         transition:none;
     }
 }
+
+
+/* Hide only the section eyebrow while a workout session is active. */
+.training-workspace--active-session > .finance-workspace-header > .finance-section-meta{display:none}
