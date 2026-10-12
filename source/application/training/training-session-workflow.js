@@ -1,5 +1,5 @@
-// source/application/training/training-session-workflow.js — Version 1.3
-// Responsibility: coordinate starting, restoring, and recording sets through the session API.
+// source/application/training/training-session-workflow.js — Version 1.4
+// Responsibility: coordinate starting, restoring, recording sets, and completing a session through the session API.
 const RESISTANCE_UNITS = new Set(["kg", "lb", "bodyweight", "band", "machine", "other"]);
 function requireUserContext(userContext) {
     if (typeof userContext?.userId !== "string" || !userContext.userId.trim()) throw new TypeError("Training session workflow: authenticated user context is required.");
@@ -10,7 +10,7 @@ function requireEnvelope(value, expectedStatus) {
     return value;
 }
 function createTrainingSessionWorkflow({ api, clock = () => Date.now() } = {}) {
-    if (!api || typeof api.createSession !== "function" || typeof api.startSession !== "function" || typeof api.reviseSession !== "function" || typeof api.listSessions !== "function") {
+    if (!api || typeof api.createSession !== "function" || typeof api.startSession !== "function" || typeof api.reviseSession !== "function" || typeof api.completeSession !== "function" || typeof api.listSessions !== "function") {
         throw new TypeError("Training session workflow: session API is required.");
     }
     if (typeof clock !== "function") throw new TypeError("Training session workflow: clock is required.");
@@ -81,6 +81,22 @@ function createTrainingSessionWorkflow({ api, clock = () => Date.now() } = {}) {
             : item);
         return requireEnvelope(await api.reviseSession({ sessionId: current.session.id, expectedRevision: current.revision, changes: { exercises } }), "in_progress");
     }
-    return Object.freeze({ startWorkout, getActiveWorkout, recordSet });
+    async function completeWorkout({ userContext, sessionResult } = {}) {
+        requireUserContext(userContext);
+        const current = requireEnvelope(sessionResult, "in_progress");
+        const hasCompletedSet = current.session.exercises.some((exercise) =>
+            exercise.sets.some((set) => set.completed === true)
+        );
+        if (!hasCompletedSet) {
+            const error = new Error("Сохрани хотя бы один подход перед завершением тренировки.");
+            error.code = "TRAINING_SESSION_EMPTY";
+            throw error;
+        }
+        return requireEnvelope(await api.completeSession({
+            sessionId: current.session.id,
+            expectedRevision: current.revision
+        }), "completed");
+    }
+    return Object.freeze({ startWorkout, getActiveWorkout, recordSet, completeWorkout });
 }
 export { createTrainingSessionWorkflow };
