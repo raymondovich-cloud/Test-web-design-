@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.49 */
+/* source/design/patterns/training.css — Version 3.50 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -931,3 +931,14 @@
         font-size:calc(var(--font-size-xs) * .5);
     }
 }
+
+
+/* Per-exercise set-value confirmation — Version 1.0 */
+.training-session__preset-modal{position:fixed;inset:0;z-index:1200;display:flex;align-items:center;justify-content:center;padding:var(--space-4);background:rgba(0,0,0,.68);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.training-session__preset-dialog{display:grid;gap:var(--space-4);width:min(100%,28rem);padding:var(--space-5);border:1px solid rgba(242,138,46,.38);border-radius:var(--radius-card);background:var(--gradient-surface);box-shadow:var(--shadow-elevated),0 18px 50px rgba(0,0,0,.35)}
+.training-session__preset-title{margin:0;color:var(--color-white);font-size:var(--font-size-interface);font-weight:var(--font-weight-medium);line-height:1.45}
+.training-session__preset-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--space-3)}
+.training-session__preset-accept,.training-session__preset-decline{min-height:2.9rem;padding:var(--space-3);border:1px solid rgba(242,138,46,.4);border-radius:var(--radius-sm);font-size:var(--font-size-sm);font-weight:var(--font-weight-medium)}
+.training-session__preset-accept{background:linear-gradient(110deg,rgba(242,138,46,.96),rgba(205,91,24,.92));color:#080808}
+.training-session__preset-decline{background:rgba(255,255,255,.035);color:var(--color-white-soft)}
+.training-session__preset-accept:focus-visible,.training-session__preset-decline:focus-visible{outline:2px solid var(--color-accent);outline-offset:3px}

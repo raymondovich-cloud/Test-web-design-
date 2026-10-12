@@ -1,4 +1,4 @@
-// source/presentation/training/training-session.js — Version 2.17
+// source/presentation/training/training-session.js — Version 2.18
 // Responsibility: render the active workout interaction; delegate persistence and business rules to the application layer.
 function createElement(tag, className = "", text = null) {
     const element = document.createElement(tag);
@@ -23,6 +23,8 @@ function renderTrainingSession(container, { sessionResult, workout, application,
             : Number.isFinite(current.session.createdAt) ? current.session.createdAt : Date.now();
     let timerId = null;
     const expandedExerciseIds = new Set();
+    const sharedSetValuesByExercise = new Map();
+    const setValuePromptedExerciseIds = new Set();
 
     function getPlannedSetCount(exercise) {
         const definition = workout.exercises.find((item) => item.id === exercise.id) || exercise;
@@ -130,7 +132,8 @@ function renderTrainingSession(container, { sessionResult, workout, application,
                 const reps = document.createElement("input");
                 reps.type = "number"; reps.min = "1"; reps.max = "100"; reps.step = "1";
                 reps.inputMode = "numeric"; reps.className = "training-session__set-reps";
-                reps.value = savedSet ? String(savedSet.reps) : "";
+                const sharedValues = sharedSetValuesByExercise.get(exercise.id);
+                reps.value = savedSet ? String(savedSet.reps) : sharedValues ? String(sharedValues.reps) : "";
                 reps.placeholder = "повт";
                 reps.disabled = Boolean(savedSet);
                 reps.setAttribute("aria-label", "Количество повторений, подход " + (index + 1));
@@ -143,7 +146,7 @@ function renderTrainingSession(container, { sessionResult, workout, application,
                 resistance.inputMode = "decimal";
                 resistance.className = "training-session__set-weight";
                 resistance.placeholder = "кг";
-                resistance.value = String(savedSet?.resistance?.value ?? definition.targetResistance?.value ?? "");
+                resistance.value = String(savedSet?.resistance?.value ?? sharedValues?.weight ?? definition.targetResistance?.value ?? "");
                 resistance.disabled = Boolean(savedSet);
                 resistance.setAttribute("aria-label", "Вес в килограммах, подход " + (index + 1));
                 if (isCardio) {
@@ -153,6 +156,60 @@ function renderTrainingSession(container, { sessionResult, workout, application,
                     row.append(checkbox, number, reps, resistance);
                 }
                 if (savedSet) row.classList.add("is-complete");
+                const maybeConfirmSharedValues = () => {
+                    if (index !== 0 || isCardio || setValuePromptedExerciseIds.has(exercise.id)) return;
+                    const repsText = reps.value.trim();
+                    const weightText = resistance.value.trim();
+                    const repetitions = Number(repsText);
+                    const weight = Number(weightText);
+                    if (!repsText || !weightText || !Number.isInteger(repetitions) ||
+                        repetitions < 1 || repetitions > 100 || !Number.isFinite(weight) ||
+                        weight < 0 || weight > 1000) return;
+
+                    setValuePromptedExerciseIds.add(exercise.id);
+                    const overlay = createElement("div", "training-session__preset-modal");
+                    overlay.setAttribute("role", "presentation");
+                    const dialog = createElement("section", "training-session__preset-dialog");
+                    dialog.setAttribute("role", "dialog");
+                    dialog.setAttribute("aria-modal", "true");
+                    dialog.setAttribute("aria-labelledby", "training-session-preset-title");
+                    const prompt = createElement("h4", "training-session__preset-title",
+                        "Зафиксировать данные значения для текущего упражнения?");
+                    prompt.id = "training-session-preset-title";
+                    const actions = createElement("div", "training-session__preset-actions");
+                    const accept = createElement("button", "training-session__preset-accept", "Да");
+                    const decline = createElement("button", "training-session__preset-decline", "Нет");
+                    accept.type = "button";
+                    decline.type = "button";
+                    const closePrompt = () => {
+                        overlay.remove();
+                        reps.focus();
+                    };
+                    accept.addEventListener("click", () => {
+                        sharedSetValuesByExercise.set(exercise.id, { reps: repetitions, weight });
+                        render();
+                    });
+                    decline.addEventListener("click", closePrompt);
+                    dialog.addEventListener("keydown", (event) => {
+                        if (event.key === "Escape") {
+                            event.preventDefault();
+                            closePrompt();
+                        }
+                        if (event.key === "Tab") {
+                            event.preventDefault();
+                            (document.activeElement === accept ? decline : accept).focus();
+                        }
+                    });
+                    actions.append(decline, accept);
+                    dialog.append(prompt, actions);
+                    overlay.appendChild(dialog);
+                    screen.appendChild(overlay);
+                    accept.focus();
+                };
+                if (!isCardio && index === 0 && !savedSet) {
+                    reps.addEventListener("change", maybeConfirmSharedValues);
+                    resistance.addEventListener("change", maybeConfirmSharedValues);
+                }
                 checkbox.addEventListener("change", async () => {
                     const repetitions = Number(reps.value);
                     const weightText = resistance.value.trim();
