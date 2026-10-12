@@ -1,4 +1,4 @@
-// source/presentation/training/training.js — Version 4.2
+// source/presentation/training/training.js — Version 4.3
 // Responsibility: render the Training workspace and coordinate user actions through Application callbacks only.
 import { renderTrainingOverview } from "./training-overview.js";
 import { createPinIndicator } from "../shared/pin-indicator.js";
@@ -573,6 +573,7 @@ async function renderTraining(container, { trainingOverviewApplication = null, t
     };
     const notifyActiveScreen = (visible) => {
         workspacePage?.classList.toggle("training-workspace--active-session", visible === true);
+        workspacePage?.querySelector(".finance-workspace-header")?.classList.toggle("training-workspace__intro--hidden", visible === true);
         if (typeof onActiveWorkoutScreenChange === "function") onActiveWorkoutScreenChange(visible);
     };
     const showActiveWorkout = ({ sessionResult, workout } = {}) => {
