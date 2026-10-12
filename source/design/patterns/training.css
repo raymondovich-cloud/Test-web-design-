@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.63 */
+/* source/design/patterns/training.css — Version 3.64 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -2570,3 +2570,7 @@ body.is-training-session-active .training-session__footer{
     box-shadow:none;
     overflow:visible;
 }
+
+
+/* Reduce the vertical gap between collapsed exercise rows by 3x — Version 3.64. */
+.training-session--active .training-session__exercises{gap:calc(var(--space-2) / 3) !important;}
