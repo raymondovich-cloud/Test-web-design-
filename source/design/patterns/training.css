@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.30 */
+/* source/design/patterns/training.css — Version 3.31 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -546,10 +546,10 @@
     gap:var(--space-3);
 }
 .training-session--active .training-session__exercise-card--current .training-session__exercise-title{
-    font-size:clamp(1.2rem,4.8vw,1.55rem);
-    font-weight:var(--font-weight-semibold);
-    letter-spacing:-.035em;
-    line-height:1.16;
+    font-size:var(--font-size-interface);
+    font-weight:var(--font-weight-medium);
+    letter-spacing:normal;
+    line-height:var(--line-height-snug);
 }
 .training-session--active .training-session__exercise-card--current .training-session__exercise-progress{
     color:var(--color-white-soft);
