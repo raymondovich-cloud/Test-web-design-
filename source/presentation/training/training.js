@@ -1,4 +1,4 @@
-// source/presentation/training/training.js — Version 4.3
+// source/presentation/training/training.js — Version 4.4
 // Responsibility: render the Training workspace and coordinate user actions through Application callbacks only.
 import { renderTrainingOverview } from "./training-overview.js";
 import { createPinIndicator } from "../shared/pin-indicator.js";
@@ -525,7 +525,9 @@ function renderSavedResources(container, { exercises, templates, onCreateWorkout
 async function renderTraining(container, { trainingOverviewApplication = null, trainingSessionApplication = null, trainingWorkoutLibraryApplication = null, onBack = null, onOpenAnalytics = null, activeWorkout = null, onActiveWorkoutChange = null, onActiveWorkoutScreenChange = null } = {}) {
     if (!container || typeof container.replaceChildren !== "function") throw new TypeError("LifeGame Training: a container element is required.");
     const content = renderTrainingShell(container, onBack);
+    const workspaceBack = container.querySelector(".training-workspace__back");
     const workspaceIntro = container.querySelector(".finance-workspace-header");
+    const setWorkspaceBackVisible = (visible) => { if (workspaceBack) { workspaceBack.hidden = !visible; workspaceBack.style.display = visible ? "" : "none"; } };
     const setWorkspaceIntroVisible = (visible) => { if (workspaceIntro) { workspaceIntro.hidden = !visible; workspaceIntro.style.display = visible ? "" : "none"; } };
     if (!trainingOverviewApplication || typeof trainingOverviewApplication.execute !== "function" ||
         !trainingWorkoutLibraryApplication || typeof trainingWorkoutLibraryApplication.listExercises !== "function") {
@@ -578,6 +580,7 @@ async function renderTraining(container, { trainingOverviewApplication = null, t
     const showActiveWorkout = ({ sessionResult, workout } = {}) => {
         if (!sessionResult?.session || !workout) return;
         setWorkspaceIntroVisible(false);
+        setWorkspaceBackVisible(false);
         currentActiveWorkout = { sessionResult, workout };
         notifyActiveWorkout();
         if (typeof sessionCleanup === "function") sessionCleanup();
@@ -592,6 +595,7 @@ async function renderTraining(container, { trainingOverviewApplication = null, t
                 if (typeof sessionCleanup === "function") sessionCleanup();
                 sessionCleanup = null;
                 notifyActiveScreen(false);
+                setWorkspaceBackVisible(true);
                 setWorkspaceIntroVisible(true);
                 await loadOverview();
             },
@@ -600,6 +604,7 @@ async function renderTraining(container, { trainingOverviewApplication = null, t
                 sessionCleanup = null;
                 notifyActiveWorkout();
                 notifyActiveScreen(false);
+                setWorkspaceBackVisible(true);
                 setWorkspaceIntroVisible(true);
                 await loadOverview();
             }

@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.24 */
+/* source/design/patterns/training.css — Version 3.25 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -923,4 +923,50 @@
     .training-session--active *,
     .training-session--active *::before,
     .training-session--active *::after{transition:none!important}
+}
+
+
+/* Active workout timer emphasis — Version 3.25
+   Presentation-only styling for the elapsed-time display. */
+.training-session--active .training-session__timer{
+    display:grid;
+    justify-items:center;
+    align-content:center;
+    gap:.2rem;
+    min-width:5.7rem;
+    padding:.48rem .62rem .52rem;
+    border:1px solid rgba(242,138,46,.42);
+    border-radius:.8rem;
+    background:linear-gradient(145deg,rgba(242,138,46,.13),rgba(255,255,255,.025) 72%);
+    box-shadow:0 0 1.2rem rgba(242,138,46,.09),inset 0 1px 0 rgba(255,255,255,.045);
+}
+.training-session--active .training-session__timer-label{
+    color:rgba(255,190,128,.82);
+    font-size:.48rem;
+    font-weight:var(--font-weight-semibold);
+    letter-spacing:.09em;
+    line-height:1.2;
+    white-space:nowrap;
+}
+.training-session--active .training-session__timer .training-session__elapsed{
+    margin:0;
+    color:var(--color-accent);
+    font-family:var(--font-family-mono);
+    font-size:clamp(1.05rem,4.2vw,1.3rem);
+    font-weight:var(--font-weight-semibold);
+    font-variant-numeric:tabular-nums;
+    letter-spacing:-.035em;
+    line-height:1.1;
+    text-align:center;
+    text-shadow:0 0 .9rem rgba(242,138,46,.18);
+}
+@media (max-width:360px){
+    .training-session--active .training-session__timer{
+        min-width:5.2rem;
+        padding:.42rem .45rem;
+    }
+    .training-session--active .training-session__timer-label{
+        font-size:.43rem;
+        letter-spacing:.065em;
+    }
 }

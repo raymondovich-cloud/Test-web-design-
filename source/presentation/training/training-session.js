@@ -1,4 +1,4 @@
-// source/presentation/training/training-session.js — Version 2.8
+// source/presentation/training/training-session.js — Version 2.9
 // Responsibility: render the active workout interaction; delegate persistence and business rules to the application layer.
 function createElement(tag, className = "", text = null) {
     const element = document.createElement(tag);
@@ -46,14 +46,18 @@ function renderTrainingSession(container, { sessionResult, workout, application,
         screen.setAttribute("aria-label", "Активная тренировка");
         const header = createElement("header", "training-session__header");
         const title = createElement("h3", "training-session__title", workout.title || "Моя тренировка");
+        const timer = createElement("div", "training-session__timer");
+        timer.setAttribute("aria-label", "Время тренировки");
+        const timerLabel = createElement("span", "training-session__timer-label", "ВРЕМЯ ТРЕНИРОВКИ");
         const elapsed = createElement("p", "training-session__elapsed", "00:00");
         elapsed.setAttribute("aria-label", "Продолжительность тренировки");
+        timer.append(timerLabel, elapsed);
         const back = createElement("button", "training-session__back", "← Назад");
         back.type = "button";
         back.addEventListener("click", () => {
             if (typeof onBack === "function") onBack();
         });
-        header.append(back, title, elapsed);
+        header.append(back, title, timer);
 
         const completedSets = current.session.exercises.reduce(
             (total, exercise) => total + getCompletedSetCount(exercise),
