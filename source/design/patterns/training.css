@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.62 */
+/* source/design/patterns/training.css — Version 3.63 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -2536,3 +2536,37 @@ body.is-training-session-active .training-session__footer{
 .training-session--active .training-session__exercise-top{grid-template-columns:minmax(0,1fr);cursor:pointer}
 .training-session--active .training-session__exercise-top:focus-visible{outline:2px solid var(--color-accent);outline-offset:3px;border-radius:.75rem}
 .training-session--active .training-session__exercise-card--upcoming.training-session__exercise-card--expanded .training-session__exercise-top{grid-template-columns:minmax(0,1fr)}
+
+
+/* Active workout: keep the exercise number, title, set progress, and set group inside one shared card frame — Version 3.63. */
+.training-session--active .training-session__exercise-card--current,
+.training-session--active .training-session__exercise-card--upcoming.training-session__exercise-card--expanded{
+    box-sizing:border-box;
+    gap:.6rem;
+    padding:.75rem;
+    border:1px solid rgba(255,255,255,.14);
+    border-radius:1.25rem;
+    background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.008));
+    box-shadow:none;
+    overflow:hidden;
+}
+.training-session--active .training-session__exercise-card--current .training-session__exercise-top,
+.training-session--active .training-session__exercise-card--upcoming.training-session__exercise-card--expanded .training-session__exercise-top{
+    box-sizing:border-box;
+    width:100%;
+    min-width:0;
+    padding:.15rem .15rem .45rem;
+    margin:0;
+}
+.training-session--active .training-session__exercise-card--current .training-session__exercise-body,
+.training-session--active .training-session__exercise-card--upcoming.training-session__exercise-card--expanded .training-session__exercise-body{
+    box-sizing:border-box;
+    width:100%;
+    min-width:0;
+    padding:0;
+    border:0;
+    border-radius:0;
+    background:transparent;
+    box-shadow:none;
+    overflow:visible;
+}
