@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.29 */
+/* source/design/patterns/training.css — Version 3.30 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -1303,3 +1303,163 @@
 .training-session--active .training-session__footer{position:sticky;bottom:0;z-index:5;margin-top:1rem;padding:1rem 0 max(1rem,env(safe-area-inset-bottom));border-top:1px solid rgba(255,255,255,.07);background:linear-gradient(180deg,rgba(7,7,7,.84),#070707 28%);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px)}
 .training-session--active .training-session__complete{min-height:3.55rem;border:1px solid rgba(255,190,128,.72);border-radius:999px;background:linear-gradient(110deg,#ffad55,#f26b19 54%,#f28a2e);color:#fff;font-size:.9rem;font-weight:var(--font-weight-semibold);letter-spacing:0;box-shadow:0 0 1.8rem rgba(242,105,25,.18),inset 0 1px 0 rgba(255,255,255,.25)}
 @media(max-width:390px){.training-session--active .training-session__set-row{grid-template-columns:1rem 1.8rem minmax(0,1fr) minmax(0,1fr);gap:.3rem;padding:.45rem}.training-session--active .training-session__set-number{width:1.7rem;height:1.7rem}.training-session--active .training-session__set-field{padding:.1rem .25rem;gap:.1rem}.training-session--active .training-session__set-field .training-session__set-reps,.training-session--active .training-session__set-field .training-session__set-weight{font-size:.9rem}.training-session--active .training-session__exercise-meta-item{font-size:.7rem}}
+
+
+/* LifeGame Signature — active workout reference reconstruction — Version 3.30 */
+/* Presentation-only overrides: preserve the existing session commands and data contract. */
+.training-session--active{
+    --session-accent:#ff8a2a;
+    --session-line:rgba(255,255,255,.105);
+    --session-muted:rgba(255,255,255,.48);
+    width:100%;max-width:48rem;margin-inline:auto;padding:clamp(.7rem,3.6vw,1.25rem);
+    color:#f7f5f2;background:#080808;box-sizing:border-box
+}
+.training-session--active *{box-sizing:border-box}
+.training-session--active .training-session__header{
+    display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:.85rem;
+    padding:0 0 1.2rem;border-bottom:1px solid var(--session-line)
+}
+.training-session--active .training-session__back{
+    display:inline-flex;align-items:center;justify-content:center;min-height:2.65rem;padding:0 .85rem;
+    border:1px solid var(--session-line);border-radius:999px;background:#101010;color:#f5f5f5;
+    font-size:.78rem;font-weight:600;white-space:nowrap
+}
+.training-session--active .training-session__identity{min-width:0;display:flex;flex-direction:column;gap:.3rem}
+.training-session--active .training-session__eyebrow{
+    color:var(--session-accent);font-size:.59rem;font-weight:750;letter-spacing:.19em;line-height:1.3
+}
+.training-session--active .training-session__title{
+    margin:0;color:#fff;font-size:clamp(1rem,4.8vw,1.35rem);font-weight:700;letter-spacing:-.045em;
+    line-height:1.12;overflow-wrap:anywhere
+}
+.training-session--active .training-session__timer{
+    display:flex;flex-direction:column;align-items:flex-end;gap:.28rem;min-width:0;padding:0;border:0;
+    background:transparent;text-align:right
+}
+.training-session--active .training-session__timer-label{
+    color:var(--session-muted);font-size:.49rem;font-weight:700;letter-spacing:.1em;white-space:nowrap
+}
+.training-session--active .training-session__elapsed{
+    margin:0;color:#fff;font-variant-numeric:tabular-nums;font-size:1.15rem;font-weight:650;letter-spacing:-.04em
+}
+.training-session--active .training-session__progress{padding:1.15rem 0 1.35rem}
+.training-session--active .training-session__progress-heading{
+    display:flex;align-items:center;justify-content:space-between;gap:.8rem;margin-bottom:.65rem
+}
+.training-session--active .training-session__progress-label{
+    color:var(--session-muted);font-size:.59rem;font-weight:750;letter-spacing:.14em
+}
+.training-session--active .training-session__progress-value{
+    color:#f4f1ed;font-size:.72rem;font-weight:650;font-variant-numeric:tabular-nums;white-space:nowrap
+}
+.training-session--active .training-session__progress-bar{
+    display:block;width:100%;height:.3rem;overflow:hidden;border:0;border-radius:999px;background:#252525;
+    color:var(--session-accent);accent-color:var(--session-accent)
+}
+.training-session--active .training-session__progress-bar::-webkit-progress-bar{background:#252525;border-radius:999px}
+.training-session--active .training-session__progress-bar::-webkit-progress-value{background:linear-gradient(90deg,#ffb45e,#f27622);border-radius:999px}
+.training-session--active .training-session__progress-bar::-moz-progress-bar{background:linear-gradient(90deg,#ffb45e,#f27622);border-radius:999px}
+.training-session--active .training-session__exercises{gap:1.45rem}
+.training-session--active .training-session__exercise-card{padding:1.05rem 0 0;border-top:1px solid var(--session-line)}
+.training-session--active .training-session__exercise-card:first-child{padding-top:.15rem;border-top:0}
+.training-session--active .training-session__exercise-top{grid-template-columns:minmax(0,1fr) 2.45rem;gap:.65rem;padding-bottom:.65rem}
+.training-session--active .training-session__exercise-heading{gap:.35rem}
+.training-session--active .training-session__exercise-kicker{
+    display:flex;align-items:center;gap:.42rem;color:var(--session-accent);font-size:.57rem;font-weight:800;letter-spacing:.18em
+}
+.training-session--active .training-session__exercise-kicker::before{
+    content:"";width:.35rem;height:.35rem;border-radius:50%;background:var(--session-accent);box-shadow:0 0 .7rem rgba(255,138,42,.65)
+}
+.training-session--active .training-session__exercise-title{
+    font-size:clamp(1.42rem,6vw,1.9rem);font-weight:730;letter-spacing:-.055em;line-height:1.04
+}
+.training-session--active .training-session__exercise-progress{font-size:.69rem;letter-spacing:.01em;color:var(--session-muted)}
+.training-session--active .training-session__collapse{
+    width:2.4rem;height:2.4rem;min-width:2.4rem;min-height:2.4rem;border:1px solid var(--session-line);
+    border-radius:50%;background:#101010;color:#f6f6f6;font-size:1rem
+}
+.training-session--active .training-session__exercise-meta{gap:.4rem .7rem;margin:.65rem 0 .6rem}
+.training-session--active .training-session__exercise-meta-item{color:rgba(255,255,255,.68);font-size:.68rem}
+.training-session--active .training-session__exercise-meta-item+.training-session__exercise-meta-item::before{
+    width:.22rem;height:.22rem;margin:0 .42rem .1rem 0;background:var(--session-accent)
+}
+.training-session--active .training-session__set-progress{gap:.38rem;min-height:1.35rem;margin:.5rem 0 .85rem}
+.training-session--active .training-session__set-progress-tick{
+    width:clamp(1.5rem,10vw,2.45rem);height:.2rem;border-radius:999px;background:#292929;box-shadow:none
+}
+.training-session--active .training-session__set-progress-tick.is-complete,
+.training-session--active .training-session__set-progress-tick.is-current{
+    background:linear-gradient(90deg,#ffb45e,#f27622);box-shadow:0 0 .55rem rgba(242,138,46,.2)
+}
+.training-session--active .training-session__exercise-body{
+    gap:0;padding:0;border:1px solid rgba(255,255,255,.12);border-radius:1rem;
+    background:linear-gradient(145deg,rgba(255,255,255,.035),rgba(255,255,255,.012));overflow:hidden
+}
+.training-session--active .training-session__set-row{
+    grid-template-columns:1.65rem 2rem minmax(0,1fr) minmax(0,1fr);gap:.55rem;min-height:3.85rem;
+    padding:.48rem .6rem;border-bottom:1px solid rgba(255,255,255,.075);background:transparent
+}
+.training-session--active .training-session__set-row:last-child{border-bottom:0}
+.training-session--active .training-session__set-row.is-current,
+.training-session--active .training-session__set-row:focus-within{background:rgba(255,138,42,.045)}
+.training-session--active .training-session__set-check{
+    width:1.05rem;height:1.05rem;justify-self:center;accent-color:var(--session-accent)
+}
+.training-session--active .training-session__set-number{
+    width:1.85rem;height:1.85rem;border:1px solid rgba(255,255,255,.15);border-radius:.62rem;
+    background:#111;color:rgba(255,255,255,.88);font-size:.82rem;font-weight:750
+}
+.training-session--active .training-session__set-row.is-complete .training-session__set-number{
+    border-color:rgba(255,138,42,.45);background:rgba(255,138,42,.1);color:#ffad55
+}
+.training-session--active .training-session__set-field{
+    min-height:2.55rem;padding:.1rem .42rem;border:1px solid rgba(255,255,255,.12);border-radius:.7rem;
+    background:rgba(0,0,0,.24);transition:border-color .18s ease,background .18s ease
+}
+.training-session--active .training-session__set-field:focus-within{
+    border-color:rgba(255,138,42,.7);background:rgba(255,138,42,.045)
+}
+.training-session--active .training-session__set-field .training-session__set-reps,
+.training-session--active .training-session__set-field .training-session__set-weight{
+    font-size:.96rem;font-weight:700;font-variant-numeric:tabular-nums
+}
+.training-session--active .training-session__set-field .training-session__set-unit,
+.training-session--active .training-session__set-field .training-session__set-weight-unit{
+    color:rgba(255,255,255,.4);font-size:.53rem;letter-spacing:.04em
+}
+.training-session--active .training-session__add-set{
+    display:flex;align-items:center;justify-content:center;gap:.5rem;min-height:3rem;margin-top:.65rem;
+    padding:.5rem .8rem;border:1px dashed rgba(255,255,255,.18);border-radius:.85rem;
+    background:rgba(255,255,255,.018);color:rgba(255,255,255,.72);font-size:.77rem;font-weight:650
+}
+.training-session--active .training-session__add-set::first-letter{color:var(--session-accent)}
+.training-session--active .training-session__exercise-card--complete .training-session__exercise-title{color:rgba(255,255,255,.72)}
+.training-session--active .training-session__exercise-card--upcoming .training-session__exercise-title{color:rgba(255,255,255,.88)}
+.training-session--active .training-session__footer{
+    position:sticky;bottom:0;z-index:5;margin:1rem calc(clamp(.7rem,3.6vw,1.25rem)*-1) 0;
+    padding:.85rem clamp(.7rem,3.6vw,1.25rem) max(.85rem,env(safe-area-inset-bottom));
+    border-top:1px solid rgba(255,255,255,.09);background:rgba(8,8,8,.92);
+    -webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px)
+}
+.training-session--active .training-session__complete{
+    width:100%;min-height:3.4rem;border:1px solid rgba(255,190,128,.6);border-radius:999px;
+    background:linear-gradient(110deg,#ffb45e 0%,#ff8528 52%,#f06a1a 100%);color:#fff;
+    font-size:.86rem;font-weight:800;letter-spacing:.015em;box-shadow:0 0 1.4rem rgba(242,105,25,.16),inset 0 1px 0 rgba(255,255,255,.25)
+}
+@media(max-width:420px){
+    .training-session--active{padding:.7rem}
+    .training-session--active .training-session__header{grid-template-columns:auto minmax(0,1fr);gap:.65rem;padding-bottom:1rem}
+    .training-session--active .training-session__timer{grid-column:2;flex-direction:row;align-items:baseline;justify-content:flex-start;gap:.5rem;text-align:left}
+    .training-session--active .training-session__timer-label{font-size:.47rem}
+    .training-session--active .training-session__elapsed{font-size:.95rem}
+    .training-session--active .training-session__back{min-height:2.35rem;padding:0 .7rem;font-size:.72rem}
+    .training-session--active .training-session__set-row{grid-template-columns:1.2rem 1.8rem minmax(0,1fr) minmax(0,1fr);gap:.35rem;padding:.45rem .42rem}
+    .training-session--active .training-session__set-number{width:1.65rem;height:1.65rem;border-radius:.52rem;font-size:.76rem}
+    .training-session--active .training-session__set-field{min-height:2.35rem;padding:.08rem .22rem;gap:.08rem}
+    .training-session--active .training-session__set-field .training-session__set-reps,
+    .training-session--active .training-session__set-field .training-session__set-weight{font-size:.88rem}
+    .training-session--active .training-session__exercise-meta-item{font-size:.64rem}
+}
+@media(prefers-reduced-motion:reduce){
+    .training-session--active .training-session__set-field{transition:none}
+}
