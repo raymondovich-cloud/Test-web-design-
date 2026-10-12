@@ -1,4 +1,4 @@
-// source/presentation/training/training-session.js — Version 2.19
+// source/presentation/training/training-session.js — Version 2.20
 // Responsibility: render the active workout interaction; delegate persistence and business rules to the application layer.
 function createElement(tag, className = "", text = null) {
     const element = document.createElement(tag);
@@ -46,12 +46,8 @@ function renderTrainingSession(container, { sessionResult, workout, application,
         const screen = createElement("section", "training-session training-session--active");
         screen.setAttribute("aria-label", "Активная тренировка");
         const header = createElement("header", "training-session__header");
-        const systemLine = createElement("div", "training-session__system-line");
-        const systemBrand = createElement("span", "training-session__brand-name", "LIFEGAME");
-        const systemStatus = createElement("span", "training-session__system-status", "SYSTEM ONLINE");
         const elapsed = createElement("p", "training-session__elapsed", "00:00");
         elapsed.setAttribute("aria-label", "Продолжительность тренировки");
-        systemLine.append(systemBrand, systemStatus, elapsed);
 
         const title = createElement("h3", "training-session__title", workout.title || "Моя тренировка");
         const back = createElement("button", "training-session__back", "← Назад");
@@ -59,7 +55,7 @@ function renderTrainingSession(container, { sessionResult, workout, application,
         back.addEventListener("click", () => {
             if (typeof onBack === "function") onBack();
         });
-        header.append(systemLine, title, back);
+        header.append(elapsed, title, back);
 
         const completedSets = current.session.exercises.reduce(
             (total, exercise) => total + getCompletedSetCount(exercise),
