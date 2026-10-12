@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.46 */
+/* source/design/patterns/training.css — Version 3.47 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -2325,7 +2325,7 @@ body.is-training-session-active .training-session__footer{
 }
 @media(max-width:520px){
     .training-session--active .training-session__exercise-card--upcoming{
-        width:calc(100% - 1rem);
+        width:calc(100% - (2 * clamp(1rem,5.5vw,1.5rem) - 1rem));
         margin-inline:auto;
         min-height:4.7rem;
     }
