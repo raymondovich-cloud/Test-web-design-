@@ -1,0 +1,53 @@
+name: Copy LifeGame source snapshot
+
+on:
+  push:
+    branches:
+      - chore/design-repo-bootstrap
+
+permissions:
+  contents: write
+
+concurrency:
+  group: copy-lifegame-source
+  cancel-in-progress: false
+
+jobs:
+  copy-source:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout design repository
+        uses: actions/checkout@v4
+        with:
+          ref: chore/design-repo-bootstrap
+          path: target
+          persist-credentials: true
+
+      - name: Checkout pinned LifeGame source
+        uses: actions/checkout@v4
+        with:
+          repository: raymondovich-cloud/LifeGame
+          ref: 4bcf36c66918705f5e21e016bef3e36ec799acba
+          path: source
+          persist-credentials: false
+
+      - name: Copy source snapshot while preserving design-repo metadata
+        shell: bash
+        run: |
+          set -euo pipefail
+          rsync -a --delete \
+            --exclude='.git/' \
+            --exclude='README.md' \
+            --exclude='docs/design-repo-plan.md' \
+            --exclude='.github/workflows/copy-lifegame-source.yml' \
+            source/ target/
+          cd target
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Target already matches the pinned LifeGame source."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "chore: copy LifeGame source snapshot 4bcf36c"
+          git push origin HEAD:chore/design-repo-bootstrap
