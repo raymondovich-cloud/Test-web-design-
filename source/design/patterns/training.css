@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.41 */
+/* source/design/patterns/training.css — Version 3.42 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -692,9 +692,12 @@
     padding-block:calc(var(--space-4) * .75);
     row-gap:calc(var(--space-3) * .75);
 }
-.training-session--active .training-session__exercise-card--current{
+ .training-session--active .training-session__exercise-card--current{
     padding-block:calc(var(--space-4) * .75);
     row-gap:calc(var(--space-4) * .75);
+}
+.training-session--active .training-session__exercise-card--current .training-session__set-row{
+    padding-block:calc(var(--space-3) * .75);
 }
 @media(max-width:380px){
     .training-session--active .training-session__exercise-card{
@@ -702,5 +705,8 @@
     }
     .training-session--active .training-session__exercise-card--current{
         padding-block:calc(var(--space-3) * .75);
+    }
+    .training-session--active .training-session__exercise-card--current .training-session__set-row{
+        padding-block:calc(var(--space-2) * .75);
     }
 }
