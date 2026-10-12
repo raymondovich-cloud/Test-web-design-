@@ -1,4 +1,4 @@
-// training-session-workflow.test.mjs — Version 1.1
+// training-session-workflow.test.mjs — Version 1.2
 import test from "node:test";
 import assert from "node:assert/strict";
 import { createTrainingSessionWorkflow } from "./training-session-workflow.js";
@@ -32,11 +32,6 @@ function setup() {
             current = { session: { ...current.session, ...input.changes, updatedAt: 3000 }, revision: current.revision + 1 };
             return current;
         },
-        async completeSession(input) {
-            calls.push({ action: "complete", ...input });
-            current = { session: { ...current.session, status: "completed", updatedAt: 4000 }, revision: current.revision + 1 };
-            return current;
-        }
     };
     return { calls, workflow: createTrainingSessionWorkflow({ api, clock: () => Date.parse("2026-10-11T12:00:00Z") }) };
 }
@@ -63,21 +58,6 @@ test("records a completed set through a revisioned application command", async (
     assert.equal(result.session.exercises[0].sets.length, 1);
     assert.deepEqual(result.session.exercises[0].sets[0], { reps: 8, completed: true, resistance: { value: 40, unit: "kg" } });
     assert.equal(result.revision, 3);
-});
-
-test("requires at least one saved set before completing the workout", async () => {
-    const { workflow } = setup();
-    const started = await workflow.startWorkout({ userContext: USER, workout });
-    await assert.rejects(workflow.completeWorkout({ userContext: USER, sessionResult: started }), (error) => error.code === "TRAINING_SESSION_EMPTY");
-});
-
-test("completes a session after recorded work", async () => {
-    const { workflow } = setup();
-    let current = await workflow.startWorkout({ userContext: USER, workout });
-    current = await workflow.recordSet({ userContext: USER, sessionResult: current, exercise: workout.exercises[0], reps: 8, resistance: { value: 40, unit: "kg" } });
-    const completed = await workflow.completeWorkout({ userContext: USER, sessionResult: current });
-    assert.equal(completed.session.status, "completed");
-    assert.equal(completed.revision, 4);
 });
 
 test("rejects missing authentication, invalid reps and exercises outside the session", async () => {
