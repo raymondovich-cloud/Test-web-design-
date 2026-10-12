@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.48 */
+/* source/design/patterns/training.css — Version 3.49 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -2320,6 +2320,8 @@ body.is-training-session-active .training-session__footer{
     min-height:3.8rem;
     max-height:3.8rem;
     margin-inline:auto;
+    justify-self:center;
+    align-self:center;
     padding:0;
     overflow:hidden;
 }
@@ -2331,4 +2333,9 @@ body.is-training-session-active .training-session__footer{
     height:100%;
     min-height:0;
     padding:0 .75rem;
+}
+.training-session--active .training-session__exercise-card--upcoming{
+    position:relative;
+    left:50%;
+    transform:translateX(-50%);
 }
