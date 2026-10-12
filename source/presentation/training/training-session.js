@@ -1,4 +1,4 @@
-// source/presentation/training/training-session.js — Version 4.5
+// source/presentation/training/training-session.js — Version 4.6
 // Responsibility: render the active workout interaction; delegate persistence and business rules to the application layer.
 function createElement(tag, className = "", text = null) {
     const element = document.createElement(tag);
@@ -124,12 +124,6 @@ function renderTrainingSession(container, { sessionResult, workout, application,
             meta.append(createElement("span", "training-session__exercise-meta-item", String(definition.targetReps ?? 8) + " повторений"));
             meta.append(createElement("span", "training-session__exercise-meta-item", String(getPlannedSetCount(exercise)) + " подхода"));
             heading.appendChild(meta);
-            if (isCurrentExercise) {
-                const exerciseVisual = createElement("div", "training-session__exercise-visual");
-                exerciseVisual.setAttribute("aria-hidden", "true");
-                exerciseVisual.innerHTML = '<svg viewBox="0 0 88 104" focusable="false"><path class="muscle-outline" d="M25 19 32 8 39 16 49 16 56 8 63 20 71 28 75 45 70 59 66 47 63 34 58 29 55 40 50 46 38 46 33 40 30 29 25 34 22 47 18 59 13 44 17 29Z"/><path class="muscle-outline" d="M33 18 31 35 36 44 44 49 52 44 57 35 55 18M36 44 33 58 37 69 34 83M52 44 55 58 51 69 54 83M38 49 44 55 50 49M37 69 44 73 51 69"/><path class="muscle-highlight" d="M29 30 39 27 43 36 36 43 29 39ZM45 36 49 27 59 30 59 39 52 43Z"/><path class="muscle-outline" d="M27 61 22 76 25 91M61 61 66 76 63 91M35 83 32 98M53 83 56 98"/></svg>';
-                heading.appendChild(exerciseVisual);
-            }
             const setProgress = createElement("div", "training-session__set-progress");
             setProgress.setAttribute("aria-label", "Прогресс подходов упражнения");
             for (let tick = 0; tick < getPlannedSetCount(exercise); tick += 1) {
