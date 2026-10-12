@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.38 */
+/* source/design/patterns/training.css — Version 3.39 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -249,9 +249,8 @@
 .training-session__field input,.training-session__field select{width:100%;min-height:2.8rem;padding:var(--space-2);border:var(--border-subtle);border-radius:var(--radius-sm);background:rgba(255,255,255,.04);color:var(--color-white)}
 .training-session__field select option{background:#111;color:#fff}
 .training-session__save-set{grid-column:1/-1;width:100%;min-height:2.8rem;border:1px solid rgba(242,138,46,.48);border-radius:var(--radius-sm);background:rgba(242,138,46,.1);color:var(--color-white);font-size:var(--font-size-xs);font-weight:var(--font-weight-medium)}
-.training-session__footer{display:grid;gap:var(--space-3);position:relative;z-index:1}
-.training-session__complete{width:100%;min-height:3.25rem;border:1px solid rgba(242,138,46,.65);border-radius:var(--radius-sm);background:var(--gradient-accent-line);color:#080808;font-size:var(--font-size-xs);font-weight:var(--font-weight-semibold);letter-spacing:.12em}
-.training-session__complete:disabled,.training-session__save-set:disabled{opacity:.45;cursor:not-allowed}
+.training-session__status{min-height:1.2em;margin:0;color:var(--color-gray);font-size:var(--font-size-xs);line-height:1.45}
+.training-session__save-set:disabled{opacity:.45;cursor:not-allowed}
 .training-session__back{justify-self:start;border:0;background:transparent;color:var(--color-gray);font-size:var(--font-size-sm)}
 @media (min-width:720px){.training-session{padding:var(--space-5)}.training-session__set-form{grid-template-columns:repeat(3,minmax(0,1fr))}.training-session__save-set{grid-column:auto}}
 
@@ -460,10 +459,7 @@
 .training-session__set-unit,.training-session__set-weight-unit{color:var(--color-gray);font-size:.62rem;font-weight:var(--font-weight-semibold);letter-spacing:.06em;white-space:nowrap}
 .training-session__add-set{width:100%;min-height:2.8rem;margin-top:var(--space-2);padding:var(--space-2) var(--space-3);border:1px dashed rgba(242,138,46,.28);border-radius:var(--radius-sm);background:rgba(242,138,46,.035);color:var(--color-white-soft);font-size:var(--font-size-xs);font-weight:var(--font-weight-medium);transition:border-color var(--motion-duration-fast),background var(--motion-duration-fast),color var(--motion-duration-fast)}
 .training-session__add-set:active{border-color:rgba(242,138,46,.6);background:rgba(242,138,46,.08);color:var(--color-white)}
-.training-session__footer{position:sticky;bottom:0;z-index:5;display:grid;gap:var(--space-3);padding:var(--space-4) 0 max(var(--space-3),env(safe-area-inset-bottom));background:linear-gradient(180deg,transparent,var(--color-background,#080808) 24%)}
-.training-session__status{margin:0;color:var(--color-gray);font-size:var(--font-size-xs);line-height:1.45}
-.training-session__complete{width:100%;min-height:3.25rem;padding:var(--space-3) var(--space-4);border:1px solid rgba(242,138,46,.55);border-radius:var(--radius-sm);background:var(--gradient-accent-line);color:#080808;font-size:var(--font-size-xs);font-weight:var(--font-weight-semibold);letter-spacing:.1em;box-shadow:0 8px 24px rgba(242,138,46,.1)}
-.training-session__complete:disabled{opacity:.38;box-shadow:none}
+.training-session__status{min-height:1.2em;margin:0;color:var(--color-gray);font-size:var(--font-size-xs);line-height:1.45}
 .training-session__exercise-body[hidden],.training-session__add-set[hidden]{display:none!important}
 @media(max-width:380px){
     .training-session--active .training-session__header{gap:var(--space-1)}
@@ -600,10 +596,6 @@
 .training-session--active .training-session__exercise-card--complete .training-session__exercise-title{
     color:var(--color-white-soft);
 }
-.training-session--active .training-session__footer{
-    -webkit-backdrop-filter:blur(10px);
-    backdrop-filter:blur(10px);
-}
 @media(max-width:380px){
     .training-session--active .training-session__exercise-card--current{
         padding:var(--space-3);
@@ -639,29 +631,3 @@
 .training-workspace--active-session > .finance-workspace-header,
 .training-workspace__intro--hidden{display:none}
 
-
-/* Active workout completion button — match the exercise-card frame. */
-.training-session--active .training-session__complete{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    box-sizing:border-box;
-    width:100%;
-    min-width:0;
-    min-height:4.5rem;
-    padding:var(--space-4);
-    border:var(--training-session-frame-border);
-    border-radius:var(--training-session-frame-radius);
-    background:transparent;
-    background-color:transparent;
-    color:var(--color-white);
-    box-shadow:var(--training-session-frame-shadow);
-    text-align:center;
-    line-height:var(--line-height-snug);
-}
-@media(max-width:380px){
-    .training-session--active .training-session__complete{
-        min-height:4rem;
-        padding:var(--space-3);
-    }
-}
