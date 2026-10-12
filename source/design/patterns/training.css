@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.35 */
+/* source/design/patterns/training.css — Version 3.36 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -638,3 +638,29 @@
 .training-workspace--active-session > .training-workspace__back,
 .training-workspace--active-session > .finance-workspace-header,
 .training-workspace__intro--hidden{display:none}
+
+
+/* Active workout completion button — match the exercise-card frame. */
+.training-session--active .training-session__complete{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-sizing:border-box;
+    width:100%;
+    min-width:0;
+    min-height:4.5rem;
+    padding:var(--space-4);
+    border:var(--training-session-frame-border);
+    border-radius:var(--training-session-frame-radius);
+    background:var(--training-session-frame-background);
+    color:var(--color-white);
+    box-shadow:var(--training-session-frame-shadow);
+    text-align:center;
+    line-height:var(--line-height-snug);
+}
+@media(max-width:380px){
+    .training-session--active .training-session__complete{
+        min-height:4rem;
+        padding:var(--space-3);
+    }
+}
