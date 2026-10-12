@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.51 */
+/* source/design/patterns/training.css — Version 3.52 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -2349,6 +2349,23 @@ body.is-training-session-active .training-session__footer{
     height:auto;
     min-height:5.8rem;
     padding:.7rem 1rem;
+}
+/* Keep the finish action in the workout's normal layout; do not render a detached black footer panel. */
+.training-session--active .training-session__footer{
+    position:static;
+    inset:auto;
+    z-index:auto;
+    display:grid;
+    gap:.65rem;
+    box-sizing:border-box;
+    width:auto;
+    max-width:none;
+    margin:1rem 0 0;
+    padding:.85rem 0 max(.85rem,env(safe-area-inset-bottom, 0px));
+    border:0;
+    background:transparent;
+    -webkit-backdrop-filter:none;
+    backdrop-filter:none;
 }
 /* The finish button uses the same neutral surface as the training screen, not a separate orange gradient. */
 .training-session--active .training-session__complete{
