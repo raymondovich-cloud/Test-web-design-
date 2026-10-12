@@ -1,1 +1,0 @@
-Temporary trigger for the pinned LifeGame source snapshot workflow. This file should be removed by the synchronization job.

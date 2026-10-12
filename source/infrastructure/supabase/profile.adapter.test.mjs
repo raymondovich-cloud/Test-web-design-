@@ -1,0 +1,319 @@
+// LifeGame 3.0 — Supabase Profile Adapter Tests
+// Version: 1.2
+// Responsibility: verify the Profile persistence boundary without contacting Supabase.
+
+import test from "node:test";
+import assert from "node:assert/strict";
+
+import { createSupabaseProfileAdapter } from "./profile.adapter.js";
+
+test("updateProfile updates only canonical profile fields and returns mapped data", async () => {
+    const calls = [];
+    const response = {
+        id: "user-1",
+        display_name: "Bogdan",
+        birth_date: "1997-04-12"
+    };
+
+    const supabaseClient = {
+        from(table) {
+            calls.push(["from", table]);
+
+            return {
+                update(values) {
+                    calls.push(["update", values]);
+
+                    return {
+                        eq(column, value) {
+                            calls.push(["eq", column, value]);
+
+                            return {
+                                select(columns) {
+                                    calls.push(["select", columns]);
+
+                                    return {
+                                        async maybeSingle() {
+                                            calls.push(["maybeSingle"]);
+                                            return {
+                                                data: response,
+                                                error: null
+                                            };
+                                        }
+                                    };
+                                }
+                            };
+                        }
+                    };
+                }
+            };
+        }
+    };
+
+    const adapter = createSupabaseProfileAdapter(supabaseClient);
+
+    const result = await adapter.updateProfile("user-1", {
+        displayName: "Bogdan",
+        birthDate: "1997-04-12"
+    });
+
+    assert.deepEqual(calls, [
+        ["from", "profiles"],
+        [
+            "update",
+            {
+                display_name: "Bogdan",
+                birth_date: "1997-04-12"
+            }
+        ],
+        ["eq", "id", "user-1"],
+        ["select", "id, display_name, birth_date, gender"],
+        ["maybeSingle"]
+    ]);
+
+    assert.deepEqual(result, {
+        id: "user-1",
+        displayName: "Bogdan",
+        birthDate: "1997-04-12"
+    });
+});
+
+test("updateProfile stores an empty birth date as null", async () => {
+    let updatedValues = null;
+
+    const supabaseClient = {
+        from() {
+            return {
+                update(values) {
+                    updatedValues = values;
+
+                    return {
+                        eq() {
+                            return {
+                                select() {
+                                    return {
+                                        async maybeSingle() {
+                                            return {
+                                                data: {
+                                                    id: "user-1",
+                                                    display_name: "Bogdan",
+                                                    birth_date: null
+                                                },
+                                                error: null
+                                            };
+                                        }
+                                    };
+                                }
+                            };
+                        }
+                    };
+                }
+            };
+        }
+    };
+
+    const adapter = createSupabaseProfileAdapter(supabaseClient);
+
+    await adapter.updateProfile("user-1", {
+        displayName: "Bogdan",
+        birthDate: ""
+    });
+
+    assert.deepEqual(updatedValues, {
+        display_name: "Bogdan",
+        birth_date: null
+    });
+});
+
+test("updateProfile normalizes Supabase errors", async () => {
+    const supabaseClient = {
+        from() {
+            return {
+                update() {
+                    return {
+                        eq() {
+                            return {
+                                select() {
+                                    return {
+                                        async maybeSingle() {
+                                            return {
+                                                data: null,
+                                                error: {
+                                                    message: "provider-specific secret"
+                                                }
+                                            };
+                                        }
+                                    };
+                                }
+                            };
+                        }
+                    };
+                }
+            };
+        }
+    };
+
+    const adapter = createSupabaseProfileAdapter(supabaseClient);
+
+    await assert.rejects(
+        () =>
+            adapter.updateProfile("user-1", {
+                displayName: "Bogdan",
+                birthDate: ""
+            }),
+        /provider-specific secret/
+    );
+});
+
+
+test("getUserRole reads the role from the signed-in user's profile row", async () => {
+    const calls = [];
+    const supabaseClient = {
+        from(table) {
+            calls.push(["from", table]);
+            return {
+                select(columns) {
+                    calls.push(["select", columns]);
+                    return {
+                        eq(column, value) {
+                            calls.push(["eq", column, value]);
+                            return {
+                                async maybeSingle() {
+                                    calls.push(["maybeSingle"]);
+                                    return { data: { role: "creator" }, error: null };
+                                }
+                            };
+                        }
+                    };
+                }
+            };
+        }
+    };
+
+    const adapter = createSupabaseProfileAdapter(supabaseClient);
+    assert.equal(await adapter.getUserRole("user-1"), "creator");
+    assert.deepEqual(calls, [
+        ["from", "user_profiles"],
+        ["select", "role"],
+        ["eq", "user_id", "user-1"],
+        ["maybeSingle"]
+    ]);
+});
+
+test("getUserRole defaults missing profile roles to user", async () => {
+    const supabaseClient = {
+        from() {
+            return {
+                select() {
+                    return {
+                        eq() {
+                            return {
+                                async maybeSingle() {
+                                    return { data: null, error: null };
+                                }
+                            };
+                        }
+                    };
+                }
+            };
+        }
+    };
+
+    const adapter = createSupabaseProfileAdapter(supabaseClient);
+    assert.equal(await adapter.getUserRole("user-1"), "user");
+});
+
+
+test("getProfile reads and maps the saved gender", async () => {
+    const supabaseClient = {
+        from(table) {
+            assert.equal(table, "profiles");
+            return {
+                select(columns) {
+                    assert.equal(columns, "id, display_name, birth_date, gender");
+                    return {
+                        eq(column, value) {
+                            assert.equal(column, "id");
+                            assert.equal(value, "user-1");
+                            return {
+                                async maybeSingle() {
+                                    return {
+                                        data: {
+                                            id: "user-1",
+                                            display_name: "Alex",
+                                            birth_date: "1997-04-12",
+                                            gender: "female"
+                                        },
+                                        error: null
+                                    };
+                                }
+                            };
+                        }
+                    };
+                }
+            };
+        }
+    };
+
+    const adapter = createSupabaseProfileAdapter(supabaseClient);
+    assert.deepEqual(await adapter.getProfile("user-1"), {
+        id: "user-1",
+        displayName: "Alex",
+        birthDate: "1997-04-12",
+        gender: "female"
+    });
+});
+
+test("updateProfile persists a changed gender", async () => {
+    let updatedValues = null;
+    const supabaseClient = {
+        from() {
+            return {
+                update(values) {
+                    updatedValues = values;
+                    return {
+                        eq() {
+                            return {
+                                select() {
+                                    return {
+                                        async maybeSingle() {
+                                            return {
+                                                data: {
+                                                    id: "user-1",
+                                                    display_name: "Alex",
+                                                    birth_date: null,
+                                                    gender: "female"
+                                                },
+                                                error: null
+                                            };
+                                        }
+                                    };
+                                }
+                            };
+                        }
+                    };
+                }
+            };
+        }
+    };
+
+    const adapter = createSupabaseProfileAdapter(supabaseClient);
+    const result = await adapter.updateProfile("user-1", {
+        displayName: "Alex",
+        birthDate: "",
+        gender: "female"
+    });
+
+    assert.deepEqual(updatedValues, {
+        display_name: "Alex",
+        birth_date: null,
+        gender: "female"
+    });
+    assert.equal(result.gender, "female");
+});
+
+test("adapter requires a Supabase client", () => {
+    assert.throws(
+        () => createSupabaseProfileAdapter(),
+        /Supabase client is required/
+    );
+});

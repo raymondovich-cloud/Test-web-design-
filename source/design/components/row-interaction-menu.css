@@ -1,0 +1,85 @@
+/* row-interaction-menu.css — Version 1.6 */
+
+.row-interaction-backdrop {
+    position:fixed;
+    inset:0;
+    z-index:1200;
+    display:grid;
+    place-items:center;
+    padding:var(--space-4);
+    background:rgba(0,0,0,.45);
+    backdrop-filter:blur(4px) saturate(.78);
+    -webkit-backdrop-filter:blur(4px) saturate(.78);
+    opacity:0;
+    pointer-events:none;
+    transition:
+        opacity 220ms var(--motion-ease-standard),
+        backdrop-filter 260ms var(--motion-ease-standard);
+    will-change:opacity,backdrop-filter;
+    touch-action:none;
+}
+
+.row-interaction-backdrop.is-visible {
+    opacity:1;
+    pointer-events:auto;
+}
+
+.row-interaction-menu {
+    width:min(14rem,100%);
+    max-width:100%;
+    padding:.3rem;
+    background:var(--gradient-card-premium);
+    border:1px solid var(--color-accent-border);
+    border-radius:var(--radius-lg);
+    box-shadow:
+        var(--shadow-card),
+        0 0 1.5rem rgba(242,138,46,.1);
+    display:flex;
+    flex-direction:column;
+    gap:.25rem;
+    opacity:0;
+    transform:scale(.72);
+    transform-origin:center;
+    pointer-events:none;
+    transition:
+        opacity 180ms var(--motion-ease-standard),
+        transform 280ms var(--motion-ease-emphasis);
+    will-change:transform,opacity;
+}
+
+.row-interaction-backdrop.is-visible .row-interaction-menu {
+    opacity:1;
+    transform:scale(1);
+    pointer-events:auto;
+}
+
+.row-interaction-menu__item {
+    display:block;
+    width:100%;
+    min-height:2.55rem;
+    padding:0 .8rem;
+    color:var(--color-white);
+    font:inherit;
+    font-size:var(--font-size-xs);
+    font-weight:var(--font-weight-medium);
+    text-align:left;
+    background:var(--gradient-accent-button);
+    border:0;
+    border-radius:var(--radius-md);
+    outline:none;
+}
+
+.row-interaction-menu__item {
+    color:var(--color-white);
+    background:var(--gradient-accent-button);
+    border:1px solid transparent;
+}
+
+.row-interaction-menu__item:active {
+    background:var(--gradient-accent-button);
+    filter:brightness(1.08);
+}
+
+
+/* Respect the native hidden state despite the component's display:grid rule. */
+.row-interaction-backdrop[hidden]{display:none!important;}

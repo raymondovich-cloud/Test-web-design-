@@ -1,0 +1,11 @@
+/* card.css — Version 1.3 */
+
+.card {
+    position:relative;
+    padding:var(--space-5);
+    overflow:hidden;
+    background:var(--surface-section);
+    border:var(--border-subtle);
+    border-radius:var(--radius-card);
+    box-shadow:none;
+}

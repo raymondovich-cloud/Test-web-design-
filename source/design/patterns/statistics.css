@@ -1,0 +1,831 @@
+/* statistics.css — Version 4.7 */
+
+/* Internal pattern name remains statistics for architecture compatibility. User-facing language is analytics. */
+
+.statistics { display:grid; gap:var(--space-3); }
+
+.statistics-value {
+    color:var(--color-white);
+    font-size:var(--font-size-value);
+    font-weight:var(--font-weight-semibold);
+    letter-spacing:var(--letter-spacing-tight);
+    line-height:var(--line-height-tight);
+}
+
+.statistics-meta {
+    color:var(--color-gray);
+    font-size:var(--font-size-xs);
+    font-weight:var(--font-weight-medium);
+    letter-spacing:var(--letter-spacing-wide);
+    line-height:var(--line-height-snug);
+    text-transform:uppercase;
+}
+
+.assets-summary {
+    display:grid;
+    gap:var(--space-2);
+    margin-bottom:var(--space-5);
+}
+
+.assets-summary-heading {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:var(--space-3);
+    min-height:1.25rem;
+}
+
+.assets-statistics-trigger {
+    display:inline-flex;
+    align-items:center;
+    gap:var(--space-1);
+    margin:0;
+    padding:0;
+    min-height:auto;
+    border:0;
+    background:transparent;
+    color:var(--color-gray);
+    font-size:var(--font-size-xs);
+    font-weight:var(--font-weight-medium);
+    letter-spacing:var(--letter-spacing-wide);
+    text-transform:uppercase;
+    white-space:nowrap;
+}
+
+.assets-statistics-trigger:hover,
+.assets-statistics-trigger:focus-visible { color:var(--color-white); }
+
+.assets-total-row {
+    display:flex;
+    align-items:baseline;
+    width:100%;
+    min-width:0;
+    padding:var(--space-3) 0 0;
+    box-sizing:border-box;
+}
+
+.assets-total-value {
+    display:block;
+    max-width:100%;
+    overflow:hidden;
+    color:var(--color-white);
+    font-size:var(--font-size-value);
+    font-weight:var(--font-weight-semibold);
+    letter-spacing:-0.05em;
+    line-height:0.98;
+    white-space:nowrap;
+}
+
+.assets-summary-date {
+    justify-self:start;
+    margin-top:var(--space-1);
+    color:var(--color-gray-dark);
+    font-size:var(--font-size-2xs);
+}
+
+/* Assets analytics — dedicated page. */
+
+.assets-statistics-screen {
+    display:grid;
+    gap:var(--space-5);
+}
+
+.assets-statistics-header {
+    display:grid;
+    gap:var(--space-4);
+}
+
+.assets-statistics-back {
+    justify-self:start;
+    margin:0;
+    padding:0;
+    min-height:auto;
+    border:0;
+    background:transparent;
+    color:var(--color-gray-dark);
+    font-size:var(--font-size-xs);
+    font-weight:var(--font-weight-medium);
+    letter-spacing:var(--letter-spacing-wide);
+    line-height:var(--line-height-snug);
+    text-align:left;
+}
+
+.assets-statistics-back:hover,
+.assets-statistics-back:focus-visible { color:var(--color-white-soft); }
+
+.assets-statistics-heading {
+    display:grid;
+    gap:var(--space-2);
+}
+
+.assets-statistics-title {
+    margin:0;
+    color:var(--color-white);
+    font-size:var(--font-size-section);
+    font-weight:var(--font-weight-semibold);
+    line-height:var(--line-height-snug);
+}
+
+.assets-statistics-description {
+    max-width:34rem;
+    margin:0;
+    color:var(--color-gray);
+    font-size:var(--font-size-sm);
+    line-height:var(--line-height-normal);
+}
+
+.statistics-period-selector {
+    display:flex;
+    align-items:center;
+    gap:var(--space-5);
+    padding:0;
+    background:transparent;
+    border:0;
+    border-radius:0;
+}
+
+.statistics-period-button {
+    position:relative;
+    width:auto;
+    min-width:0;
+    min-height:2.25rem;
+    margin:0;
+    padding:0 0 var(--space-2);
+    background:transparent;
+    border:0;
+    border-radius:0;
+    box-shadow:none;
+    color:var(--color-gray-dark);
+    font-size:var(--font-size-xs);
+    font-weight:var(--font-weight-medium);
+    letter-spacing:var(--letter-spacing-wide);
+}
+
+.statistics-period-button:hover,
+.statistics-period-button:focus-visible,
+.statistics-period-button.is-active {
+    background:transparent;
+    border-color:transparent;
+    box-shadow:none;
+}
+
+.statistics-period-button:hover,
+.statistics-period-button:focus-visible { color:var(--color-white-soft); }
+.statistics-period-button.is-active { color:var(--color-white); }
+
+.statistics-period-button.is-active::after {
+    content:"";
+    position:absolute;
+    right:0;
+    bottom:0;
+    left:0;
+    height:1px;
+    background:var(--color-accent);
+}
+
+.assets-analytics-content {
+    display:grid;
+    gap:0;
+}
+
+.assets-analytics-primary {
+    display:grid;
+    gap:var(--space-2);
+    padding:var(--space-5) 0 var(--space-6);
+    border-top:var(--border-subtle);
+}
+
+.assets-analytics-primary-value {
+    font-size:clamp(2.5rem,12vw,4rem);
+    line-height:.95;
+}
+
+.assets-analytics-date { color:var(--color-gray-dark); }
+
+.assets-statistics-metric {
+    display:grid;
+    gap:var(--space-2);
+    padding:var(--space-5) 0;
+    border-top:var(--border-subtle);
+}
+
+.assets-statistics-change {
+    color:var(--color-white);
+    font-size:var(--font-size-lg);
+    font-weight:var(--font-weight-semibold);
+    line-height:var(--line-height-tight);
+}
+
+.assets-analytics-detail {
+    color:var(--color-gray);
+    font-size:var(--font-size-sm);
+    line-height:var(--line-height-normal);
+}
+
+.assets-statistics-history,
+.assets-statistics-assets {
+    display:grid;
+    gap:var(--space-2);
+    padding:var(--space-5) 0 0;
+}
+
+.assets-statistics-history-row {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:var(--space-3);
+    padding:var(--space-3) 0;
+    border-top:var(--border-subtle);
+    color:var(--color-white-soft);
+    font-size:var(--font-size-sm);
+}
+
+.assets-statistics-history-row span:last-child {
+    color:var(--color-gray);
+    text-align:right;
+}
+
+/* FSI 3.0 — primary score with restrained diagnostic detail. */
+
+.financial-stability-index-panel {
+    display:grid;
+    gap:var(--space-3);
+    padding:var(--space-5) 0;
+    border-top:var(--border-subtle);
+}
+
+.financial-stability-index-eyebrow {
+    color:var(--color-gray);
+    font-family:var(--font-family-mono);
+    font-size:var(--font-size-2xs);
+    font-weight:var(--font-weight-medium);
+    letter-spacing:var(--letter-spacing-system);
+    line-height:var(--line-height-snug);
+    text-transform:uppercase;
+}
+
+.financial-stability-index-score-row {
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:var(--space-4);
+    padding:var(--space-1) 0 var(--space-2);
+}
+
+.financial-stability-index-value {
+    color:var(--color-white);
+    font-size:clamp(2.75rem,14vw,4.5rem);
+    font-weight:var(--font-weight-semibold);
+    letter-spacing:-0.055em;
+    line-height:.9;
+    white-space:nowrap;
+}
+
+.financial-stability-index-category {
+    flex:0 0 auto;
+    color:var(--color-accent);
+    font-size:var(--font-size-xs);
+    font-weight:var(--font-weight-semibold);
+    letter-spacing:var(--letter-spacing-wide);
+    text-transform:uppercase;
+}
+
+.financial-stability-index-description {
+    max-width:38rem;
+    margin:0;
+    color:var(--color-gray);
+    font-size:var(--font-size-sm);
+    line-height:var(--line-height-relaxed);
+}
+
+.financial-stability-index-components {
+    display:grid;
+    gap:0;
+    margin-top:var(--space-2);
+}
+
+.financial-stability-index-component {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:var(--space-3);
+    padding:var(--space-3) 0;
+    color:var(--color-white-soft);
+    border-top:var(--border-subtle);
+    font-size:var(--font-size-sm);
+}
+
+.financial-stability-index-component span:last-child {
+    color:var(--color-gray);
+    font-family:var(--font-family-mono);
+    font-size:var(--font-size-xs);
+    text-align:right;
+}
+
+
+.assets-analytics-custom-period {
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:var(--space-3);
+    padding:var(--space-3) 0 var(--space-4);
+}
+
+.assets-analytics-date-field {
+    display:grid;
+    gap:var(--space-1);
+    color:var(--color-gray);
+    font-size:var(--font-size-xs);
+    letter-spacing:var(--letter-spacing-wide);
+    text-transform:uppercase;
+}
+
+.assets-analytics-date-field input {
+    width:100%;
+    min-height:2.75rem;
+    box-sizing:border-box;
+    padding:0 var(--space-3);
+    border:var(--border-subtle);
+    border-radius:var(--radius-sm);
+    background:transparent;
+    color:var(--color-white);
+    font:inherit;
+}
+
+.assets-analytics-custom-hint {
+    grid-column:1 / -1;
+    color:var(--color-gray-dark);
+    font-size:var(--font-size-2xs);
+}
+
+.assets-analytics-section {
+    display:grid;
+    gap:var(--space-3);
+    padding:var(--space-5) 0 0;
+    border-top:var(--border-subtle);
+}
+
+.assets-analytics-section-total {
+    color:var(--color-white);
+    font-size:var(--font-size-lg);
+    font-weight:var(--font-weight-semibold);
+}
+
+.assets-analytics-chart {
+    display:grid;
+    gap:var(--space-2);
+    min-height:13rem;
+    color:var(--color-accent);
+    overflow:hidden;
+}
+
+.assets-analytics-chart svg {
+    width:100%;
+    height:13rem;
+    overflow:visible;
+}
+
+.assets-analytics-chart-range {
+    display:flex;
+    justify-content:space-between;
+    color:var(--color-gray-dark);
+    font-size:var(--font-size-2xs);
+}
+
+.assets-analytics-liquidity-bar {
+    display:flex;
+    width:100%;
+    height:.35rem;
+    overflow:hidden;
+    border-radius:999px;
+    background:var(--color-gray-dark);
+}
+
+.assets-analytics-liquidity-bar__liquid,
+.assets-analytics-liquidity-bar__illiquid {
+    display:block;
+    height:100%;
+}
+
+.assets-analytics-liquidity-bar__liquid {
+    background:var(--color-accent);
+}
+
+.assets-analytics-liquidity-bar__illiquid {
+    background:var(--color-gray);
+}
+
+.assets-analytics-liquidity-rows {
+    display:grid;
+    gap:var(--assets-block-spacing, var(--space-2));
+}
+
+.assets-analytics-liquidity-group {
+    display:grid;
+    gap:var(--assets-block-spacing, var(--space-2));
+}
+
+.assets-analytics-liquidity-group .assets-analytics-liquidity-bar {
+    height:.5rem;
+}
+
+.assets-analytics-liquidity-group--liquid {
+    padding-bottom:var(--assets-block-spacing, var(--space-2));
+}
+
+.assets-analytics-liquidity-group--illiquid {
+    padding-top:var(--assets-block-spacing, var(--space-2));
+    padding-bottom:var(--assets-block-spacing, var(--space-2));
+    border-top:var(--border-subtle);
+}
+
+.assets-analytics-liquidity-row {
+    display:flex;
+    justify-content:space-between;
+    gap:var(--space-3);
+    padding:var(--space-3) 0;
+    border-top:var(--border-subtle);
+    color:var(--color-white-soft);
+    font-size:var(--font-size-sm);
+}
+
+.assets-analytics-liquidity-row span:last-child {
+    color:var(--color-gray);
+    text-align:right;
+}
+
+.assets-analytics-empty,
+.assets-analytics-empty-state {
+    color:var(--color-gray);
+    font-size:var(--font-size-sm);
+}
+
+.assets-analytics-locked {
+    display:grid;
+    gap:var(--space-3);
+    padding:var(--space-6) 0;
+    border-top:var(--border-subtle);
+}
+
+.assets-analytics-locked strong {
+    color:var(--color-white);
+    font-size:var(--font-size-lg);
+}
+
+.assets-analytics-locked > span:not(.statistics-meta) {
+    color:var(--color-gray);
+    font-size:var(--font-size-sm);
+}
+
+
+
+/* Assets summary: every neighboring visual gap is the X reference unit. */
+.finance-data-screen .finance-data-accordion .finance-subblock[data-subblock="assets"] .assets-summary{gap:var(--assets-block-spacing);margin-bottom:var(--assets-block-spacing);}
+.finance-data-screen .finance-data-accordion .finance-subblock[data-subblock="assets"] .assets-summary-heading{gap:var(--assets-block-spacing);}
+.finance-data-screen .finance-data-accordion .finance-subblock[data-subblock="assets"] .assets-total-row{padding-top:0;}
+.finance-data-screen .finance-data-accordion .finance-subblock[data-subblock="assets"] .assets-summary-date{margin-top:0;}
+.finance-data-screen .finance-data-accordion .finance-subblock[data-subblock="assets"] .assets-statistics-trigger{gap:var(--assets-block-spacing);}
+
+/* Assets analytics: reuse the exact premium surface foundation of the «Активы» accordion. */
+.assets-statistics-back{
+    margin:0 0 var(--assets-block-spacing, var(--space-2));
+}
+.assets-statistics-screen{
+    position:relative;
+    display:grid;
+    gap:0;
+    padding:0;
+    overflow:visible;
+    background:var(--gradient-card-premium);
+    border:1px solid transparent;
+    border-radius:var(--radius-card);
+    box-shadow:var(--shadow-soft),0 18px 50px rgba(0,0,0,.22);
+}
+.assets-statistics-screen::after{
+    position:absolute;
+    inset:0;
+    padding:1px;
+    pointer-events:none;
+    content:"";
+    background:linear-gradient(135deg,rgba(242,138,46,.42) 0%,rgba(5,5,5,.92) 42%,rgba(242,138,46,.24) 100%);
+    border-radius:inherit;
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;
+    mask-composite:exclude;
+}
+.assets-statistics-screen::before{
+    position:absolute;
+    top:0;
+    left:8%;
+    right:8%;
+    height:1px;
+    pointer-events:none;
+    content:"";
+    background:var(--gradient-accent-line);
+    opacity:.38;
+}
+.assets-statistics-header,
+.statistics-period-selector,
+.assets-analytics-custom-period,
+.assets-analytics-content{
+    position:relative;
+    z-index:1;
+}
+.assets-statistics-header{
+    display:grid;
+    gap:var(--assets-block-spacing, var(--space-2));
+    padding:var(--space-3) var(--space-4);
+    border-bottom:var(--border-subtle);
+}
+.assets-statistics-heading{
+    display:grid;
+    gap:var(--assets-block-spacing, var(--space-2));
+}
+.statistics-period-selector{
+    display:flex;
+    align-items:center;
+    gap:var(--assets-block-spacing, var(--space-2));
+    padding:var(--space-3) var(--space-4);
+    overflow-x:auto;
+    border-bottom:var(--border-subtle);
+}
+.assets-analytics-custom-period{
+    gap:var(--assets-block-spacing, var(--space-2));
+    padding:var(--assets-block-spacing, var(--space-4));
+    border-bottom:var(--border-subtle);
+}
+.assets-analytics-content{
+    display:grid;
+    gap:0;
+    padding:0 var(--space-4) var(--space-5);
+}
+.assets-statistics-screen .assets-analytics-section,
+.assets-statistics-screen .assets-statistics-metric,
+.assets-statistics-screen .assets-analytics-primary,
+.assets-statistics-screen .assets-statistics-history,
+.assets-statistics-screen .assets-statistics-assets,
+.assets-statistics-screen .assets-analytics-locked{
+    gap:var(--assets-block-spacing, var(--space-2));
+}
+@media (max-width:719px){
+    .assets-statistics-screen{
+        gap:0;
+        padding:0;
+    }
+    .assets-statistics-header,
+    .statistics-period-selector{
+        padding-left:var(--space-4);
+        padding-right:var(--space-4);
+    }
+    .assets-analytics-content{
+        padding-left:var(--space-4);
+        padding-right:var(--space-4);
+    }
+}
+
+
+/* Assets analytics v1: compact capital composition without period controls. */
+.assets-analytics-overview{
+    display:grid;
+    gap:var(--assets-block-spacing, var(--space-2));
+    padding:var(--space-5) 0 var(--space-5);
+    border-top:var(--border-subtle);
+}
+.assets-analytics-overview-value{
+    color:var(--color-white);
+    font-family:var(--font-family-mono);
+    font-size:clamp(2.5rem,12vw,4rem);
+    font-weight:var(--font-weight-semibold);
+    letter-spacing:-.065em;
+    line-height:.92;
+}
+.assets-analytics-overview-date{
+    color:var(--color-gray-dark);
+    font-size:var(--font-size-2xs);
+}
+.assets-analytics-distribution{
+    padding-top:var(--space-5);
+}
+.assets-analytics-distribution .statistics-meta{
+    display:block;
+}
+.assets-analytics-composition{
+    padding-bottom:var(--space-2);
+}
+.assets-analytics-composition-main{
+    display:grid;
+    gap:.2rem;
+    min-width:0;
+}
+.assets-analytics-composition-main > span:first-child{
+    overflow:hidden;
+    color:var(--color-white-soft);
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+.assets-analytics-composition-type{
+    color:var(--color-gray-dark);
+    font-size:var(--font-size-2xs);
+}
+.assets-analytics-composition-value{
+    display:grid;
+    justify-items:end;
+    gap:.2rem;
+    min-width:5.5rem;
+}
+.assets-analytics-composition-value strong{
+    color:var(--color-white);
+    font-family:var(--font-family-mono);
+    font-size:var(--font-size-xs);
+    font-weight:var(--font-weight-medium);
+    white-space:nowrap;
+}
+.assets-analytics-composition-value span{
+    color:var(--color-gray);
+    font-family:var(--font-family-mono);
+    font-size:var(--font-size-2xs);
+}
+.assets-statistics-screen .assets-analytics-content{
+    padding-bottom:var(--space-5);
+}
+
+/* Analytics asset rows: symmetric inner edge and right-side percentage/pin grouping. */
+.assets-statistics-screen .assets-analytics-composition .swipe-delete-content{
+    padding:var(--space-3) var(--assets-block-spacing, var(--space-3));
+}
+.assets-statistics-screen .assets-analytics-composition .assets-analytics-composition-main{
+    align-self:center;
+}
+.assets-statistics-screen .assets-analytics-composition .assets-analytics-composition-value{
+    align-items:end;
+}
+.assets-statistics-screen .assets-analytics-composition .assets-analytics-composition-meta{
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    gap:var(--space-1);
+    min-height:.9rem;
+    min-width:0;
+    max-width:100%;
+    box-sizing:border-box;
+    overflow:hidden;
+}
+.assets-statistics-screen .assets-analytics-composition .assets-analytics-composition-meta .finance-entry-pin{
+    display:none;
+    flex:0 0 .78rem;
+    width:.78rem;
+    height:.78rem;
+    margin:0;
+}
+.assets-statistics-screen .assets-analytics-composition .swipe-delete-item.is-pinned .assets-analytics-composition-meta .finance-entry-pin{
+    display:inline-flex;
+}
+
+/* Analytics preview/full-list rows: restrained rounded premium gradient border. */
+.assets-statistics-screen .assets-analytics-composition .swipe-delete-item{
+    overflow:visible;
+    border-radius:var(--radius-sm);
+}
+.assets-statistics-screen .assets-analytics-composition .swipe-delete-content{
+    border:var(--border-subtle);
+    border-radius:var(--radius-sm);
+    background:var(--gradient-surface);
+}
+.assets-statistics-screen .assets-analytics-composition .assets-analytics-composition-meta .finance-entry-pin{
+    color:var(--color-accent);
+}
+.assets-analytics-open-all{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    width:100%;
+    min-height:2.5rem;
+    margin-top:var(--assets-block-spacing, var(--space-2));
+    padding:0 var(--assets-block-spacing, var(--space-2));
+    border:0;
+    border-radius:var(--radius-sm);
+    background:transparent;
+    color:var(--color-gray);
+    font-size:var(--font-size-xs);
+    font-weight:var(--font-weight-medium);
+    letter-spacing:var(--letter-spacing-wide);
+    text-transform:uppercase;
+}
+.assets-analytics-open-all:hover,
+.assets-analytics-open-all:focus-visible{
+    color:var(--color-white);
+}
+
+
+/* Credit product details — opened by a normal tap; long press remains row interaction. */
+.credit-product-details-screen{
+    background:transparent;
+    border:0;
+    border-radius:0;
+    box-shadow:none;
+}
+.credit-product-details-screen::before,
+.credit-product-details-screen::after{
+    display:none;
+}
+.credit-product-details-frame{
+    position:relative;
+    overflow:visible;
+    background:var(--gradient-card-premium);
+    border:1px solid transparent;
+    border-radius:var(--radius-card);
+    box-shadow:var(--shadow-soft),0 18px 50px rgba(0,0,0,.22);
+}
+.credit-product-details-frame::after{
+    position:absolute;
+    inset:0;
+    padding:1px;
+    pointer-events:none;
+    content:"";
+    background:linear-gradient(135deg,rgba(242,138,46,.42) 0%,rgba(5,5,5,.92) 42%,rgba(242,138,46,.24) 100%);
+    border-radius:inherit;
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;
+    mask-composite:exclude;
+}
+.credit-product-details-frame::before{
+    position:absolute;
+    top:0;
+    left:8%;
+    right:8%;
+    height:1px;
+    pointer-events:none;
+    content:"";
+    background:var(--gradient-accent-line);
+    opacity:.38;
+}
+.credit-product-details-frame .assets-statistics-header,
+.credit-product-details-frame .credit-product-details-content{
+    position:relative;
+    z-index:1;
+}
+
+.credit-product-details-screen .assets-statistics-header{
+    padding-bottom:var(--space-4);
+}
+.credit-product-details-content{
+    padding-top:0;
+}
+.credit-product-details-overview{
+    display:grid;
+    gap:var(--assets-block-spacing, var(--space-2));
+    padding:var(--space-5) 0;
+    border-top:var(--border-subtle);
+}
+.credit-product-details-overview-value{
+    color:var(--color-white);
+    font-family:var(--font-family-mono);
+    font-size:clamp(2.75rem,13vw,4.25rem);
+    font-weight:var(--font-weight-semibold);
+    letter-spacing:-.065em;
+    line-height:.92;
+}
+.credit-product-details-list{
+    display:grid;
+    gap:0;
+    border-top:var(--border-subtle);
+}
+.credit-product-details-row{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:var(--space-4);
+    min-height:3.25rem;
+    padding:var(--space-3) 0;
+    border-bottom:var(--border-subtle);
+}
+.credit-product-details-row span{
+    color:var(--color-gray);
+    font-size:var(--font-size-sm);
+}
+.credit-product-details-row strong{
+    color:var(--color-white-soft);
+    font-family:var(--font-family-mono);
+    font-size:var(--font-size-sm);
+    font-weight:var(--font-weight-medium);
+    text-align:right;
+}
+.credit-product-details-row strong.is-emphasis{
+    color:var(--color-accent);
+}
+.credit-product-details-warning{
+    margin:0;
+    padding:var(--space-4) 0 0;
+    color:var(--color-accent);
+    font-size:var(--font-size-sm);
+    line-height:var(--line-height-normal);
+}
+.credit-product-details-footnote{
+    margin:0;
+    padding:var(--space-4) 0 0;
+    color:var(--color-gray-dark);
+    font-size:var(--font-size-2xs);
+    line-height:var(--line-height-normal);
+}
+.assets-statistics-screen .assets-analytics-composition .swipe-delete-content[role="button"]{
+    cursor:pointer;
+}

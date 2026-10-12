@@ -1,0 +1,114 @@
+// source/application/navigation/navigation.js — Version 1.6
+
+const MODULES = Object.freeze({
+    finance: Object.freeze({ id: "finance", number: "01", name: "Finance", localName: "Finance" }),
+    health: Object.freeze({ id: "health", number: "02", name: "Health", localName: "Health" }),
+    development: Object.freeze({ id: "development", number: "03", name: "Development", localName: "Development" }),
+    profile: Object.freeze({ id: "profile", number: "04", name: "Profile", localName: "Profile" }),
+    auth: Object.freeze({ id: "auth", number: "04", name: "Authorization", localName: "Authorization" })
+});
+
+const DEFAULT_MODULE_ID = "finance";
+
+function createNavigation(appRoot) {
+    const shell = appRoot.querySelector(".app-shell");
+    const title = appRoot.querySelector("#module-title");
+    const localTitle = appRoot.querySelector(".module-title-local");
+    const moduleLabel = appRoot.querySelector(".module-label");
+    const moduleNumber = appRoot.querySelector(".module-number");
+    const moduleStatus = appRoot.querySelector(".module-status");
+    const navigationItems = [...appRoot.querySelectorAll(".navigation-item")];
+    const accountNavigationItem = navigationItems.find(
+        (item) => item.dataset.navigationSlot === "account"
+    ) || navigationItems[3];
+
+    if (!shell) {
+        throw new Error("LifeGame Navigation: application shell was not found.");
+    }
+
+    function resolveModule(moduleId) {
+        // Training is a subroute within Health, not a separate bottom-navigation module.
+        const navigationModuleId = moduleId === "training" ? "health" : moduleId;
+        return MODULES[navigationModuleId] || MODULES[DEFAULT_MODULE_ID];
+    }
+
+    function render(moduleId, updateUrl = true) {
+        const module = resolveModule(moduleId);
+        shell.dataset.module = module.id;
+        if (title) {
+            title.textContent = module.name;
+        }
+
+        if (localTitle) {
+            localTitle.textContent = module.localName;
+        }
+
+        if (moduleLabel) {
+            moduleLabel.textContent = "LIFE MODULE " + module.number;
+        }
+
+        if (moduleNumber) {
+            moduleNumber.textContent = module.number;
+        }
+
+        if (moduleStatus) {
+            moduleStatus.textContent = module.name + " module подключён.";
+        }
+
+        navigationItems.forEach((item) => {
+            const isActive = item.dataset.module === module.id;
+            item.classList.toggle("is-active", isActive);
+
+            if (isActive) {
+                item.setAttribute("aria-current", "page");
+            } else {
+                item.removeAttribute("aria-current");
+            }
+        });
+
+        if (updateUrl) {
+            history.pushState({ module: module.id }, "", "#" + module.id);
+        }
+    }
+
+    function setAuthenticationState(isAuthenticated) {
+        if (!accountNavigationItem) {
+            throw new Error("LifeGame Navigation: account navigation item was not found.");
+        }
+
+        const module = isAuthenticated ? MODULES.profile : MODULES.auth;
+
+        accountNavigationItem.dataset.module = module.id;
+        accountNavigationItem.href = "#" + module.id;
+
+        const label = accountNavigationItem.querySelector(".navigation-label");
+        if (label) {
+            label.textContent = module.localName;
+        }
+
+        const currentRoute = window.location.hash.slice(1);
+        if (currentRoute === "profile" || currentRoute === "auth") {
+            render(currentRoute, false);
+        }
+    }
+
+    navigationItems.forEach((item) => {
+        item.addEventListener("click", (event) => {
+            event.preventDefault();
+            render(item.dataset.module);
+        });
+    });
+
+    window.addEventListener("popstate", () => {
+        render(window.location.hash.slice(1), false);
+    });
+
+    render(window.location.hash.slice(1) || DEFAULT_MODULE_ID, false);
+
+    return Object.freeze({
+        render,
+        setAuthenticationState
+    });
+}
+
+export { createNavigation };

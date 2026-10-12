@@ -1,0 +1,33 @@
+/* colors.css — Version 1.5 */
+
+:root {
+    --color-black: #080706;
+    --color-black-soft: #090807;
+    --color-surface: #0d0d0d;
+    --color-surface-elevated: #121212;
+    --color-surface-highlight: #171717;
+    --color-white: #f7f5f2;
+    --color-white-soft: #d6d0c9;
+    --color-gray: #aaa39b;
+    --color-gray-dark: #505050;
+    --color-border: rgba(255, 255, 255, 0.12);
+    --color-border-strong: rgba(255, 255, 255, 0.22);
+    --color-overlay: rgba(0, 0, 0, 0.72);
+    --color-accent: #f28a2e;
+    --color-accent-soft: rgba(242, 138, 46, 0.12);
+    --color-accent-glow: rgba(242, 138, 46, 0.18);
+    --color-accent-border: rgba(242, 138, 46, 0.42);
+    --color-brand-orange: #ff7900;
+    --color-success: #b9ffcf;
+    --color-warning: #ffe2a8;
+    --color-danger: #ffb8b8;
+
+    /* Surface hierarchy: page → section → elevated → highlight. */
+    --surface-page: var(--color-black);
+    --surface-section: var(--color-surface);
+    --surface-elevated: var(--color-surface-elevated);
+    --surface-highlight: var(--color-surface-highlight);
+    --surface-control: rgba(255,255,255,.035);
+    --surface-control-hover: rgba(255,255,255,.065);
+    --surface-overlay: rgba(0,0,0,.72);
+}

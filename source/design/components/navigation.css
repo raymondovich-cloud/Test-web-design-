@@ -1,0 +1,96 @@
+/* navigation.css — Version 1.9 */
+
+.app-navigation {
+    display:grid;
+    grid-template-columns:repeat(4,minmax(0,1fr));
+    gap:var(--space-1);
+    width:100%;
+    margin-top:var(--space-6);
+    padding:var(--space-2) 0 0;
+    border-top:var(--border-subtle);
+}
+
+.navigation-item {
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:clamp(.2rem,.6vw,var(--space-1));
+    min-width:0;
+    min-height:2.75rem;
+    padding:var(--space-2) clamp(.2rem,.8vw,var(--space-2));
+    color:var(--color-gray);
+    border-radius:var(--radius-control);
+    white-space:nowrap;
+    transition:color var(--motion-duration-normal) var(--motion-ease-standard),background var(--motion-duration-normal) var(--motion-ease-standard);
+}
+
+.navigation-item::before {
+    position:absolute;
+    top:0;
+    left:20%;
+    right:20%;
+    height:1px;
+    content:"";
+    background:var(--color-accent);
+    opacity:0;
+    transform:scaleX(.45);
+    transition:opacity var(--motion-duration-normal) var(--motion-ease-standard),transform var(--motion-duration-normal) var(--motion-ease-standard);
+}
+
+.navigation-item:hover {
+    color:var(--color-white-soft);
+    background:transparent;
+}
+
+.navigation-item.is-active {
+    color:var(--color-white);
+    background:transparent;
+}
+
+.navigation-item.is-active::before {
+    opacity:1;
+    transform:scaleX(1);
+}
+
+.navigation-index {
+    flex:0 0 auto;
+    color:var(--color-gray-dark);
+    font-family:var(--font-family-mono);
+    font-size:var(--font-size-2xs);
+    letter-spacing:var(--letter-spacing-wide);
+}
+
+.navigation-item.is-active .navigation-index {
+    color:var(--color-gray);
+}
+
+.navigation-label {
+    min-width:0;
+    overflow:hidden;
+    font-size:var(--font-size-interface);
+    font-weight:var(--font-weight-medium);
+    text-overflow:ellipsis;
+}
+
+
+@media (max-width:30rem) {
+    .app-navigation {
+        gap:0;
+        margin-top:var(--space-5);
+        padding-top:var(--space-1);
+    }
+
+    .navigation-item {
+        min-height:3rem;
+        padding-inline:.15rem;
+    }
+
+    .navigation-index {
+        display:none;
+    }
+
+    .navigation-label {
+        font-size:clamp(.6875rem,2.6vw,.75rem);
+    }
+}

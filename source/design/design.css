@@ -1,0 +1,48 @@
+/* design.css — Version 4.7 */
+
+/* Единая точка входа Design System. */
+
+@import "./tokens/colors.css";
+@import "./tokens/typography.css";
+@import "./tokens/spacing.css";
+@import "./tokens/radius.css";
+@import "./tokens/shadows.css";
+@import "./tokens/borders.css";
+@import "./tokens/gradients.css";
+@import "./tokens/motion.css";
+
+@import "./foundation/reset.css";
+@import "./foundation/base.css";
+@import "./foundation/layout.css";
+@import "./foundation/accessibility.css";
+
+@import "./components/button.css";
+@import "./components/card.css";
+@import "./components/input.css?v=20261010-1600";
+@import "./components/modal.css";
+@import "./components/financial-burden-confirmation.css";
+@import "./components/accordion.css";
+@import "./components/navigation.css";
+@import "./components/header.css";
+@import "./components/list.css?v=20261012-1420";
+@import "./components/row-interaction-menu.css?v=20261010-1530";
+@import "./components/subscription-limit.css";
+@import "./components/badge.css";
+@import "./components/progress.css";
+@import "./components/liquidity.switch.css";
+@import "./components/info.tooltip.css";
+@import "./components/profile.css?v=20261012-1700";
+
+@import "./patterns/dashboard.css";
+@import "./patterns/finance.css?v=20261012-1420";
+@import "./patterns/health.css?v=20261011-1924";
+@import "./patterns/training.css?v=20261012-0102";
+@import "./patterns/training-analytics.css?v=20261012-0227";
+@import "./patterns/development.css";
+@import "./patterns/watermarks.css?v=20261012-1600";
+@import "./patterns/forms.css?v=20261012-1512";
+@import "./patterns/preview.css";
+@import "./patterns/statistics.css?v=20261012-1435";
+
+@import "./themes/dark.css";
+@import "./themes/light.css";
