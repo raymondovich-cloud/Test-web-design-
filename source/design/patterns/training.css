@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.58 */
+/* source/design/patterns/training.css — Version 3.59 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -2466,4 +2466,45 @@ body.is-training-session-active .training-session__footer{
     .training-session--active .training-session__set-field-label{font-size:.52rem}
     .training-session--active .training-session__set-field .training-session__set-unit,
     .training-session--active .training-session__set-field .training-session__set-weight-unit{font-size:.47rem}
+}
+
+
+/* Match the Add Set button dimensions to the 3.8rem exercise and set rows. */
+.training-session--active .training-session__add-set{
+    box-sizing:border-box;
+    width:100%;
+    min-width:0;
+    height:3.8rem;
+    min-height:3.8rem;
+    max-height:3.8rem;
+    grid-template-columns:2.1rem minmax(0,1fr) 1rem;
+    align-items:center;
+    gap:.65rem;
+    margin-top:0;
+    padding:0 .75rem;
+    border-radius:1rem;
+    overflow:hidden;
+}
+.training-session--active .training-session__add-set::before{
+    box-sizing:border-box;
+    width:1.8rem;
+    height:1.8rem;
+    font-size:1.3rem;
+}
+.training-session--active .training-session__add-set-arrow{font-size:1.5rem}
+@media(max-width:390px){
+    .training-session--active .training-session__add-set{
+        height:3.8rem;
+        min-height:3.8rem;
+        max-height:3.8rem;
+        grid-template-columns:1.8rem minmax(0,1fr) .8rem;
+        gap:.45rem;
+        padding:0 .55rem;
+        font-size:.9rem;
+    }
+    .training-session--active .training-session__add-set::before{
+        width:1.55rem;
+        height:1.55rem;
+        font-size:1.15rem;
+    }
 }
