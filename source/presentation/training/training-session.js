@@ -1,4 +1,4 @@
-// source/presentation/training/training-session.js — Version 2.14
+// source/presentation/training/training-session.js — Version 2.15
 // Responsibility: render the active workout interaction; delegate persistence and business rules to the application layer.
 function createElement(tag, className = "", text = null) {
     const element = document.createElement(tag);
@@ -7,11 +7,11 @@ function createElement(tag, className = "", text = null) {
     return element;
 }
 
-function renderTrainingSession(container, { sessionResult, workout, application, onFinished, onBack, onSessionChange } = {}) {
+function renderTrainingSession(container, { sessionResult, workout, application, onBack, onSessionChange } = {}) {
     if (!container || typeof container.replaceChildren !== "function") throw new TypeError("Training Session: a container element is required.");
     if (!sessionResult?.session || !Number.isSafeInteger(sessionResult.revision)) throw new TypeError("Training Session: a valid session envelope is required.");
     if (!workout || !Array.isArray(workout.exercises) || !application ||
-        typeof application.recordSet !== "function" || typeof application.completeWorkout !== "function") {
+        typeof application.recordSet !== "function") {
         throw new TypeError("Training Session: workout and application commands are required.");
     }
 
@@ -228,29 +228,10 @@ function renderTrainingSession(container, { sessionResult, workout, application,
             exerciseHost.appendChild(section);
         });
 
-        const footer = createElement("footer", "training-session__footer");
         const status = createElement("p", "training-session__status");
-        status.setAttribute("role", "status"); status.setAttribute("aria-live", "polite");
-        const complete = createElement("button", "training-session__complete", "ЗАВЕРШИТЬ ТРЕНИРОВКУ");
-        complete.type = "button";
-        complete.disabled = !current.session.exercises.some((exercise) => exercise.sets.some((set) => set.completed === true));
-        complete.addEventListener("click", async () => {
-            complete.disabled = true;
-            status.textContent = "Сохраняем результат…";
-            try {
-                current = await application.completeWorkout({ sessionResult: current });
-                if (timerId !== null) window.clearInterval(timerId);
-                status.textContent = "Тренировка завершена. Результат сохранён.";
-                if (typeof onFinished === "function") await onFinished();
-            } catch (error) {
-                status.textContent = error?.code === "TRAINING_SESSION_CONFLICT"
-                    ? "Тренировка изменилась в другом запросе. Обнови экран перед продолжением."
-                    : error?.message || "Не удалось завершить тренировку.";
-                complete.disabled = false;
-            }
-        });
-        footer.append(status, complete);
-        screen.append(header, progress, exerciseHost, footer);
+        status.setAttribute("role", "status");
+        status.setAttribute("aria-live", "polite");
+        screen.append(header, progress, status, exerciseHost);
         container.appendChild(screen);
         const updateElapsed = () => {
             const seconds = Math.max(0, Math.floor((Date.now() - startedAt) / 1000));
