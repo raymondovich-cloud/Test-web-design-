@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.32 */
+/* source/design/patterns/training.css — Version 3.33 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -208,18 +208,30 @@
 }
 
 
+/* Active workout frame tokens: shared by the workout container and every exercise frame. */
+:root{
+    --training-session-frame-border-width:1px;
+    --training-session-frame-border-color:rgba(242,138,46,.28);
+    --training-session-frame-border:var(--training-session-frame-border-width) solid var(--training-session-frame-border-color);
+    --training-session-frame-background:var(--gradient-card-premium);
+    --training-session-frame-radius:var(--radius-card);
+    --training-session-frame-shadow:var(--shadow-soft),0 18px 50px rgba(0,0,0,.22);
+}
+
 /* Active workout lifecycle */
 .training-session{
     position:relative;
     display:grid;
     gap:var(--space-4);
+    width:100%;
     min-width:0;
+    box-sizing:border-box;
     padding:var(--space-4);
     overflow:hidden;
-    background:var(--gradient-card-premium);
-    border:1px solid rgba(242,138,46,.28);
-    border-radius:var(--radius-card);
-    box-shadow:var(--shadow-soft),0 18px 50px rgba(0,0,0,.22);
+    background:var(--training-session-frame-background);
+    border:var(--training-session-frame-border);
+    border-radius:var(--training-session-frame-radius);
+    box-shadow:var(--training-session-frame-shadow);
 }
 .training-session__header,
 .training-session__exercise,
@@ -414,8 +426,20 @@
 .training-session__progress-bar::-webkit-progress-value{border-radius:999px;background:var(--gradient-accent-line);transition:width var(--motion-duration-normal) cubic-bezier(.22,1,.36,1)}
 .training-session__progress-bar::-moz-progress-bar{border-radius:999px;background:var(--gradient-accent-line)}
 .training-session__exercises{display:grid;gap:var(--space-2);min-width:0}
-.training-session__exercise-card{display:grid;gap:var(--space-3);min-width:0;padding:var(--space-4) 0;border:0;border-bottom:var(--border-subtle);border-radius:0;background:transparent;box-shadow:none;transition:opacity var(--motion-duration-fast),background var(--motion-duration-fast)}
-.training-session__exercise-card--current{padding:var(--space-4) var(--space-3);border-left:2px solid var(--color-accent);border-bottom-color:transparent;border-radius:0 var(--radius-sm) var(--radius-sm) 0;background:linear-gradient(100deg,rgba(242,138,46,.075),rgba(255,255,255,.012) 78%,transparent)}
+.training-session__exercise-card{
+    display:grid;
+    gap:var(--space-3);
+    width:100%;
+    min-width:0;
+    box-sizing:border-box;
+    padding:var(--space-4);
+    border:var(--training-session-frame-border);
+    border-radius:var(--training-session-frame-radius);
+    background:var(--training-session-frame-background);
+    box-shadow:var(--training-session-frame-shadow);
+    transition:opacity var(--motion-duration-fast);
+}
+.training-session__exercise-card--current{}
 .training-session__exercise-card--complete{opacity:.72}
 .training-session__exercise-card--upcoming{opacity:.94}
 .training-session__exercise-top{display:grid;grid-template-columns:minmax(0,1fr);align-items:center;gap:var(--space-3);cursor:pointer;outline-offset:3px}
@@ -531,15 +555,18 @@
 @media(max-width:360px){.training-overview__analytics{column-gap:var(--space-2)}.training-overview__analytics-action{font-size:var(--font-size-xs)}}
 
 
-/* Active workout: keep the current exercise layout neutral, without an orange card highlight. */
+/* Keep current, upcoming, and completed exercises inside the exact shared workout frame. */
+.training-session--active .training-session__exercise-card{
+    width:100%;
+    box-sizing:border-box;
+    border:var(--training-session-frame-border);
+    border-radius:var(--training-session-frame-radius);
+    background:var(--training-session-frame-background);
+    box-shadow:var(--training-session-frame-shadow);
+}
 .training-session--active .training-session__exercise-card--current{
     gap:var(--space-4);
     padding:var(--space-4);
-    border:0;
-    border-bottom:var(--border-subtle);
-    border-radius:0;
-    background:transparent;
-    box-shadow:none;
 }
 .training-session--active .training-session__exercise-card--current .training-session__exercise-top{
     margin-left:calc(-1 * var(--space-4));
@@ -580,7 +607,16 @@
 @media(max-width:380px){
     .training-session--active .training-session__exercise-card--current{
         padding:var(--space-3);
-        border-radius:var(--radius-sm);
+        border:var(--training-session-frame-border);
+        border-radius:var(--training-session-frame-radius);
+        background:var(--training-session-frame-background);
+        box-shadow:var(--training-session-frame-shadow);
+    }
+    .training-session--active .training-session__exercise-card{
+        border:var(--training-session-frame-border);
+        border-radius:var(--training-session-frame-radius);
+        background:var(--training-session-frame-background);
+        box-shadow:var(--training-session-frame-shadow);
     }
     .training-session--active .training-session__exercise-card--current .training-session__exercise-top{
         margin-left:calc(-1 * var(--space-3));
