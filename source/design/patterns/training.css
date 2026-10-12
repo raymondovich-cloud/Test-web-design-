@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.31 */
+/* source/design/patterns/training.css — Version 3.32 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -1696,3 +1696,24 @@
     .training-session--active .training-session__exercise-meta-item{font-size:.78rem}
 }
 @media(prefers-reduced-motion:reduce){.training-session--active *{transition:none!important}}
+
+
+/* Full-screen workout mode: hide global app chrome exactly while a session is active. */
+body.is-training-session-active{background:#050505!important;overflow-x:hidden}
+body.is-training-session-active .app-header,
+body.is-training-session-active .app-navigation,
+body.is-training-session-active .app-footer{display:none!important}
+body.is-training-session-active #application-shell,
+body.is-training-session-active #module-content{min-height:100dvh;background:#050505}
+body.is-training-session-active #module-content{padding-top:max(.45rem,env(safe-area-inset-top));padding-bottom:0}
+body.is-training-session-active .training-workspace{margin:0!important;padding:0!important;border:0!important;background:transparent!important;box-shadow:none!important}
+body.is-training-session-active .training-workspace__back,
+body.is-training-session-active .training-workspace>.finance-workspace-header{display:none!important}
+body.is-training-session-active .training-workspace__content{margin:0!important;padding:0!important}
+.training-session--active .training-session__progress{grid-template-columns:auto minmax(0,1fr) auto}
+.training-session--active .training-session__progress-value{grid-column:1;grid-row:1}
+.training-session--active .training-session__progress-bar{grid-column:2;grid-row:1}
+.training-session--active .training-session__progress-percent{grid-column:3;grid-row:1}
+@media(max-width:520px){
+ body.is-training-session-active #module-content{padding-top:max(.3rem,env(safe-area-inset-top))}
+}
