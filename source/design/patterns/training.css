@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.45 */
+/* source/design/patterns/training.css — Version 3.46 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -828,5 +828,43 @@
     }
     .training-session--active .training-session__exercise-body:not([hidden]) .training-session__set-row{
         padding-inline:var(--space-5);
+    }
+}
+
+
+/* Active workout — add-set action reuses the exercise frame dimensions and spacing. */
+.training-session--active .training-session__exercise-card:has(.training-session__exercise-body:not([hidden])) .training-session__add-set{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-sizing:border-box;
+    width:100%;
+    min-width:0;
+    min-height:var(--training-session-active-row-height);
+    height:var(--training-session-active-row-height);
+    margin-top:0;
+    padding:var(--space-4);
+    border:var(--training-session-frame-border);
+    border-radius:var(--training-session-frame-radius);
+    background:var(--training-session-frame-background);
+    color:var(--color-white-soft);
+    box-shadow:var(--training-session-frame-shadow);
+    font-size:var(--font-size-xs);
+    font-weight:var(--font-weight-medium);
+    letter-spacing:normal;
+    text-align:center;
+}
+.training-session--active .training-session__exercise-card:has(.training-session__exercise-body:not([hidden])) .training-session__add-set:active{
+    border-color:var(--training-session-frame-border-color);
+    background:var(--training-session-frame-background);
+}
+@media(max-width:380px){
+    .training-session--active .training-session__exercise-card:has(.training-session__exercise-body:not([hidden])) .training-session__add-set{
+        padding:var(--space-3);
+    }
+}
+@media(min-width:720px){
+    .training-session--active .training-session__exercise-card:has(.training-session__exercise-body:not([hidden])) .training-session__add-set{
+        padding:var(--space-5);
     }
 }
