@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.37 */
+/* source/design/patterns/training.css — Version 3.38 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -652,7 +652,7 @@
     padding:var(--space-4);
     border:var(--training-session-frame-border);
     border-radius:var(--training-session-frame-radius);
-    background:linear-gradient(135deg,rgba(242,138,46,.12) 0%,rgba(242,138,46,.025) 48%,rgba(242,138,46,.09) 100%);
+    background:transparent;
     background-color:transparent;
     color:var(--color-white);
     box-shadow:var(--training-session-frame-shadow);
