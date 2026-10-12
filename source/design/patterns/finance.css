@@ -1,4 +1,4 @@
-/* finance.css — Version 3.22 */
+/* finance.css — Version 3.23 */
 
 .finance-workspace{display:grid;gap:var(--space-6)}
 .finance-workspace-header{display:grid;gap:var(--space-1);padding-bottom:var(--space-4);border-bottom:var(--border-subtle)}
@@ -536,7 +536,7 @@
 .finance-capital,
 .finance-data-entry{
     background:var(--gradient-card-premium);
-    border:1px solid rgba(242,138,46,.24);
+    border:1px solid var(--color-financial-health-border);
     border-radius:var(--radius-card);
     box-shadow:none;
 }
