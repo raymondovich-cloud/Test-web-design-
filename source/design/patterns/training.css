@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.25 */
+/* source/design/patterns/training.css — Version 3.26 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -968,5 +968,172 @@
     .training-session--active .training-session__timer-label{
         font-size:.43rem;
         letter-spacing:.065em;
+    }
+}
+
+
+/* LifeGame Signature — active session hierarchy — Version 3.26
+   Presentation-only composition. Workout timing and session behavior remain unchanged. */
+.training-session--active .training-session__header{
+    grid-template-columns:minmax(0,1fr) auto;
+    align-items:start;
+    column-gap:1rem;
+    row-gap:.8rem;
+    padding:.1rem 0 1.25rem;
+    border-bottom:1px solid rgba(255,255,255,.1);
+}
+.training-session--active .training-session__back{
+    grid-column:1 / -1;
+    justify-self:start;
+    width:fit-content;
+    min-height:2rem;
+    margin:0;
+    color:var(--color-gray);
+    font-size:var(--font-size-xs);
+    transition:color var(--motion-duration-fast);
+}
+.training-session--active .training-session__back:hover,
+.training-session--active .training-session__back:focus-visible{
+    color:var(--color-white);
+}
+.training-session--active .training-session__identity{
+    display:grid;
+    align-content:end;
+    justify-items:start;
+    gap:.48rem;
+    min-width:0;
+    grid-column:1;
+    grid-row:2;
+}
+.training-session--active .training-session__eyebrow{
+    display:inline-flex;
+    align-items:center;
+    gap:.48rem;
+    color:var(--color-gray);
+    font-family:var(--font-family-mono);
+    font-size:.56rem;
+    font-weight:var(--font-weight-medium);
+    letter-spacing:.18em;
+    line-height:1.2;
+    text-transform:uppercase;
+}
+.training-session--active .training-session__eyebrow::before{
+    width:.34rem;
+    height:.34rem;
+    flex:0 0 auto;
+    border-radius:50%;
+    background:var(--color-accent);
+    box-shadow:0 0 .7rem rgba(242,138,46,.42);
+    content:"";
+}
+.training-session--active .training-session__identity .training-session__title{
+    min-width:0;
+    margin:0;
+    font-size:clamp(1.45rem,6.3vw,2.1rem);
+    font-weight:var(--font-weight-semibold);
+    letter-spacing:-.055em;
+    line-height:1.02;
+    overflow-wrap:anywhere;
+}
+.training-session--active .training-session__timer{
+    grid-column:2;
+    grid-row:2;
+    align-self:end;
+    justify-items:end;
+    gap:.34rem;
+    min-width:0;
+    padding:.45rem 0 .25rem .9rem;
+    border:0;
+    border-left:1px solid rgba(242,138,46,.52);
+    border-radius:0;
+    background:transparent;
+    box-shadow:none;
+}
+.training-session--active .training-session__timer-label{
+    max-width:7rem;
+    color:var(--color-gray);
+    font-size:.48rem;
+    letter-spacing:.12em;
+    line-height:1.35;
+    text-align:right;
+    white-space:normal;
+}
+.training-session--active .training-session__timer .training-session__elapsed{
+    color:var(--color-accent);
+    font-size:clamp(1.35rem,5.4vw,1.8rem);
+    font-weight:var(--font-weight-semibold);
+    letter-spacing:-.055em;
+    line-height:1;
+    text-shadow:0 0 1.2rem rgba(242,138,46,.2);
+}
+.training-session--active .training-session__progress{
+    display:grid;
+    gap:.72rem;
+    margin-top:.1rem;
+    padding:.15rem 0 .65rem;
+}
+.training-session--active .training-session__progress-heading{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap:.75rem;
+}
+.training-session--active .training-session__progress-label{
+    color:var(--color-gray);
+    font-size:.56rem;
+    font-weight:var(--font-weight-medium);
+    letter-spacing:.15em;
+}
+.training-session--active .training-session__progress-value{
+    flex:0 0 auto;
+    color:var(--color-white-soft);
+    font-family:var(--font-family-mono);
+    font-size:.72rem;
+    font-variant-numeric:tabular-nums;
+}
+.training-session--active .training-session__progress-bar{
+    display:block;
+    width:100%;
+    height:.2rem;
+    overflow:hidden;
+    border:0;
+    border-radius:var(--radius-pill);
+    background:rgba(255,255,255,.09);
+    accent-color:var(--color-accent);
+}
+.training-session--active .training-session__progress-bar::-webkit-progress-bar{
+    border-radius:var(--radius-pill);
+    background:rgba(255,255,255,.09);
+}
+.training-session--active .training-session__progress-bar::-webkit-progress-value{
+    border-radius:var(--radius-pill);
+    background:var(--gradient-text-premium);
+}
+.training-session--active .training-session__progress-bar::-moz-progress-bar{
+    border-radius:var(--radius-pill);
+    background:var(--gradient-text-premium);
+}
+@media(max-width:380px){
+    .training-session--active .training-session__header{
+        column-gap:.65rem;
+        row-gap:.65rem;
+    }
+    .training-session--active .training-session__identity .training-session__title{
+        font-size:clamp(1.3rem,6vw,1.6rem);
+    }
+    .training-session--active .training-session__timer{
+        padding-left:.65rem;
+    }
+    .training-session--active .training-session__timer-label{
+        font-size:.44rem;
+        letter-spacing:.08em;
+    }
+    .training-session--active .training-session__timer .training-session__elapsed{
+        font-size:1.3rem;
+    }
+}
+@media(prefers-reduced-motion:reduce){
+    .training-session--active .training-session__back{
+        transition:none;
     }
 }
