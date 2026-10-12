@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.46 */
+/* source/design/patterns/training.css — Version 3.47 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -866,5 +866,42 @@
 @media(min-width:720px){
     .training-session--active .training-session__exercise-card:has(.training-session__exercise-body:not([hidden])) .training-session__add-set{
         padding:var(--space-5);
+    }
+}
+
+
+/* Active workout — unit hints live inside editable per-set inputs. */
+.training-session--active .training-session__exercise-body:not([hidden]) .training-session__set-row{
+    grid-template-columns:1.25rem minmax(0,1fr) minmax(0,1fr) 1.2rem;
+}
+.training-session--active .training-session__exercise-body:not([hidden]) .training-session__set-row--cardio{
+    grid-template-columns:1.25rem minmax(0,1fr) 1.2rem;
+}
+.training-session--active .training-session__exercise-body:not([hidden]) .training-session__set-reps::placeholder,
+.training-session--active .training-session__exercise-body:not([hidden]) .training-session__set-weight::placeholder{
+    color:var(--color-gray);
+    opacity:1;
+    text-transform:lowercase;
+    font-size:var(--font-size-xs);
+    font-weight:var(--font-weight-medium);
+}
+.training-session--active .training-session__exercise-body:not([hidden]) .training-session__set-reps:focus::placeholder,
+.training-session--active .training-session__exercise-body:not([hidden]) .training-session__set-weight:focus::placeholder{
+    color:transparent;
+}
+@media(max-width:380px){
+    .training-session--active .training-session__exercise-body:not([hidden]) .training-session__set-row{
+        grid-template-columns:1rem minmax(0,1fr) minmax(0,1fr) 1rem;
+    }
+    .training-session--active .training-session__exercise-body:not([hidden]) .training-session__set-row--cardio{
+        grid-template-columns:1rem minmax(0,1fr) 1rem;
+    }
+}
+@media(min-width:720px){
+    .training-session--active .training-session__exercise-body:not([hidden]) .training-session__set-row{
+        grid-template-columns:1.5rem minmax(0,1fr) minmax(0,1fr) 1.4rem;
+    }
+    .training-session--active .training-session__exercise-body:not([hidden]) .training-session__set-row--cardio{
+        grid-template-columns:1.5rem minmax(0,1fr) 1.4rem;
     }
 }
