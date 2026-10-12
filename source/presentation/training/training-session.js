@@ -1,4 +1,4 @@
-// source/presentation/training/training-session.js — Version 3.0
+// source/presentation/training/training-session.js — Version 3.1
 // Responsibility: render the active workout interaction; delegate persistence and business rules to the application layer.
 function createElement(tag, className = "", text = null) {
     const element = document.createElement(tag);
@@ -128,6 +128,20 @@ function renderTrainingSession(container, { sessionResult, workout, application,
             body.hidden = !isExpanded;
             const targetSets = Math.max(4, Number.isInteger(definition.targetSets) ? definition.targetSets : 4);
             const rowsCount = Math.max(targetSets, exercise.sets.length);
+            const setHead = createElement(
+                "div",
+                "training-session__set-head" + (definition.exerciseType === "cardio" ? " training-session__set-head--cardio" : "")
+            );
+            setHead.setAttribute("aria-hidden", "true");
+            setHead.append(
+                createElement("span", "training-session__set-head-spacer"),
+                createElement("span", "training-session__set-head-number", "ПОДХОД"),
+                createElement("span", "training-session__set-head-reps", "ПОВТОРЫ"),
+                ...(definition.exerciseType === "cardio" ? [] : [
+                    createElement("span", "training-session__set-head-weight", "РАБОЧИЙ ВЕС")
+                ])
+            );
+            body.appendChild(setHead);
             for (let index = 0; index < rowsCount; index += 1) {
                 const savedSet = exercise.sets[index];
                 const row = createElement("div", "training-session__set-row");
@@ -228,13 +242,22 @@ function renderTrainingSession(container, { sessionResult, workout, application,
         complete.disabled = !current.session.exercises.some((exercise) => exercise.sets.some((set) => set.completed === true));
         complete.addEventListener("click", async () => {
             complete.disabled = true;
-            status.textContent = "Сохраняем результат…";
+            complete.setAttribute("aria-busy", "true");
+            complete.textContent = "СОХРАНЯЕМ РЕЗУЛЬТАТ…";
+            status.className = "training-session__status training-session__status--loading";
+            status.textContent = "Сохраняем результат тренировки…";
             try {
                 current = await application.completeWorkout({ sessionResult: current });
                 if (timerId !== null) window.clearInterval(timerId);
+                complete.removeAttribute("aria-busy");
+                complete.textContent = "ТРЕНИРОВКА ЗАВЕРШЕНА ✓";
+                status.className = "training-session__status training-session__status--success";
                 status.textContent = "Тренировка завершена. Результат сохранён.";
                 if (typeof onFinished === "function") await onFinished();
             } catch (error) {
+                complete.removeAttribute("aria-busy");
+                complete.textContent = "ЗАВЕРШИТЬ ТРЕНИРОВКУ";
+                status.className = "training-session__status training-session__status--error";
                 status.textContent = error?.code === "TRAINING_SESSION_CONFLICT"
                     ? "Тренировка изменилась в другом запросе. Обнови экран перед продолжением."
                     : error?.message || "Не удалось завершить тренировку.";

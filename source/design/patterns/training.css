@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.26 */
+/* source/design/patterns/training.css — Version 3.27 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -1137,3 +1137,28 @@
         transition:none;
     }
 }
+
+/* Active workout — structured set controls and completion states — Version 3.27 */
+.training-session--active .training-session__set-head{display:grid;grid-template-columns:1.1rem 1.25rem minmax(2.4rem,1fr) auto minmax(3rem,.8fr) auto;align-items:center;gap:clamp(.35rem,1.8vw,.7rem);padding:.3rem .1rem .55rem;color:rgba(255,255,255,.48);font-family:var(--font-family-mono);font-size:.53rem;font-weight:var(--font-weight-medium);letter-spacing:.08em;line-height:1.3}
+.training-session--active .training-session__set-head-number{grid-column:2;text-align:center;white-space:nowrap}
+.training-session--active .training-session__set-head-reps{grid-column:3 / 5;text-align:center;white-space:nowrap}
+.training-session--active .training-session__set-head-weight{grid-column:5 / 7;text-align:center;white-space:nowrap}
+.training-session--active .training-session__set-head--cardio{grid-template-columns:1.1rem 1.25rem minmax(2.4rem,1fr) auto}
+.training-session--active .training-session__set-head--cardio .training-session__set-head-weight{display:none}
+.training-session--active .training-session__set-row{background:transparent}
+.training-session--active .training-session__set-row.is-complete{position:relative;background:linear-gradient(90deg,rgba(242,138,46,.065),transparent 72%)}
+.training-session--active .training-session__set-row.is-complete .training-session__set-number{color:var(--color-accent)}
+.training-session--active .training-session__set-reps,.training-session--active .training-session__set-weight{border:1px solid rgba(255,255,255,.1);border-radius:.65rem;background:rgba(255,255,255,.025);transition:border-color var(--motion-duration-fast),background var(--motion-duration-fast)}
+.training-session--active .training-session__set-reps:focus-visible,.training-session--active .training-session__set-weight:focus-visible{border-color:rgba(242,138,46,.72);background:rgba(242,138,46,.055)}
+.training-session--active .training-session__set-reps:disabled,.training-session--active .training-session__set-weight:disabled{border-color:rgba(255,255,255,.055);background:transparent}
+.training-session--active .training-session__footer{padding:1rem 0 max(1rem,env(safe-area-inset-bottom));border-top:1px solid rgba(255,255,255,.075);background:linear-gradient(180deg,rgba(8,8,8,.96),var(--color-background,#080808) 30%);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px)}
+.training-session--active .training-session__complete{min-height:3.7rem;border:1px solid rgba(255,196,133,.5);border-radius:1rem;background:linear-gradient(115deg,#ffbd72 0%,#f28a2e 48%,#d96818 100%);color:#100a05;font-size:.74rem;font-weight:var(--font-weight-semibold);letter-spacing:.105em;box-shadow:0 10px 30px rgba(242,138,46,.16),inset 0 1px 0 rgba(255,255,255,.3);transition:transform var(--motion-duration-fast),filter var(--motion-duration-fast),box-shadow var(--motion-duration-fast)}
+.training-session--active .training-session__complete:active:not(:disabled){transform:translateY(1px) scale(.995);filter:brightness(.96)}
+.training-session--active .training-session__complete[aria-busy="true"]{cursor:progress;filter:saturate(.72);box-shadow:none}
+.training-session--active .training-session__complete:disabled{opacity:.42;box-shadow:none}
+.training-session--active .training-session__status--success{color:#ffc084}
+.training-session--active .training-session__status--error{color:#ff9a86}
+.training-session--active .training-session__status--loading{color:var(--color-white-soft)}
+@media(max-width:380px){.training-session--active .training-session__set-head{grid-template-columns:.95rem 1.1rem minmax(2rem,1fr) auto minmax(2.45rem,.8fr) auto;gap:.25rem;padding-right:0;padding-left:0;font-size:.47rem;letter-spacing:.035em}.training-session--active .training-session__set-head--cardio{grid-template-columns:.95rem 1.1rem minmax(2rem,1fr) auto}}
+@media(min-width:720px){.training-session--active .training-session__set-head{grid-template-columns:1.4rem 1.5rem minmax(4rem,.7fr) auto minmax(4.5rem,.7fr) auto;gap:1rem}}
+@media(prefers-reduced-motion:reduce){.training-session--active .training-session__set-reps,.training-session--active .training-session__set-weight,.training-session--active .training-session__complete{transition:none}}
