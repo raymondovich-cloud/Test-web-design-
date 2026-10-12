@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.40 */
+/* source/design/patterns/training.css — Version 3.41 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -683,5 +683,24 @@
     .training-session--active .training-session__complete{
         min-height:4rem;
         padding:var(--space-3);
+    }
+}
+
+
+/* Active workout exercise rows — reduce vertical footprint by 25% (CSS only). */
+.training-session--active .training-session__exercise-card{
+    padding-block:calc(var(--space-4) * .75);
+    row-gap:calc(var(--space-3) * .75);
+}
+.training-session--active .training-session__exercise-card--current{
+    padding-block:calc(var(--space-4) * .75);
+    row-gap:calc(var(--space-4) * .75);
+}
+@media(max-width:380px){
+    .training-session--active .training-session__exercise-card{
+        padding-block:calc(var(--space-3) * .75);
+    }
+    .training-session--active .training-session__exercise-card--current{
+        padding-block:calc(var(--space-3) * .75);
     }
 }
