@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.60 */
+/* source/design/patterns/training.css — Version 3.61 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -2519,3 +2519,14 @@ body.is-training-session-active .training-session__footer{
     box-shadow:none;
     overflow:hidden;
 }
+
+
+/* Active workout exercise heading hierarchy — Version 3.61 */
+.training-session--active .training-session__exercise-top{grid-template-columns:minmax(0,1fr) 2.45rem;align-items:start;gap:.65rem}
+.training-session--active .training-session__exercise-heading{display:grid;grid-template-columns:1.8rem minmax(0,1fr);align-items:start;gap:.65rem;min-width:0}
+.training-session--active .training-session__exercise-index{display:flex;align-items:center;justify-content:center;width:1.8rem;min-height:1.8rem;border:1px solid rgba(242,138,46,.3);border-radius:.6rem;color:#f28a2e;font-size:.8rem;font-weight:700;font-variant-numeric:tabular-nums}
+.training-session--active .training-session__exercise-title-block{display:grid;gap:.28rem;min-width:0}
+.training-session--active .training-session__exercise-title{min-width:0;overflow-wrap:anywhere}
+.training-session--active .training-session__exercise-progress{margin:0;color:rgba(255,255,255,.52);font-size:.75rem}
+.training-session--active .training-session__collapse{grid-column:2;grid-row:1}
+@media(max-width:390px){.training-session--active .training-session__exercise-heading{grid-template-columns:1.65rem minmax(0,1fr);gap:.5rem}.training-session--active .training-session__exercise-index{width:1.65rem;min-height:1.65rem}}
