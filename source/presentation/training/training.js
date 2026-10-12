@@ -1,4 +1,4 @@
-// source/presentation/training/training.js — Version 4.5
+// source/presentation/training/training.js — Version 4.6
 // Responsibility: render the Training workspace and coordinate user actions through Application callbacks only.
 import { renderTrainingOverview } from "./training-overview.js";
 import { createPinIndicator } from "../shared/pin-indicator.js";
@@ -593,6 +593,20 @@ async function renderTraining(container, { trainingOverviewApplication = null, t
                 sessionCleanup = null;
                 notifyActiveScreen(false);
                 await loadOverview();
+            },
+            onFinished: async () => {
+                currentActiveWorkout = null;
+                sessionCleanup = null;
+                notifyActiveWorkout();
+                notifyActiveScreen(false);
+                await loadOverview();
+                if (content.isConnected) {
+                    const notice = document.createElement("p");
+                    notice.className = "training-session__completion-notice";
+                    notice.setAttribute("role", "status");
+                    notice.textContent = "Тренировка завершена. Результат сохранён и учтён в аналитике.";
+                    content.prepend(notice);
+                }
             }
         });
     };
