@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.48 */
+/* source/design/patterns/training.css — Version 3.49 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -911,23 +911,23 @@
 .training-session--active .training-session__exercise-body:not([hidden]) .training-session__set-reps,
 .training-session--active .training-session__exercise-body:not([hidden]) .training-session__set-weight{
     justify-self:center;
-    width:50%;
+    width:75%;
     min-width:0;
-    min-height:1.325rem;
-    height:50%;
+    min-height:1.99rem;
+    height:75%;
     padding:0;
-    font-size:calc(var(--font-size-sm) * .5);
+    font-size:calc(var(--font-size-sm) * .75);
     line-height:1;
-    border-radius:calc(var(--radius-sm) * .5);
+    border-radius:calc(var(--radius-sm) * .75);
 }
 .training-session--active .training-session__exercise-body:not([hidden]) .training-session__set-reps::placeholder,
 .training-session--active .training-session__exercise-body:not([hidden]) .training-session__set-weight::placeholder{
-    font-size:calc(var(--font-size-xs) * .5);
+    font-size:calc(var(--font-size-xs) * .75);
 }
 @media(max-width:380px){
     .training-session--active .training-session__exercise-body:not([hidden]) .training-session__set-reps,
     .training-session--active .training-session__exercise-body:not([hidden]) .training-session__set-weight{
-        min-height:1.225rem;
+        min-height:1.84rem;
         font-size:calc(var(--font-size-xs) * .5);
     }
 }
