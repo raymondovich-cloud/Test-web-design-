@@ -1,4 +1,4 @@
-// source/presentation/training/training-session.js — Version 4.11
+// source/presentation/training/training-session.js — Version 4.12
 // Responsibility: render the active workout interaction; delegate persistence and business rules to the application layer.
 function createElement(tag, className = "", text = null) {
     const element = document.createElement(tag);
@@ -108,8 +108,15 @@ function renderTrainingSession(container, { sessionResult, workout, application,
             if (isExpanded) section.classList.add("training-session__exercise-card--expanded");
             toggle.setAttribute("aria-expanded", String(isExpanded));
             toggle.textContent = isExpanded ? "⌃" : "⌄";
-            // Keep only the expand/collapse control; remove the exercise summary block from the active workout.
-            top.appendChild(toggle);
+            const heading = createElement("div", "training-session__exercise-heading");
+            const exerciseIndexLabel = createElement("span", "training-session__exercise-index", String(exerciseIndex + 1));
+            const exerciseTitleBlock = createElement("div", "training-session__exercise-title-block");
+            exerciseTitleBlock.append(
+                createElement("h4", "training-session__exercise-title", exercise.name),
+                createElement("p", "training-session__exercise-progress", getCompletedSetCount(exercise) + " из " + getPlannedSetCount(exercise) + " подходов")
+            );
+            heading.append(exerciseIndexLabel, exerciseTitleBlock);
+            top.append(heading, toggle);
             const body = createElement("div", "training-session__exercise-body");
             body.hidden = !isExpanded;
             const rowsCount = getPlannedSetCount(exercise);
