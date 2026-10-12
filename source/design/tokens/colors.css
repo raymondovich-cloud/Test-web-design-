@@ -1,4 +1,4 @@
-/* colors.css — Version 1.5 */
+/* colors.css — Version 1.6 */
 
 :root {
     --color-black: #080706;
@@ -21,6 +21,9 @@
     --color-success: #b9ffcf;
     --color-warning: #ffe2a8;
     --color-danger: #ffb8b8;
+
+    /* Fixed border color for the FINANCIAL HEALTH frame. */
+    --color-financial-health-border: rgba(242, 138, 46, 0.24);
 
     /* Surface hierarchy: page → section → elevated → highlight. */
     --surface-page: var(--color-black);
