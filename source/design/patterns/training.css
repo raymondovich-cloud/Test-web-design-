@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.23 */
+/* source/design/patterns/training.css — Version 3.24 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -624,4 +624,303 @@
     .training-session--active .training-session__exercise-card--current .training-session__collapse{
         transition:none;
     }
+}
+
+
+/* Active workout — editorial, cardless premium composition — Version 3.24
+   Presentation-only: preserve existing DOM hooks, interactions and application contracts. */
+.training-session--active{
+    display:grid;
+    gap:clamp(1.15rem,4vw,1.8rem);
+    width:100%;
+    max-width:52rem;
+    margin-inline:auto;
+    padding:0 0 max(1rem,env(safe-area-inset-bottom));
+    overflow:visible;
+    border:0;
+    border-radius:0;
+    background:transparent;
+    box-shadow:none;
+}
+.training-session--active .training-session__header{
+    position:relative;
+    display:grid;
+    grid-template-columns:auto minmax(0,1fr) auto;
+    align-items:center;
+    gap:clamp(.45rem,2vw,.9rem);
+    padding:.35rem 0 1rem;
+    border:0;
+    border-bottom:1px solid rgba(255,255,255,.12);
+}
+.training-session--active .training-session__back{
+    min-height:2.5rem;
+    padding:.25rem .15rem;
+    color:var(--color-white-soft);
+    font-size:var(--font-size-xs);
+    letter-spacing:-.01em;
+}
+.training-session--active .training-session__title{
+    font-size:var(--font-size-sm);
+    font-weight:var(--font-weight-semibold);
+    letter-spacing:-.025em;
+}
+.training-session--active .training-session__elapsed{
+    color:var(--color-accent);
+    font-size:clamp(.95rem,3.8vw,1.15rem);
+    font-weight:var(--font-weight-semibold);
+    letter-spacing:-.035em;
+}
+.training-session__progress{
+    gap:.8rem;
+    padding:.15rem 0 1.2rem;
+    border:0;
+}
+.training-session__progress-heading{
+    align-items:center;
+    gap:1rem;
+}
+.training-session__progress-label{
+    color:var(--color-gray);
+    font-size:.62rem;
+    letter-spacing:.15em;
+}
+.training-session__progress-value{
+    color:var(--color-white);
+    font-size:.75rem;
+    font-weight:var(--font-weight-medium);
+}
+.training-session__progress-bar{
+    height:.22rem;
+    background:rgba(255,255,255,.1);
+}
+.training-session__exercises{
+    display:grid;
+    gap:0;
+    min-width:0;
+}
+.training-session--active .training-session__exercise-card,
+.training-session--active .training-session__exercise-card--current{
+    position:relative;
+    display:grid;
+    gap:1rem;
+    min-width:0;
+    padding:1.35rem 0;
+    border:0;
+    border-bottom:1px solid rgba(255,255,255,.105);
+    border-radius:0;
+    background:transparent;
+    box-shadow:none;
+    opacity:1;
+    transition:opacity var(--motion-duration-fast);
+}
+.training-session--active .training-session__exercise-card--current{
+    padding:1.55rem 0 1.7rem 1rem;
+    border-bottom-color:rgba(242,138,46,.22);
+}
+.training-session--active .training-session__exercise-card--current::before{
+    position:absolute;
+    inset:.95rem auto 1.7rem 0;
+    width:2px;
+    border-radius:2px;
+    background:var(--gradient-accent-line);
+    content:"";
+}
+.training-session--active .training-session__exercise-card--complete{
+    opacity:.62;
+}
+.training-session--active .training-session__exercise-top{
+    grid-template-columns:2.2rem minmax(0,1fr);
+    align-items:start;
+    gap:.85rem;
+}
+.training-session--active .training-session__collapse{
+    width:2.2rem;
+    height:2.2rem;
+    margin-top:.1rem;
+    border:1px solid rgba(255,255,255,.14);
+    background:transparent;
+    color:var(--color-white-soft);
+}
+.training-session--active .training-session__exercise-card--current .training-session__collapse{
+    border-color:rgba(242,138,46,.42);
+    background:rgba(242,138,46,.08);
+    color:var(--color-accent);
+}
+.training-session--active .training-session__exercise-heading{
+    gap:.42rem;
+}
+.training-session--active .training-session__exercise-kicker{
+    display:flex;
+    align-items:center;
+    gap:.5rem;
+    margin:0 0 .1rem;
+    color:var(--color-accent);
+    font-family:var(--font-family-mono);
+    font-size:.62rem;
+    letter-spacing:.16em;
+}
+.training-session--active .training-session__exercise-kicker::before{
+    width:.38rem;
+    height:.38rem;
+    flex:0 0 auto;
+    border-radius:50%;
+    background:var(--color-accent);
+    content:"";
+}
+.training-session--active .training-session__exercise-title{
+    color:var(--color-white);
+    font-size:clamp(1rem,4vw,1.2rem);
+    font-weight:var(--font-weight-medium);
+    letter-spacing:-.025em;
+    line-height:1.25;
+}
+.training-session--active .training-session__exercise-card--current .training-session__exercise-title{
+    font-size:clamp(1.35rem,5.5vw,1.8rem);
+    font-weight:var(--font-weight-semibold);
+    letter-spacing:-.045em;
+    line-height:1.12;
+}
+.training-session--active .training-session__exercise-progress{
+    color:var(--color-gray);
+    font-size:.75rem;
+}
+.training-session--active .training-session__exercise-card--current .training-session__exercise-progress{
+    color:var(--color-white-soft);
+}
+.training-session--active .training-session__exercise-body{
+    display:grid;
+    gap:0;
+    padding:.2rem 0 0;
+}
+.training-session--active .training-session__set-row{
+    grid-template-columns:1.1rem 1.25rem minmax(2.4rem,1fr) auto minmax(3rem,.8fr) auto;
+    gap:clamp(.35rem,1.8vw,.7rem);
+    min-height:3.65rem;
+    padding:.5rem .1rem;
+    border:0;
+    border-bottom:1px solid rgba(255,255,255,.075);
+    border-radius:0;
+    background:transparent;
+}
+.training-session--active .training-session__set-row:last-child{
+    border-bottom-color:transparent;
+}
+.training-session--active .training-session__set-row.is-complete{
+    background:linear-gradient(90deg,rgba(242,138,46,.095),transparent 78%);
+}
+.training-session--active .training-session__set-check{
+    width:1.05rem;
+    height:1.05rem;
+    accent-color:var(--color-accent);
+}
+.training-session--active .training-session__set-number{
+    color:var(--color-gray);
+    font-size:.8rem;
+}
+.training-session--active .training-session__set-reps,
+.training-session--active .training-session__set-weight{
+    min-height:2.8rem;
+    padding:.5rem .35rem;
+    border:0;
+    border-bottom:1px solid rgba(255,255,255,.18);
+    border-radius:0;
+    background:rgba(255,255,255,.035);
+    color:var(--color-white);
+    font-size:.95rem;
+    font-weight:var(--font-weight-semibold);
+}
+.training-session--active .training-session__set-reps:focus-visible,
+.training-session--active .training-session__set-weight:focus-visible{
+    border-bottom-color:var(--color-accent);
+    outline:2px solid rgba(242,138,46,.2);
+    outline-offset:1px;
+}
+.training-session--active .training-session__set-unit,
+.training-session--active .training-session__set-weight-unit{
+    color:var(--color-gray);
+    font-size:.58rem;
+    letter-spacing:.08em;
+}
+.training-session--active .training-session__add-set{
+    width:auto;
+    justify-self:start;
+    min-height:2.6rem;
+    margin-top:.65rem;
+    padding:.55rem .1rem;
+    border:0;
+    border-radius:0;
+    background:transparent;
+    color:var(--color-accent);
+    font-size:.78rem;
+}
+.training-session--active .training-session__add-set:active{
+    background:transparent;
+    color:var(--color-white);
+}
+.training-session--active .training-session__footer{
+    position:sticky;
+    bottom:0;
+    z-index:5;
+    gap:.7rem;
+    margin-top:.3rem;
+    padding:1.2rem 0 max(.8rem,env(safe-area-inset-bottom));
+    border-top:1px solid rgba(255,255,255,.08);
+    background:linear-gradient(180deg,rgba(8,8,8,.92),var(--color-background,#080808) 24%);
+    -webkit-backdrop-filter:blur(16px);
+    backdrop-filter:blur(16px);
+}
+.training-session--active .training-session__status{
+    min-height:1.2em;
+    color:var(--color-gray);
+    font-size:.75rem;
+}
+.training-session--active .training-session__complete{
+    min-height:3.5rem;
+    border:0;
+    border-radius:var(--radius-sm);
+    background:var(--gradient-accent-line);
+    color:#090909;
+    font-size:.72rem;
+    font-weight:var(--font-weight-semibold);
+    letter-spacing:.12em;
+    box-shadow:0 8px 26px rgba(242,138,46,.12);
+}
+.training-session--active .training-session__complete:focus-visible{
+    outline:2px solid var(--color-white);
+    outline-offset:3px;
+}
+.training-session--active .training-session__complete:disabled{
+    opacity:.42;
+    box-shadow:none;
+}
+.training-session--active .training-session__exercise-body[hidden],
+.training-session--active .training-session__add-set[hidden]{
+    display:none!important;
+}
+@media(max-width:380px){
+    .training-session--active{gap:1.1rem}
+    .training-session--active .training-session__header{gap:.3rem}
+    .training-session--active .training-session__back{font-size:.68rem}
+    .training-session--active .training-session__title{font-size:.78rem}
+    .training-session--active .training-session__elapsed{font-size:.9rem}
+    .training-session--active .training-session__exercise-card,
+    .training-session--active .training-session__exercise-card--current{padding-top:1.1rem;padding-bottom:1.2rem}
+    .training-session--active .training-session__exercise-card--current{padding-left:.7rem}
+    .training-session--active .training-session__set-row{grid-template-columns:.95rem 1.1rem minmax(2rem,1fr) auto minmax(2.45rem,.8fr) auto;gap:.25rem}
+    .training-session--active .training-session__set-reps,
+    .training-session--active .training-session__set-weight{min-height:2.55rem;font-size:.82rem}
+    .training-session--active .training-session__set-unit,
+    .training-session--active .training-session__set-weight-unit{font-size:.52rem;letter-spacing:0}
+}
+@media(min-width:720px){
+    .training-session--active{gap:1.65rem}
+    .training-session--active .training-session__exercise-card,
+    .training-session--active .training-session__exercise-card--current{padding-top:1.65rem;padding-bottom:1.65rem}
+    .training-session--active .training-session__exercise-card--current{padding-left:1.25rem}
+    .training-session--active .training-session__set-row{grid-template-columns:1.4rem 1.5rem minmax(4rem,.7fr) auto minmax(4.5rem,.7fr) auto;gap:1rem}
+}
+@media(prefers-reduced-motion:reduce){
+    .training-session--active *,
+    .training-session--active *::before,
+    .training-session--active *::after{transition:none!important}
 }
