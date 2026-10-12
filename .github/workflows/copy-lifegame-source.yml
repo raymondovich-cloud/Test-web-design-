@@ -1,53 +1,19 @@
-name: Copy LifeGame source snapshot
+# .github/workflows/copy-lifegame-source.yml — Version 1.1
+# Disabled after the initial snapshot. Design work must never trigger a destructive
+# rsync --delete from the upstream LifeGame repository.
+
+name: Copy LifeGame source snapshot (disabled)
 
 on:
-  push:
-    branches:
-      - chore/design-repo-bootstrap
+  workflow_dispatch:
 
 permissions:
-  contents: write
-
-concurrency:
-  group: copy-lifegame-source
-  cancel-in-progress: false
+  contents: read
 
 jobs:
-  copy-source:
+  disabled:
+    if: ${{ false }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout design repository
-        uses: actions/checkout@v4
-        with:
-          ref: chore/design-repo-bootstrap
-          path: target
-          persist-credentials: true
-
-      - name: Checkout pinned LifeGame source
-        uses: actions/checkout@v4
-        with:
-          repository: raymondovich-cloud/LifeGame
-          ref: 4bcf36c66918705f5e21e016bef3e36ec799acba
-          path: source
-          persist-credentials: false
-
-      - name: Copy source snapshot while preserving design-repo metadata
-        shell: bash
-        run: |
-          set -euo pipefail
-          rsync -a --delete \
-            --exclude='.git/' \
-            --exclude='README.md' \
-            --exclude='docs/design-repo-plan.md' \
-            --exclude='.github/workflows/' \
-            source/ target/
-          cd target
-          git add -A
-          if git diff --cached --quiet; then
-            echo "Target already matches the pinned LifeGame source."
-            exit 0
-          fi
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "chore: copy LifeGame source snapshot 4bcf36c"
-          git push origin HEAD:chore/design-repo-bootstrap
+      - name: Explain disabled snapshot sync
+        run: echo "Snapshot sync is disabled. Transfer only reviewed file diffs explicitly."

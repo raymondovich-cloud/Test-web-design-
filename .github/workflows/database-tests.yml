@@ -1,4 +1,4 @@
-# .github/workflows/database-tests.yml — Version 1.7
+# .github/workflows/database-tests.yml — Version 1.8
 
 name: LifeGame Database Tests
 
@@ -7,6 +7,7 @@ on:
     branches:
       - main
       - feature/pwa-static-cache
+      - chore/design-repo-bootstrap
   pull_request:
     branches:
       - main
