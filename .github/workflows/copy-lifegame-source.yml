@@ -39,7 +39,7 @@ jobs:
             --exclude='.git/' \
             --exclude='README.md' \
             --exclude='docs/design-repo-plan.md' \
-            --exclude='.github/workflows/copy-lifegame-source.yml' \
+            --exclude='.github/workflows/' \
             source/ target/
           cd target
           git add -A
