@@ -1,4 +1,4 @@
-// source/application/training/training-session-workflow.js — Version 1.2
+// source/application/training/training-session-workflow.js — Version 1.3
 // Responsibility: coordinate starting, restoring, and recording sets through the session API.
 const RESISTANCE_UNITS = new Set(["kg", "lb", "bodyweight", "band", "machine", "other"]);
 function requireUserContext(userContext) {
@@ -11,7 +11,7 @@ function requireEnvelope(value, expectedStatus) {
 }
 function createTrainingSessionWorkflow({ api, clock = () => Date.now() } = {}) {
     if (!api || typeof api.createSession !== "function" || typeof api.startSession !== "function" || typeof api.reviseSession !== "function" || typeof api.listSessions !== "function") {
-        throw new TypeError("Training session workflow: complete session API is required.");
+        throw new TypeError("Training session workflow: session API is required.");
     }
     if (typeof clock !== "function") throw new TypeError("Training session workflow: clock is required.");
     async function getActiveWorkout({ userContext } = {}) {
