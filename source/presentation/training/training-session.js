@@ -1,4 +1,4 @@
-// source/presentation/training/training-session.js — Version 2.16
+// source/presentation/training/training-session.js — Version 2.17
 // Responsibility: render the active workout interaction; delegate persistence and business rules to the application layer.
 function createElement(tag, className = "", text = null) {
     const element = document.createElement(tag);
@@ -130,7 +130,8 @@ function renderTrainingSession(container, { sessionResult, workout, application,
                 const reps = document.createElement("input");
                 reps.type = "number"; reps.min = "1"; reps.max = "100"; reps.step = "1";
                 reps.inputMode = "numeric"; reps.className = "training-session__set-reps";
-                reps.value = String(savedSet?.reps ?? definition.targetReps ?? 8);
+                reps.value = savedSet ? String(savedSet.reps) : "";
+                reps.placeholder = "повт";
                 reps.disabled = Boolean(savedSet);
                 reps.setAttribute("aria-label", "Количество повторений, подход " + (index + 1));
                 const isCardio = definition.exerciseType === "cardio";
@@ -141,17 +142,15 @@ function renderTrainingSession(container, { sessionResult, workout, application,
                 resistance.step = "0.5";
                 resistance.inputMode = "decimal";
                 resistance.className = "training-session__set-weight";
-                resistance.placeholder = "0";
+                resistance.placeholder = "кг";
                 resistance.value = String(savedSet?.resistance?.value ?? definition.targetResistance?.value ?? "");
                 resistance.disabled = Boolean(savedSet);
                 resistance.setAttribute("aria-label", "Вес в килограммах, подход " + (index + 1));
-                const label = createElement("span", "training-session__set-unit", "ПОВТ.");
-                const weightLabel = createElement("span", "training-session__set-weight-unit", "КГ");
                 if (isCardio) {
                     row.classList.add("training-session__set-row--cardio");
-                    row.append(checkbox, number, reps, label);
+                    row.append(checkbox, number, reps);
                 } else {
-                    row.append(checkbox, number, reps, label, resistance, weightLabel);
+                    row.append(checkbox, number, reps, resistance);
                 }
                 if (savedSet) row.classList.add("is-complete");
                 checkbox.addEventListener("change", async () => {
