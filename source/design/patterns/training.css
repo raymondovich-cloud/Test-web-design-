@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.34 */
+/* source/design/patterns/training.css — Version 3.35 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -2134,4 +2134,91 @@ body.is-training-session-active .training-session--active{
     .training-session--active .training-session__title{font-size:1.7rem}
     .training-session--active .training-session__progress-value,
     .training-session--active .training-session__progress-percent{font-size:.82rem}
+}
+
+
+/* Final requested composition: compact back control and muscle illustration beside exercise details. */
+.training-session--active .training-session__header{
+    grid-template-columns:2.45rem minmax(0,1fr);
+    align-items:center;
+    gap:.65rem;
+}
+.training-session--active .training-session__back{
+    width:2.35rem;
+    height:2.35rem;
+    min-height:2.35rem;
+    padding:0 0 .08rem;
+    font-size:1.35rem;
+    border-color:rgba(255,132,39,.65);
+}
+.training-session--active .training-session__identity{
+    grid-column:2;
+    grid-row:1;
+    align-self:center;
+}
+.training-session--active .training-session__exercise-card--current .training-session__exercise-heading{
+    display:grid;
+    grid-template-columns:5rem minmax(0,1fr);
+    grid-template-rows:auto auto;
+    align-items:start;
+    column-gap:.8rem;
+    row-gap:.4rem;
+}
+.training-session--active .training-session__exercise-card--current .training-session__exercise-title-block{
+    grid-column:2;
+    grid-row:1;
+    align-self:start;
+}
+.training-session--active .training-session__exercise-card--current .training-session__exercise-meta{
+    grid-column:2;
+    grid-row:2;
+    display:flex;
+    flex-direction:column;
+    align-items:flex-start;
+    gap:.3rem;
+    min-width:0;
+}
+.training-session--active .training-session__exercise-card--current .training-session__exercise-meta-item{
+    font-size:clamp(.78rem,3.5vw,.9rem);
+    line-height:1.25;
+}
+.training-session--active .training-session__exercise-card--current .training-session__exercise-visual{
+    grid-column:1;
+    grid-row:1 / span 2;
+    align-self:center;
+    justify-content:center;
+    width:5rem;
+    min-height:0;
+    height:7.25rem;
+    margin:0;
+}
+.training-session--active .training-session__exercise-card--current .training-session__exercise-visual svg{
+    display:block;
+    width:4.7rem;
+    height:6.2rem;
+    max-width:100%;
+}
+@media(max-width:390px){
+    .training-session--active .training-session__header{
+        grid-template-columns:2.15rem minmax(0,1fr);
+        gap:.6rem;
+    }
+    .training-session--active .training-session__back{
+        width:2.05rem;
+        height:2.05rem;
+        min-height:2.05rem;
+        font-size:1.2rem;
+    }
+    .training-session--active .training-session__exercise-card--current .training-session__exercise-heading{
+        grid-template-columns:4.2rem minmax(0,1fr);
+        column-gap:.65rem;
+    }
+    .training-session--active .training-session__exercise-card--current .training-session__exercise-visual{
+        width:4.2rem;
+        height:6.4rem;
+    }
+    .training-session--active .training-session__exercise-card--current .training-session__exercise-visual svg{
+        width:4rem;
+        height:5.5rem;
+    }
 }
