@@ -1,4 +1,4 @@
-// source/presentation/training/training-session.js — Version 4.10
+// source/presentation/training/training-session.js — Version 4.11
 // Responsibility: render the active workout interaction; delegate persistence and business rules to the application layer.
 function createElement(tag, className = "", text = null) {
     const element = document.createElement(tag);
@@ -108,32 +108,8 @@ function renderTrainingSession(container, { sessionResult, workout, application,
             if (isExpanded) section.classList.add("training-session__exercise-card--expanded");
             toggle.setAttribute("aria-expanded", String(isExpanded));
             toggle.textContent = isExpanded ? "⌃" : "⌄";
-            const heading = createElement("div", "training-session__exercise-heading");
-            const isCompactExercise = !isCurrentExercise || !expandedExerciseIds.has(exercise.id);
-            if (isCompactExercise) {
-                heading.appendChild(createElement("span", "training-session__exercise-index", String(exerciseIndex + 1)));
-            }
-            const exerciseTitleBlock = createElement("div", "training-session__exercise-title-block");
-            exerciseTitleBlock.append(
-                createElement("h4", "training-session__exercise-title", exercise.name),
-                createElement("p", "training-session__exercise-progress", getCompletedSetCount(exercise) + " из " + getPlannedSetCount(exercise) + " подходов")
-            );
-            heading.appendChild(exerciseTitleBlock);
-            top.append(toggle, heading);
-            const meta = createElement("div", "training-session__exercise-meta");
-            meta.append(createElement("span", "training-session__exercise-meta-item", definition.targetResistance?.value != null ? String(definition.targetResistance.value) + " кг" : "Собственный вес"));
-            meta.append(createElement("span", "training-session__exercise-meta-item", String(definition.targetReps ?? 8) + " повторений"));
-            meta.append(createElement("span", "training-session__exercise-meta-item", String(getPlannedSetCount(exercise)) + " подхода"));
-            heading.appendChild(meta);
-            const setProgress = createElement("div", "training-session__set-progress");
-            setProgress.setAttribute("aria-label", "Прогресс подходов упражнения");
-            for (let tick = 0; tick < getPlannedSetCount(exercise); tick += 1) {
-                const mark = createElement("span", "training-session__set-progress-tick");
-                if (tick < getCompletedSetCount(exercise)) mark.classList.add("is-complete");
-                else if (isCurrentExercise && tick === getCompletedSetCount(exercise)) mark.classList.add("is-current");
-                setProgress.appendChild(mark);
-            }
-            heading.appendChild(setProgress);
+            // Keep only the expand/collapse control; remove the exercise summary block from the active workout.
+            top.appendChild(toggle);
             const body = createElement("div", "training-session__exercise-body");
             body.hidden = !isExpanded;
             const rowsCount = getPlannedSetCount(exercise);
