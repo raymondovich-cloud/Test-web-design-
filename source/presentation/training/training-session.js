@@ -1,4 +1,4 @@
-// source/presentation/training/training-session.js — Version 4.4
+// source/presentation/training/training-session.js — Version 4.5
 // Responsibility: render the active workout interaction; delegate persistence and business rules to the application layer.
 function createElement(tag, className = "", text = null) {
     const element = document.createElement(tag);
@@ -48,7 +48,8 @@ function renderTrainingSession(container, { sessionResult, workout, application,
         const identity = createElement("div", "training-session__identity");
         const eyebrow = createElement("span", "training-session__eyebrow", "ACTIVE SESSION");
         const title = createElement("h3", "training-session__title", workout.title || "Моя тренировка");
-        identity.append(eyebrow, title);
+        const sessionProgress = createElement("span", "training-session__session-progress");
+        identity.append(eyebrow, title, sessionProgress);
         const back = createElement("button", "training-session__back", "‹");
         back.type = "button";
         back.setAttribute("aria-label", "Назад к тренировкам");
@@ -79,19 +80,13 @@ function renderTrainingSession(container, { sessionResult, workout, application,
 
         const progress = createElement("section", "training-session__progress");
         progress.setAttribute("aria-label", "Прогресс тренировки");
-        const progressHeading = createElement("div", "training-session__progress-heading");
-        progressHeading.append(
-            createElement("span", "training-session__progress-label", "ПРОГРЕСС ТРЕНИРОВКИ"),
-            createElement("span", "training-session__progress-value", completedSets + " из " + plannedSets + " подходов")
-        );
+        sessionProgress.textContent = completedSets + " из " + plannedSets + " подходов";
         const progressBar = document.createElement("progress");
         progressBar.className = "training-session__progress-bar";
         progressBar.max = Math.max(1, plannedSets);
         progressBar.value = completedSets;
         progressBar.setAttribute("aria-label", "Выполненные подходы");
-        const progressPercent = Math.round((completedSets / Math.max(1, plannedSets)) * 100);
-        progressHeading.appendChild(createElement("span", "training-session__progress-percent", progressPercent + "%"));
-        progress.append(progressHeading, progressBar);
+        progress.append(progressBar);
 
         const exerciseHost = createElement("div", "training-session__exercises");
         current.session.exercises.forEach((exercise, exerciseIndex) => {
@@ -125,9 +120,9 @@ function renderTrainingSession(container, { sessionResult, workout, application,
             heading.appendChild(exerciseTitleBlock);
             top.append(toggle, heading);
             const meta = createElement("div", "training-session__exercise-meta");
-            meta.append(createElement("span", "training-session__exercise-meta-item", String(getPlannedSetCount(exercise)) + " подходов"));
-            meta.append(createElement("span", "training-session__exercise-meta-item", String(definition.targetReps ?? 8) + " повторений"));
             meta.append(createElement("span", "training-session__exercise-meta-item", definition.targetResistance?.value != null ? String(definition.targetResistance.value) + " кг" : "Собственный вес"));
+            meta.append(createElement("span", "training-session__exercise-meta-item", String(definition.targetReps ?? 8) + " повторений"));
+            meta.append(createElement("span", "training-session__exercise-meta-item", String(getPlannedSetCount(exercise)) + " подхода"));
             heading.appendChild(meta);
             if (isCurrentExercise) {
                 const exerciseVisual = createElement("div", "training-session__exercise-visual");
@@ -266,7 +261,11 @@ function renderTrainingSession(container, { sessionResult, workout, application,
         const footer = createElement("footer", "training-session__footer");
         const status = createElement("p", "training-session__status");
         status.setAttribute("role", "status"); status.setAttribute("aria-live", "polite");
-        const complete = createElement("button", "training-session__complete", "ЗАВЕРШИТЬ ТРЕНИРОВКУ");
+        const complete = createElement("button", "training-session__complete");
+        const finishFlag = createElement("span", "training-session__complete-flag", "🏁");
+        finishFlag.setAttribute("aria-hidden", "true");
+        const finishLabel = createElement("span", "training-session__complete-label", "ЗАВЕРШИТЬ ТРЕНИРОВКУ");
+        complete.append(finishFlag, finishLabel);
         complete.type = "button";
         complete.disabled = !current.session.exercises.some((exercise) => exercise.sets.some((set) => set.completed === true));
         complete.addEventListener("click", async () => {
@@ -279,13 +278,13 @@ function renderTrainingSession(container, { sessionResult, workout, application,
                 current = await application.completeWorkout({ sessionResult: current });
                 if (timerId !== null) window.clearInterval(timerId);
                 complete.removeAttribute("aria-busy");
-                complete.textContent = "Тренировка завершена ✓";
+                finishLabel.textContent = "ТРЕНИРОВКА ЗАВЕРШЕНА ✓";
                 status.className = "training-session__status training-session__status--success";
                 status.textContent = "Тренировка завершена. Результат сохранён.";
                 if (typeof onFinished === "function") await onFinished();
             } catch (error) {
                 complete.removeAttribute("aria-busy");
-                complete.textContent = "⚑  Завершить тренировку";
+                finishLabel.textContent = "ЗАВЕРШИТЬ ТРЕНИРОВКУ";
                 status.className = "training-session__status training-session__status--error";
                 status.textContent = error?.code === "TRAINING_SESSION_CONFLICT"
                     ? "Тренировка изменилась в другом запросе. Обнови экран перед продолжением."
