@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.47 */
+/* source/design/patterns/training.css — Version 3.48 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -2312,25 +2312,23 @@ body.is-training-session-active .training-session__footer{
     grid-template-columns:auto minmax(0,1fr);
 }
 
-/* Match the complete collapsed exercise row to the finish-workout button bounds. */
+/* Match upcoming exercise rows to the exact outer dimensions of the fixed finish-workout button. */
 .training-session--active .training-session__exercise-card--upcoming{
-    width:100%;
-    min-height:5.7rem;
     box-sizing:border-box;
+    width:min(calc(100vw - 2 * clamp(1rem,5.5vw,1.5rem)),calc(34rem - 2 * clamp(1rem,5.5vw,1.5rem)));
+    height:3.8rem;
+    min-height:3.8rem;
+    max-height:3.8rem;
+    margin-inline:auto;
+    padding:0;
+    overflow:hidden;
 }
 .training-session--active .training-session__exercise-card--upcoming .training-session__exercise-top{
     box-sizing:border-box;
-    min-height:5.7rem;
-    padding:.8rem 1.2rem;
-}
-@media(max-width:520px){
-    .training-session--active .training-session__exercise-card--upcoming{
-        width:calc(100% - (2 * clamp(1rem,5.5vw,1.5rem) - 1rem));
-        margin-inline:auto;
-        min-height:4.7rem;
-    }
-    .training-session--active .training-session__exercise-card--upcoming .training-session__exercise-top{
-        min-height:4.7rem;
-        padding:.6rem .75rem;
-    }
+    display:flex;
+    align-items:center;
+    width:100%;
+    height:100%;
+    min-height:0;
+    padding:0 .75rem;
 }
