@@ -1,4 +1,4 @@
-// source/presentation/training/training-session.js — Version 4.13
+// source/presentation/training/training-session.js — Version 4.14
 // Responsibility: render the active workout interaction; delegate persistence and business rules to the application layer.
 function createElement(tag, className = "", text = null) {
     const element = document.createElement(tag);
@@ -101,13 +101,12 @@ function renderTrainingSession(container, { sessionResult, workout, application,
             );
             if (isCurrentExercise) section.setAttribute("aria-current", "step");
             const top = createElement("div", "training-session__exercise-top");
-            const toggle = createElement("button", "training-session__collapse", "⌄");
-            toggle.type = "button";
-            toggle.setAttribute("aria-label", "Свернуть или развернуть упражнение " + exercise.name);
             const isExpanded = expandedExerciseIds.has(exercise.id);
+            top.setAttribute("role", "button");
+            top.setAttribute("tabindex", "0");
+            top.setAttribute("aria-label", "Раскрыть или скрыть упражнение " + exercise.name);
+            top.setAttribute("aria-expanded", String(isExpanded));
             if (isExpanded) section.classList.add("training-session__exercise-card--expanded");
-            toggle.setAttribute("aria-expanded", String(isExpanded));
-            toggle.textContent = isExpanded ? "⌃" : "⌄";
             const heading = createElement("div", "training-session__exercise-heading");
             const exerciseIndexLabel = createElement("span", "training-session__exercise-index", String(exerciseIndex + 1));
             const exerciseTitleBlock = createElement("div", "training-session__exercise-title-block");
@@ -116,7 +115,7 @@ function renderTrainingSession(container, { sessionResult, workout, application,
                 createElement("p", "training-session__exercise-progress", getCompletedSetCount(exercise) + " из " + getPlannedSetCount(exercise) + " подходов")
             );
             heading.append(exerciseIndexLabel, exerciseTitleBlock);
-            top.append(heading, toggle);
+            top.append(heading);
             const body = createElement("div", "training-session__exercise-body");
             body.hidden = !isExpanded;
             const rowsCount = getPlannedSetCount(exercise);
@@ -223,11 +222,17 @@ function renderTrainingSession(container, { sessionResult, workout, application,
                 addedSetCounts.set(exercise.id, rowsCount + 1);
                 render();
             });
-            toggle.addEventListener("click", () => {
+            const toggleExercise = () => {
                 const nextExpanded = body.hidden;
                 if (nextExpanded) expandedExerciseIds.add(exercise.id);
                 else expandedExerciseIds.delete(exercise.id);
                 render();
+            };
+            top.addEventListener("click", toggleExercise);
+            top.addEventListener("keydown", (event) => {
+                if (event.key !== "Enter" && event.key !== " ") return;
+                event.preventDefault();
+                toggleExercise();
             });
             body.appendChild(addSet);
             section.append(top, body);
