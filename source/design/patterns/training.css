@@ -1,4 +1,4 @@
-/* source/design/patterns/training.css — Version 3.38 */
+/* source/design/patterns/training.css — Version 3.39 */
 
 .health-training-overview-host{min-width:0}
 .training-overview{
@@ -2296,3 +2296,13 @@ body.is-training-session-active .training-session__footer{
 .training-session--active .training-session__exercise-card--current .training-session__exercise-title-block{grid-column:1;grid-row:1;min-width:0}
 .training-session--active .training-session__exercise-card--current .training-session__exercise-meta{grid-column:1;grid-row:2;flex-wrap:wrap}
 .training-session--active .training-session__exercise-card--current .training-session__set-progress{grid-column:1;grid-row:3}
+
+/* Active session header: keep the back control beside the title block. */
+.training-session--active .training-session__header{grid-template-columns:2.2rem minmax(0,1fr);align-items:center}
+.training-session--active .training-session__back{grid-column:1;grid-row:1;align-self:center;justify-self:start}
+.training-session--active .training-session__identity{grid-column:2;grid-row:1;min-width:0}
+@media(max-width:390px){
+ .training-session--active .training-session__header{grid-template-columns:2rem minmax(0,1fr)}
+ .training-session--active .training-session__back{grid-column:1;grid-row:1}
+ .training-session--active .training-session__identity{grid-column:2;grid-row:1}
+}
