@@ -1,4 +1,4 @@
-/* design.css — Version 4.30 */
+/* design.css — Version 4.31 */
 
 /* Единая точка входа Design System. */
 
@@ -23,7 +23,7 @@
 @import "./components/financial-burden-confirmation.css";
 @import "./components/accordion.css";
 @import "./components/navigation.css";
-@import "./components/header.css?v=20261013-1316";
+@import "./components/header.css?v=20261013-1547";
 @import "./components/list.css?v=20261012-1420";
 @import "./components/row-interaction-menu.css?v=20261010-1530";
 @import "./components/subscription-limit.css";
