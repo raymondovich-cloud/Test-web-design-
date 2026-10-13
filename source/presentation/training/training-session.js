@@ -1,5 +1,6 @@
-// source/presentation/training/training-session.js — Version 2.22
+// source/presentation/training/training-session.js — Version 2.23
 // Responsibility: render the active workout interaction; delegate persistence and business rules to the application layer.
+import { classifyWorkoutType, getWorkoutTypeLabel } from "../../domain/training/workout-type.js";
 function createElement(tag, className = "", text = null) {
     const element = document.createElement(tag);
     if (className) element.className = className;
@@ -49,13 +50,15 @@ function renderTrainingSession(container, { sessionResult, workout, application,
         const elapsed = createElement("p", "training-session__elapsed", "00:00");
         elapsed.setAttribute("aria-label", "Продолжительность тренировки");
 
+        const workoutType = classifyWorkoutType(workout.exercises);
+        const workoutTypeLabel = createElement("p", "training-session__type", "Тип тренировки: " + (workoutType ? getWorkoutTypeLabel(workoutType) : "Не определён"));
         const title = createElement("h3", "training-session__title", "ACTIVE SESSION: " + (workout.title || "Тренировка"));
         const back = createElement("button", "training-session__back", "← Назад");
         back.type = "button";
         back.addEventListener("click", () => {
             if (typeof onBack === "function") onBack();
         });
-        header.append(elapsed, title, back);
+        header.append(workoutTypeLabel, elapsed, title, back);
 
         const completedSets = current.session.exercises.reduce(
             (total, exercise) => total + getCompletedSetCount(exercise),
